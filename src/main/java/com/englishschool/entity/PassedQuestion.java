@@ -15,7 +15,9 @@ public class PassedQuestion implements Serializable {
     @Id
     private String id;
     private Question question;
-    private List<String> userAnswers;
+    private List<Answer> userAnswers;
+    private List<String> answerText;
+    private Answer rightAnswer;
 
     public String getId() {
         return id;
@@ -33,12 +35,28 @@ public class PassedQuestion implements Serializable {
         this.question = question;
     }
 
-    public List<String> getUserAnswers() {
+    public List<Answer> getUserAnswers() {
         return userAnswers;
     }
 
-    public void setUserAnswers(List<String> userAnswers) {
+    public void setUserAnswers(List<Answer> userAnswers) {
         this.userAnswers = userAnswers;
+    }
+
+    public List<String> getAnswerText() {
+        return answerText;
+    }
+
+    public void setAnswerText(List<String> answerText) {
+        this.answerText = answerText;
+    }
+
+    public Answer getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setRightAnswer(Answer rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 
     @Override
@@ -68,6 +86,8 @@ public class PassedQuestion implements Serializable {
                 "id='" + id + '\'' +
                 ", question=" + question +
                 ", userAnswers=" + userAnswers +
+                ", answerText=" + answerText +
+                ", rightAnswer=" + rightAnswer +
                 '}';
     }
 

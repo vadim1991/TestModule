@@ -16,7 +16,7 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements
         this.dao = (D) dao;
     }
 
-    public T findById(int id) {
+    public T findById(String id) {
         return dao.findById(id);
     }
 

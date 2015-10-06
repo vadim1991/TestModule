@@ -16,8 +16,9 @@ public class Test implements Serializable {
     @Id
     private String id;
     private DateTime creationDate;
-    private List<Integer> questionIds;
-    String testTitle;
+    private List<String> questionIds;
+    private int timeOfTest;
+    private String testTitle;
 
     public String getId() {
         return id;
@@ -35,11 +36,11 @@ public class Test implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public List<Integer> getQuestionIds() {
+    public List<String> getQuestionIds() {
         return questionIds;
     }
 
-    public void setQuestionIds(List<Integer> questionIds) {
+    public void setQuestionIds(List<String> questionIds) {
         this.questionIds = questionIds;
     }
 
@@ -49,6 +50,14 @@ public class Test implements Serializable {
 
     public void setTestTitle(String testTitle) {
         this.testTitle = testTitle;
+    }
+
+    public int getTimeOfTest() {
+        return timeOfTest;
+    }
+
+    public void setTimeOfTest(int timeOfTest) {
+        this.timeOfTest = timeOfTest;
     }
 
     @Override
@@ -80,6 +89,7 @@ public class Test implements Serializable {
                 "id='" + id + '\'' +
                 ", creationDate=" + creationDate +
                 ", questionIds=" + questionIds +
+                ", timeOfTest=" + timeOfTest +
                 ", testTitle='" + testTitle + '\'' +
                 '}';
     }

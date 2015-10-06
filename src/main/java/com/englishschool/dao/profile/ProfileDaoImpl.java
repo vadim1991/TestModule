@@ -24,6 +24,4 @@ public class ProfileDaoImpl extends GenericMongoDBDaoImpl<TestProfile> implement
         return getMongoOperations().find(query, getClazz());
     }
 
-
-
 }

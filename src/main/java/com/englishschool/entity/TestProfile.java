@@ -18,9 +18,9 @@ public class TestProfile implements Serializable {
     private String email;
     private String password;
     private int groupId;
-    private List<Test> availableTests;
+    private List<String> availableTests;
     private double averageMark;
-    private List<PassedTest> passedTests;
+    private List<String> passedTests;
 
     public String getId() {
         return id;
@@ -62,11 +62,11 @@ public class TestProfile implements Serializable {
         this.groupId = groupId;
     }
 
-    public List<Test> getAvailableTests() {
+    public List<String> getAvailableTests() {
         return availableTests;
     }
 
-    public void setAvailableTests(List<Test> availableTests) {
+    public void setAvailableTests(List<String> availableTests) {
         this.availableTests = availableTests;
     }
 
@@ -78,11 +78,11 @@ public class TestProfile implements Serializable {
         this.averageMark = averageMark;
     }
 
-    public List<PassedTest> getPassedTests() {
+    public List<String> getPassedTests() {
         return passedTests;
     }
 
-    public void setPassedTests(List<PassedTest> passedTests) {
+    public void setPassedTests(List<String> passedTests) {
         this.passedTests = passedTests;
     }
 

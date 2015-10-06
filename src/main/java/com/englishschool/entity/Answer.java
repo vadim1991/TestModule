@@ -11,16 +11,15 @@ import java.io.Serializable;
 @Document
 public class Answer implements Serializable {
 
-    @Id
-    private String id;
+    private int id;
     private String answerText;
     private boolean rightAnswer;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -47,15 +46,15 @@ public class Answer implements Serializable {
 
         Answer answer = (Answer) o;
 
+        if (id != answer.id) return false;
         if (rightAnswer != answer.rightAnswer) return false;
-        if (id != null ? !id.equals(answer.id) : answer.id != null) return false;
         return !(answerText != null ? !answerText.equals(answer.answerText) : answer.answerText != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (answerText != null ? answerText.hashCode() : 0);
         result = 31 * result + (rightAnswer ? 1 : 0);
         return result;
@@ -64,10 +63,10 @@ public class Answer implements Serializable {
     @Override
     public String toString() {
         return "Answer{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", answerText='" + answerText + '\'' +
                 ", rightAnswer=" + rightAnswer +
                 '}';
     }
-    
+
 }

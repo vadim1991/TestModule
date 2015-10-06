@@ -20,14 +20,14 @@ public class GenericMongoDBDaoImpl<T> implements GenericDao<T> {
     private Class<T> clazz;
 
     @Override
-    public T findById(int id) {
+    public T findById(String id) {
         Query query = new Query(Criteria.where(ID).is(id));
-        return mongoOperations.findOne(query, clazz);
+        return mongoOperations.findOne(query, getClazz());
     }
 
     @Override
     public List<T> findAll() {
-        return mongoOperations.findAll(clazz);
+        return mongoOperations.findAll(getClazz());
     }
 
     @Override
