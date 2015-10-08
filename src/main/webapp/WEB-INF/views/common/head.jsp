@@ -4,6 +4,7 @@
   <link href="/resources/bower_components/bootstrap-material-design/dist/css/roboto.css" rel="stylesheet">
   <link href="/resources/bower_components/bootstrap-material-design/dist/css/material-fullpalette.css" rel="stylesheet">
   <link href="/resources/bower_components/bootstrap-material-design/dist/css/ripples.css" rel="stylesheet">
+  <link href="/resources/css/custom_style.css" rel="stylesheet">
   <script src="/resources/bower_components/jquery/dist/jquery.js"></script>
   <script src="/resources/js/jquery.cookie.js"></script>
   <script src="/resources/js/test.js"></script>

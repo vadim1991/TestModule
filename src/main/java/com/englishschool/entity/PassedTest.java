@@ -16,7 +16,7 @@ public class PassedTest implements Serializable {
     @Id
     private String id;
     private String testId;
-    private int result;
+    private double result;
     private List<PassedQuestion> passedQuestions;
     private DateTime startTest;
     private DateTime endTest;
@@ -42,11 +42,11 @@ public class PassedTest implements Serializable {
         this.testId = testId;
     }
 
-    public int getResult() {
+    public double getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(double result) {
         this.result = result;
     }
 
@@ -89,21 +89,29 @@ public class PassedTest implements Serializable {
 
         PassedTest that = (PassedTest) o;
 
-        if (result != that.result) return false;
+        if (Double.compare(that.result, result) != 0) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (testId != null ? !testId.equals(that.testId) : that.testId != null) return false;
+        if (passedQuestions != null ? !passedQuestions.equals(that.passedQuestions) : that.passedQuestions != null)
+            return false;
         if (startTest != null ? !startTest.equals(that.startTest) : that.startTest != null) return false;
-        return !(endTest != null ? !endTest.equals(that.endTest) : that.endTest != null);
+        if (endTest != null ? !endTest.equals(that.endTest) : that.endTest != null) return false;
+        return !(duringTimeTest != null ? !duringTimeTest.equals(that.duringTimeTest) : that.duringTimeTest != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result1 = id != null ? id.hashCode() : 0;
+        int result1;
+        long temp;
+        result1 = id != null ? id.hashCode() : 0;
         result1 = 31 * result1 + (testId != null ? testId.hashCode() : 0);
-        result1 = 31 * result1 + result;
+        temp = Double.doubleToLongBits(result);
+        result1 = 31 * result1 + (int) (temp ^ (temp >>> 32));
+        result1 = 31 * result1 + (passedQuestions != null ? passedQuestions.hashCode() : 0);
         result1 = 31 * result1 + (startTest != null ? startTest.hashCode() : 0);
         result1 = 31 * result1 + (endTest != null ? endTest.hashCode() : 0);
+        result1 = 31 * result1 + (duringTimeTest != null ? duringTimeTest.hashCode() : 0);
         return result1;
     }
 
@@ -119,5 +127,4 @@ public class PassedTest implements Serializable {
                 ", duringTimeTest=" + duringTimeTest +
                 '}';
     }
-
 }

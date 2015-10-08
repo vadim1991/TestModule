@@ -1,20 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Вадим
-  Date: 04.05.2015
-  Time: 19:43
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title></title>
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <script src="js/jquery-1.11.2.min.js"></script>
-    <script src="js/jquery.cookie.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
-    <script src="js/result.js"></script>
-    <script src="js/jquery.json-2.4.js"></script>
+    <jsp:include page="../views/common/head.jsp"></jsp:include>
+    <title>Add Question</title>
 </head>
 <body>
 <div class="container">
@@ -25,79 +17,72 @@
         <div class="text-center">
             <h3>Ваш результат: </h3>
 
-            <h3>${result}</h3>
+            <h3>${passedTest.result}</h3>
         </div>
         <div class="text-center">
             <a class="btn btn-success" href="runTest">Пройти еще раз</a>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-6">
+    <div class="col-xs-10">
+        <div id="test" class="test">
+            <c:forEach items="${passedTest.passedQuestions}" var="passedQuestion" varStatus="i">
+                <div class="test">
+                    <div class="question">
+                        <input type="hidden" value="">
+
+                        <p>
+                            <c:choose>
+                                <c:when test="${passedQuestion.rightAnswer}">
+                                    <span class='glyphicon glyphicon-ok green'></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class='glyphicon glyphicon-remove red'></span>
+                                </c:otherwise>
+                            </c:choose>
+                            <span class="questionTitle">${passedQuestion.question.title}</span>
+                        </p>
+
+                        <p>
+                        <pre class="java">${passedQuestion.question.questionContent}</pre>
+                        </p>
+                    </div>
+                    <div class="answer">
+                        <div>
+                            <c:forEach items="${passedQuestion.userAnswers}" var="userAnswer" varStatus="i">
+                                <div class="radio">
+                                    <label>
+                                        <c:choose>
+                                            <c:when test="${userAnswer.userAnswer}">
+                                                <input type="radio" disabled="disabled"
+                                                       checked>
+                                                <c:if test="${userAnswer.rightAnswer}">
+                                                    <span class="correct">${userAnswer.answerTest}</span>
+                                                </c:if>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="radio" disabled="disabled">
+                                                <c:if test="${userAnswer.rightAnswer}">
+                                                    <span class="correct">${userAnswer.answerTest}</span>
+                                                </c:if>
+                                                <input type="radio" disabled="disabled">${userAnswer.answerTest}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </label>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
         </div>
     </div>
 </div>
 <div class="clearfix"></div>
-<div id="test" class="test">
-    <div class="question">
-        <input type="hidden" value="">
-
-        <p>
-            <span class="questionTitle"></span>
-        </p>
-
-        <p>
-        <pre class="java"></pre>
-        </p>
-    </div>
-    <div class="answer">
-        <div class="checkbox-inline">
-            <span></span>
-        </div>
-    </div>
-</div>
 </body>
-<script type="text/javascript">
-    $.ajax({
-        url: "checkTest",
-        dataType: "json",
-        method: "get",
-        data: {
-            "show": "showAll"
-        },
-        success: function (data) {
-            var valueFromCookie = $.cookie("result");
-            var obj = jQuery.parseJSON(valueFromCookie);
-            var errors = obj.errors;
-            //var data = {"question":[{"id":1,"content":"Сколько будет 2+2?","answersList":[{"id":2,"flag":0,"content":"2"},{"id":1,"flag":1,"content":"4"},{"id":3,"flag":0,"content":"3"}]},{"id":2,"content":"Сколько пальцев у человека?","answersList":[{"id":4,"flag":1,"content":"5"},{"id":6,"flag":0,"content":"4"},{"id":5,"flag":0,"content":"3"}]},{"id":3,"content":"Сколько пальцеы у человека","answersList":[{"id":8,"flag":1,"content":"5"},{"id":7,"flag":1,"content":"4"},{"id":9,"flag":1,"content":"3"}]}]};
-            var content = $(".col-xs-6");
-            for (var i = 0; i < data.question.length; i++) {
-                var testObj = new ResultObject("Ответьте на вопрос:", i, data.question[i].content, data.question[i].answersList, errors);
-                content.append(testObj.build());
-            }
-        }
+<script>
+    $(document).ready(function () {
+        $.material.init();
     });
-
-    setTimeout(function () {
-
-        var checkbox = $('input[type="checkbox"]'), radio = $('input[type="radio"]'), checkboxCookieName = 'checkbox-state';
-
-        checkbox.each(function () {
-            if ($.cookie(checkboxCookieName + '0' + $(this).attr('name')) == "true") {
-                $(this).attr('checked', $.cookie(checkboxCookieName + '0' + $(this).attr('name')));
-            }
-        });
-        radio.each(function () {
-            if ($(this).attr("value") == $.cookie(checkboxCookieName + '|' + $(this).attr('name'))) {
-                $(this).attr('checked', true);
-            }
-        });
-        checkbox.click(function () {
-            $.cookie(checkboxCookieName + '0' + $(this).attr('name'), $(this).prop('checked'));
-        });
-        radio.click(function () {
-            $.cookie(checkboxCookieName + '|' + $(this).attr('name'), $(this).attr("value"));
-        });
-    }, 1000);
 </script>
 </html>
 

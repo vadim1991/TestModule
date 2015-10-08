@@ -9,15 +9,12 @@ import java.util.List;
 /**
  * Created by Vadym_Vlasenko on 9/25/2015.
  */
-@Document
 public class PassedQuestion implements Serializable {
 
-    @Id
     private String id;
     private Question question;
-    private List<Answer> userAnswers;
-    private List<String> answerText;
-    private Answer rightAnswer;
+    private List<UserAnswer> userAnswers;
+    private boolean rightAnswer;
 
     public String getId() {
         return id;
@@ -35,27 +32,19 @@ public class PassedQuestion implements Serializable {
         this.question = question;
     }
 
-    public List<Answer> getUserAnswers() {
+    public List<UserAnswer> getUserAnswers() {
         return userAnswers;
     }
 
-    public void setUserAnswers(List<Answer> userAnswers) {
+    public void setUserAnswers(List<UserAnswer> userAnswers) {
         this.userAnswers = userAnswers;
     }
 
-    public List<String> getAnswerText() {
-        return answerText;
-    }
-
-    public void setAnswerText(List<String> answerText) {
-        this.answerText = answerText;
-    }
-
-    public Answer getRightAnswer() {
+    public boolean isRightAnswer() {
         return rightAnswer;
     }
 
-    public void setRightAnswer(Answer rightAnswer) {
+    public void setRightAnswer(boolean rightAnswer) {
         this.rightAnswer = rightAnswer;
     }
 
@@ -86,7 +75,6 @@ public class PassedQuestion implements Serializable {
                 "id='" + id + '\'' +
                 ", question=" + question +
                 ", userAnswers=" + userAnswers +
-                ", answerText=" + answerText +
                 ", rightAnswer=" + rightAnswer +
                 '}';
     }

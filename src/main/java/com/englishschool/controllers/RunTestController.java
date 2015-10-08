@@ -1,9 +1,9 @@
 package com.englishschool.controllers;
 
-import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.*;
 import com.englishschool.entity.spring.PassedQuestionModelAttribute;
 import com.englishschool.entity.spring.PassedTestModelAttribute;
+import com.englishschool.service.passedtest.PassedTestServiceImpl;
 import com.englishschool.service.profile.ProfileServiceImpl;
 import com.englishschool.service.question.QuestionServiceImpl;
 import com.englishschool.service.test.TestServiceImpl;
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -28,20 +30,29 @@ import static com.englishschool.datamodel.CommonConstants.*;
 @Controller
 public class RunTestController {
 
-    public static final DateTime time = new DateTime();
-    public static final long timer = 1000 * 60 * 20;
-
+    public static final String CHECKBOX_STATE = "checkbox-state";
     @Autowired
     private QuestionServiceImpl questionService;
     @Autowired
     private TestServiceImpl testService;
     @Autowired
     private ProfileServiceImpl profileService;
+    @Autowired
+    private PassedTestServiceImpl passedTestService;
+
+    @RequestMapping(value = "/result/test/{id}", method = RequestMethod.GET)
+    public ModelAndView showHistoryPassedTest(@PathVariable("id") String passedTestID) {
+        PassedTest passedTest = passedTestService.findById(passedTestID);
+        return new ModelAndView(RESULT_PAGE, PASSED_TEST, passedTest);
+    }
 
     @RequestMapping(value = "/test/check", method = RequestMethod.POST)
-    public String checkTest(@ModelAttribute("passedTestModel") PassedTestModelAttribute passedTest) {
-        System.out.println("-------------- " + passedTest);
-        return "redirect:/create/question";
+    public String checkTest(@ModelAttribute("passedTestModel") PassedTestModelAttribute passedModel, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        PassedTest passedTestFromModel = getPassedTestFromModel(passedModel, session);
+        passedTestService.save(passedTestFromModel);
+        removeAllCookies(request, response);
+        return "redirect:/result/test/" + passedTestFromModel.getId();
     }
 
     @RequestMapping(value = "/run/test/{id}", method = RequestMethod.GET)
@@ -56,6 +67,57 @@ public class RunTestController {
             modelAndView = getTestFromDB(session, profileID, testID);
         }
         return modelAndView;
+    }
+
+    private PassedTest getPassedTestFromModel(PassedTestModelAttribute passedModel, HttpSession session) {
+        double countRight = 0;
+        List<PassedQuestionModelAttribute> passedModelQuestion = passedModel.getPassedQuestions();
+        PassedTest passedTest = (PassedTest) session.getAttribute(PASSED_TEST);
+        List<Question> questions = (List<Question>) session.getAttribute(QUESTIONS);
+        List<PassedQuestion> passedQuestions = new ArrayList<>();
+        for (int i = 0; i < passedModelQuestion.size(); i++) {
+            boolean rightAnswer = true;
+            Question question = questions.get(i);
+            PassedQuestion passedQuestion = new PassedQuestion();
+            PassedQuestionModelAttribute modelAttribute = passedModelQuestion.get(i);
+            List<Integer> userAnswers = modelAttribute.getUserAnswers();
+            List<Answer> answers = question.getAnswers();
+            List<UserAnswer> userAnswerList = new ArrayList<>();
+            for (int j = 0; j < answers.size(); j++) {
+                Answer answer = answers.get(j);
+                UserAnswer userAnswer = new UserAnswer();
+                userAnswer.setId(answer.getId());
+                userAnswer.setAnswerTest(answer.getAnswerText());
+                userAnswer.setRightAnswer(answer.isRightAnswer());
+                if (userAnswers != null) {
+                    userAnswer.setUserAnswer(userAnswers.contains(j));
+                }
+                rightAnswer &= userAnswer.isRightAnswer() == userAnswer.isUserAnswer() ? true : false;
+                userAnswerList.add(userAnswer);
+            }
+            if (rightAnswer) {
+                countRight++;
+            }
+            passedQuestion.setRightAnswer(rightAnswer);
+            passedQuestion.setUserAnswers(userAnswerList);
+            passedQuestion.setQuestion(question);
+            passedQuestions.add(passedQuestion);
+        }
+        System.out.println("----------" + countRight);
+        passedTest.setEndTest(new DateTime());
+        passedTest.setPassedQuestions(passedQuestions);
+        passedTest.setResult(countRight/questions.size()*100);
+        return passedTest;
+    }
+
+    private void removeAllCookies(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().contains(CHECKBOX_STATE)) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
     }
 
     private ModelAndView getTestFromDB(HttpSession session, String profileID, String testID) {
@@ -142,7 +204,6 @@ public class RunTestController {
             passedQuestions.add(passedQuestion);
         }
         passedTest.setPassedQuestions(passedQuestions);
-        System.out.println("--------- new answers -------------- " + passedTest);
         return passedTest;
     }
 

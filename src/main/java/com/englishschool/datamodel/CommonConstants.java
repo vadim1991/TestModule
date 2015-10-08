@@ -21,4 +21,5 @@ public class CommonConstants {
     public static final String SESSION = "session";
     public static final String CURRENT_TEST_PAGE = "currentTest";
     public static final String PASSED_TEST_MODEL = "passedTestModel";
+    public static final String RESULT_PAGE = "result";
 }
