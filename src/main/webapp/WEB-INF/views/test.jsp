@@ -6,40 +6,49 @@
 <html>
 <head>
     <jsp:include page="../views/common/head.jsp"></jsp:include>
-    <title>Add Question</title>
+    <title>Run Test</title>
 </head>
 <body>
 <form:form action="/test/check" modelAttribute="passedTestModel" method="post">
 
     <div class="container">
-        <div class="text-center">
+        <div class="text-center testing">
             <h1>Тестирование</h1>
 
             <div>
                 Осталось времени:
-                <span id="timer"></span>
+                <span id="timer" class="timer"></span>
             </div>
             <input type="submit" class="btn btn-success" id="endTest" name="ok" value="Закончить тест">
 
         </div>
 
         <div class="row">
-            <div class="col-xs-2 text-center">
-                <c:forEach items="${questions}" var="question" varStatus="i">
-                    <p>
-                        <button type="button" id="first${i.index}" value="${i.index}"
-                                class='buttons btn btn-warning btn-sm'>Вопрос ${i.index + 1}</button>
-                    </p>
-                </c:forEach>
+            <div class="sidebar">
+                <ul class="items">
+                    <c:forEach items="${questions}" var="question" varStatus="i">
+                        <li>
+                            <button type="button" id="first${i.index}" value="${i.index}"
+                                    class='buttons btn btn-material-grey-300 btn-sm answer-button'>
+                                Вопрос ${i.index + 1}</button>
+                        </li>
+                    </c:forEach>
+                </ul>
             </div>
             <div class="col-xs-9">
                 <c:forEach items="${questions}" var="question" varStatus="i">
+                    <c:set var="buttonClass" value="checkbox"></c:set>
+                    <c:if test="${question.questionType eq RADIO}">
+                        <c:set var="buttonClass" value="radio"></c:set>
+                    </c:if>
                     <input type="hidden" name="passedQuestions[${i.index}].id" value="${question.id}">
+
                     <div id="test${i.index}" class="test hidden">
                         <div class="question">
                             <p>
-                                <span class="questionTitle">${i.index + 1}. ${question.title}</span>
+                                <span class="questionTitle">${question.title}</span>
                             </p>
+
                             <p>
                             <pre class="java">${question.questionContent}</pre>
                             </p>
@@ -48,10 +57,11 @@
                             <div id="${question.id}">
                                 <span>Варианты ответа: </span>
                                 <c:forEach items="${question.answers}" var="answer" varStatus="j">
-                                    <div class="checkbox">
+                                    <div class="${buttonClass}">
                                         <label>
-                                            <input type="checkbox" id="${question.id}${answer.id}" name="passedQuestions[${i.index}].userAnswers" value="${answer.id}">
-                                                ${answer.answerText}
+                                            <input type="${buttonClass}" id="${question.id}${answer.id}"
+                                                   name="passedQuestions[${i.index}].userAnswers" value="${answer.id}">
+                                            <span class="answer-text">${answer.answerText}</span>
                                         </label>
                                     </div>
                                 </c:forEach>
@@ -86,10 +96,10 @@
             }
         });
         checkbox.click(function () {
-            $.cookie(checkboxCookieName + $(this).attr('id'), $(this).prop('checked'));
+            $.cookie(checkboxCookieName + $(this).attr('id'), $(this).prop('checked'), {path: '/'});
         });
         radio.click(function () {
-            $.cookie(checkboxCookieName + '|' + $(this).attr('name'), $(this).attr("value"));
+            $.cookie(checkboxCookieName + '|' + $(this).attr('name'), $(this).attr("value"), {path: '/'});
         });
 
         $(".buttons").each(function () {
@@ -100,21 +110,21 @@
         });
         $(".buttons").click(function () {
             $(".test").hide();
-            $(".buttons").removeClass("btn-material-blue");
-            $(this).addClass("btn-material-blue");
+            $(".buttons").removeClass("btn-material-grey-400");
+            $(this).addClass("btn-material-grey-400");
             var id = $(this).attr("value");
             var test = $("#test" + id + "");
             test.removeClass("hidden");
             $("#test" + id + "").show("slow");
-            $.cookie("current", id);
+            $.cookie("current", id, {path: '/'});
         });
         $(".confirm").click(function () {
             var idButton = $.cookie("current");
             var next = ++idButton;
-            $("#first" + --idButton).removeClass("btn-warning");
+            $("#first" + --idButton).removeClass("btn-material-grey-300");
             $("#first" + idButton).addClass("btn-success");
             $("#first" + next).click();
-            $.cookie("active" + idButton, idButton);
+            $.cookie("active" + idButton, idButton, {path: '/'});
         });
         var currentQuestion = $.cookie("current");
         if (currentQuestion == undefined) {

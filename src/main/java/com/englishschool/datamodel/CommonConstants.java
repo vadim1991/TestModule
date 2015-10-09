@@ -22,4 +22,11 @@ public class CommonConstants {
     public static final String CURRENT_TEST_PAGE = "currentTest";
     public static final String PASSED_TEST_MODEL = "passedTestModel";
     public static final String RESULT_PAGE = "result";
+    public static final String CHECKBOX_STATE = "checkbox-state";
+    public static final String CURRENT = "current";
+    public static final String RIGHT_SLASH = "/";
+    public static final String ACTIVE = "active";
+    public static final String AVAILABLE_TESTS = "availableTests";
+    public static final String RESULT_TEST_ID_URL = "/result/test/{id}";
+    public static final String PASSED_TESTS = "passedTests";
 }

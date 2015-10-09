@@ -6,9 +6,9 @@
 <html>
 <head>
     <jsp:include page="../views/common/head.jsp"></jsp:include>
-    <title>Add Question</title>
+    <title>Show Test Results</title>
 </head>
-<body>
+<body style="background-color: white">
 <div class="container">
     <div class="text-center">
         <div class="text-center">
@@ -17,60 +17,59 @@
         <div class="text-center">
             <h3>Ваш результат: </h3>
 
-            <h3>${passedTest.result}</h3>
-        </div>
-        <div class="text-center">
-            <a class="btn btn-success" href="runTest">Пройти еще раз</a>
+            <h3>${passedTest.result} &#37;</h3>
         </div>
     </div>
-    <div class="col-xs-10">
-        <div id="test" class="test">
+    <div class="col-xs-offset-1 col-xs-10">
+        <div id="test" class="test-result">
             <c:forEach items="${passedTest.passedQuestions}" var="passedQuestion" varStatus="i">
-                <div class="test">
-                    <div class="question">
-                        <input type="hidden" value="">
+                <c:set var="questionClass" scope="request" value="incorrect"></c:set>
+                <c:if test="${passedQuestion.rightAnswer}">
+                    <c:set var="questionClass" scope="request" value="correct"></c:set>
+                </c:if>
+                <div class="question-result">
+                    <div class="question-result-block ${questionClass}">
+                        <div class="question-topic">Custom questions</div>
+                        <div class="question-text">
 
-                        <p>
                             <c:choose>
                                 <c:when test="${passedQuestion.rightAnswer}">
-                                    <span class='glyphicon glyphicon-ok green'></span>
+                                    <span class="questionTitle right-question-title">${passedQuestion.question.title}</span>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class='glyphicon glyphicon-remove red'></span>
+                                    <span class="questionTitle wrong-question-title">${passedQuestion.question.title}</span>
                                 </c:otherwise>
                             </c:choose>
-                            <span class="questionTitle">${passedQuestion.question.title}</span>
-                        </p>
-
-                        <p>
-                        <pre class="java">${passedQuestion.question.questionContent}</pre>
-                        </p>
-                    </div>
-                    <div class="answer">
-                        <div>
-                            <c:forEach items="${passedQuestion.userAnswers}" var="userAnswer" varStatus="i">
-                                <div class="radio">
-                                    <label>
-                                        <c:choose>
-                                            <c:when test="${userAnswer.userAnswer}">
-                                                <input type="radio" disabled="disabled"
-                                                       checked>
-                                                <c:if test="${userAnswer.rightAnswer}">
-                                                    <span class="correct">${userAnswer.answerTest}</span>
-                                                </c:if>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="radio" disabled="disabled">
-                                                <c:if test="${userAnswer.rightAnswer}">
-                                                    <span class="correct">${userAnswer.answerTest}</span>
-                                                </c:if>
-                                                <input type="radio" disabled="disabled">${userAnswer.answerTest}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </label>
-                                </div>
-                            </c:forEach>
+                            <pre class="java">${passedQuestion.question.questionContent}</pre>
                         </div>
+
+                        <ul class="answers">
+                            <c:forEach items="${passedQuestion.userAnswers}" var="userAnswer" varStatus="j">
+                                <c:set var="last" value=""></c:set>
+                                <c:if test="${j.last}">
+                                    <c:set var="last" value="last"></c:set>
+                                </c:if>
+                                <c:set var="answerClass" scope="request" value="wrong-answer"></c:set>
+                                <c:if test="${userAnswer.rightAnswer}">
+                                    <c:set var="answerClass" scope="request" value="correct-answer"></c:set>
+                                </c:if>
+                                <li class="${last}">
+                                    <c:choose>
+                                        <c:when test="${userAnswer.userAnswer}">
+                                            <input type="radio" disabled="disabled"
+                                                   checked>
+                                            <span class="${answerClass}">${userAnswer.answerTest}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="radio" disabled="disabled">
+                                            <span class="${answerClass}">${userAnswer.answerTest}</span>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </li>
+                            </c:forEach>
+                        </ul>
+                        <p class="explanation">Пояснение:</p>
                     </div>
                 </div>
             </c:forEach>

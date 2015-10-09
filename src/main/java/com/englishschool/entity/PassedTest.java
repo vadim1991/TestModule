@@ -18,12 +18,11 @@ public class PassedTest implements Serializable {
     private String testId;
     private double result;
     private List<PassedQuestion> passedQuestions;
-    private DateTime startTest;
-    private DateTime endTest;
+    private String startTest;
+    private String endTest;
     private DateTime duringTimeTest;
 
     public PassedTest() {
-        startTest = new DateTime();
     }
 
     public String getId() {
@@ -58,19 +57,19 @@ public class PassedTest implements Serializable {
         this.passedQuestions = passedQuestions;
     }
 
-    public DateTime getStartTest() {
+    public String getStartTest() {
         return startTest;
     }
 
-    public void setStartTest(DateTime startTest) {
+    public void setStartTest(String startTest) {
         this.startTest = startTest;
     }
 
-    public DateTime getEndTest() {
+    public String getEndTest() {
         return endTest;
     }
 
-    public void setEndTest(DateTime endTest) {
+    public void setEndTest(String endTest) {
         this.endTest = endTest;
     }
 

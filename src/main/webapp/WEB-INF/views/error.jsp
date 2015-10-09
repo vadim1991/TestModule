@@ -11,6 +11,8 @@
 
     <h1>Error Page</h1>
 
+    <div>${message}</div>
+
     <p>${exception.message}</p>
     <!-- Exception: ${exception.message}.
           <c:forEach items="${exception.stackTrace}" var="stackTrace">

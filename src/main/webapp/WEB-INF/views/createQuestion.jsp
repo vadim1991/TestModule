@@ -10,11 +10,10 @@
 </head>
 <body>
 <div class="container">
-    <div class="page-header"></div>
     <div class="jumbotron">
         <form:form class="form-horizontal" action="/create/question" method="post" modelAttribute="question">
             <fieldset>
-                <legend>Add new Question</legend>
+                <h2>Add new Question</h2>
                 <div>${success_add}</div>
                 <div class="form-group">
                     <label for="title" class="col-lg-2 control-label">Title</label>
@@ -30,6 +29,14 @@
                     <div class="col-lg-10">
                         <form:textarea path="content" class="form-control" id="textArea" rows="5"/>
                         <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="explanation" class="col-lg-2 control-label">Explanation</label>
+
+                    <div class="col-lg-10">
+                        <textarea rows="3" class="form-control" id="explanation"></textarea>
+                        <span class="help-block">Explanation for question</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -52,25 +59,28 @@
                     </div>
                 </div>
                 <c:set var="index" scope="request" value="2"/>
-                <a id="add" class="btn btn-warning btn-sm">Add Answer</a>
-                <a id="remove-last" class="btn btn-danger btn-sm">Remove last</a>
+                <div class="col-sm-4 col-sm-offset-9">
+                    <a id="add" class="btn btn-fab btn-fab-mini btn-raised btn-primary mdi-content-add btn-sm text-right"><div class="ripple-wrapper"></div></a>
+                    <a id="remove-last" class="btn btn-fab btn-fab-mini btn-raised btn-material-red-A200 mdi-content-clear btn-sm text-right"></a>
+                </div>
+                <div id="answersDiv">
+                <c:forEach var="i" begin="0" end="${index}">
+                <div class="form-group">
+                        <label class="col-sm-2 control-label" id="answerLabel${i + 1}">Answer ${i + 1}</label>
 
-                <div class="form-group" id="answersDiv">
-                    <c:forEach var="i" begin="0" end="${index}">
-                        <label class="col-lg-2 control-label" id="answerLabel${i + 1}">Answer ${i + 1}</label>
-
-                        <div class="answers col-lg-10" id="answerBlock${i + 1}">
+                        <div class="answers col-sm-8" id="answerBlock${i + 1}">
                             <form:input path="answers" class="form-control"
                                         type="text"
                                         placeholder="answer"/>
-                            <div class="ansButton checkbox">
-                                <label>
-                                    <input class="button" type="checkbox" name="rightAnswers" value="${i}"/>
-                                </label>
-                            </div>
                         </div>
-                    </c:forEach>
+                        <div class="ansButton checkbox col-sm-2">
+                            <label>
+                                <input class="button" type="checkbox" name="rightAnswers" value="${i}"/>
+                            </label>
+                        </div>
                     <c:set var="index" value="${index + 1}"/>
+                </div>
+                </c:forEach>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
