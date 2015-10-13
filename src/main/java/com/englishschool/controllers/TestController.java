@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.englishschool.datamodel.CommonConstants.*;
 
@@ -60,7 +61,6 @@ public class TestController {
     @RequestMapping(value = CommonURLs.TEST_CHECK_URL, method = RequestMethod.POST)
     public String checkTest(@ModelAttribute(PASSED_TEST_MODEL) PassedTestModelAttribute passedModel, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        String profileID = (String) session.getAttribute(PROFILE_ID);
         PassedTest passedTestFromModel = getPassedTestFromModel(passedModel, session);
         passedTestService.save(passedTestFromModel);
         //profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());
@@ -71,8 +71,8 @@ public class TestController {
 
     @RequestMapping(value = CommonURLs.AVAILABLE_TESTS_URL, method = RequestMethod.GET)
     public ModelAndView availableTests(HttpSession session) {
-        String profileID = (String) session.getAttribute(PROFILE_ID);
-        List<String> availableTestIDs = profileService.getAvailableTests(profileID);
+        //String profileID = (String) session.getAttribute(PROFILE_ID);
+        List<String> availableTestIDs = profileService.getAvailableTests("11111");
         List<Test> availableTests = testService.getTestByListIDS(availableTestIDs);
         return new ModelAndView(CommonURLs.AVAILABLE_TESTS_PAGE, AVAILABLE_TESTS, availableTests);
     }
@@ -166,7 +166,7 @@ public class TestController {
 
     private ModelAndView getTestFromDB(HttpSession session, String profileID, String testID) {
         String resultPage = ERROR_PAGE;
-        HashMap<String, Object> model = new HashMap<>();
+        Map<String, Object> model = new HashMap<>();
         TestProfile profile = profileService.findById(profileID);
         if (profile != null) {
             List<String> availableTests = profile.getAvailableTests();
@@ -189,8 +189,8 @@ public class TestController {
         return new ModelAndView(resultPage, model);
     }
 
-    private HashMap<String, Object> getModelWithQuestions(List<Question> questions, Test currentTest, PassedTest passedTest) {
-        HashMap<String, Object> model = new HashMap<>();
+    private Map<String, Object> getModelWithQuestions(List<Question> questions, Test currentTest, PassedTest passedTest) {
+        Map<String, Object> model = new HashMap<>();
         model.put(QUESTIONS, questions);
         model.put(TIMER, getRemainingTime(passedTest, currentTest));
         model.put(PASSED_TEST_MODEL, getPassedTestModelAttribute(currentTest));
@@ -206,12 +206,11 @@ public class TestController {
     private ModelAndView checkTestFromSession(HttpSession session, Test currentTest, String testID) {
         if (currentTest != null) {
             if (currentTest.getId().equals(testID)) {
-                System.out.println(SESSION);
                 PassedTest passedTest = (PassedTest) session.getAttribute(PASSED_TEST);
                 List<Question> questions = (List<Question>) session.getAttribute(QUESTIONS);
                 return new ModelAndView(TEST_PAGE, getModelWithQuestions(questions, currentTest, passedTest));
             } else {
-                HashMap<String, Object> model = new HashMap<>();
+                Map<String, Object> model = new HashMap<>();
                 model.put(TEST_ID, currentTest.getId());
                 return new ModelAndView(CURRENT_TEST_PAGE, model);
             }
@@ -221,7 +220,7 @@ public class TestController {
 
     private TestProfile getProfile() {
         TestProfile testProfile = new TestProfile();
-        ArrayList<String> tests = new ArrayList<>();
+        List<String> tests = new ArrayList<>();
         testProfile.setId("11111");
         Test test = getTest();
         tests.add(test.getId());
@@ -231,7 +230,7 @@ public class TestController {
 
     private Test getTest() {
         Test test = new Test();
-        ArrayList<String> questions = new ArrayList<>();
+        List<String> questions = new ArrayList<>();
         questions.add("5612c3c295de30f9fd2392f1");
         questions.add("5612c3e295de30f9fd2392f2");
         test.setId("12345");
@@ -243,7 +242,7 @@ public class TestController {
 
     private PassedTestModelAttribute getPassedTestModelAttribute(Test currentTest) {
         PassedTestModelAttribute passedTest = new PassedTestModelAttribute();
-        ArrayList<PassedQuestionModelAttribute> passedQuestions = new ArrayList<>();
+        List<PassedQuestionModelAttribute> passedQuestions = new ArrayList<>();
         for (int i = 0; i < currentTest.getQuestionIds().size(); i++) {
             PassedQuestionModelAttribute passedQuestion = new PassedQuestionModelAttribute();
             passedQuestions.add(passedQuestion);
