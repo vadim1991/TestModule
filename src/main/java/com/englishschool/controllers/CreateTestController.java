@@ -1,6 +1,5 @@
 package com.englishschool.controllers;
 
-import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.Question;
 import com.englishschool.entity.spring.QuestionModelAttribute;
 import com.englishschool.service.question.IQuestionService;
@@ -12,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.Map;
 
-import static com.englishschool.datamodel.CommonConstants.*;
+import static com.englishschool.datamodel.CommonConstants.QUESTION;
 import static com.englishschool.datamodel.CommonURLs.*;
 
 /**
@@ -27,7 +27,7 @@ public class CreateTestController {
 
     @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.GET)
     public ModelAndView addNewQuestion() {
-        HashMap<String, Object> model = new HashMap<>();
+        Map<String, Object> model = new HashMap<>();
         model.put(QUESTION, new QuestionModelAttribute());
         return new ModelAndView(CREATE_QUESTION_JSP, model);
     }
