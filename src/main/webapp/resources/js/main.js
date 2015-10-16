@@ -1,12 +1,13 @@
-var testModule = function(){
+var testModule = function(time){
     var answers = [],
-        testDuration = 300, // duration in seconds
+        testDuration = time||0, // duration in seconds
         $form = $('#passedTestModel'),
         $finishBtn = $('#end-test'),
         $answerInput =  $('.answer'),
         $questions = $('.question'),
         $pagination = $('#test-list'),
         $timer = $('#timer'),
+        $answerBtn = $('.submit-btn'),
         questionsLength = $questions.length;
 
 
@@ -26,7 +27,7 @@ var testModule = function(){
     }
 
     // Set timer
-    function initTimer(){
+    function initTimer(time){
         var testTime = new Date();
         testTime.setSeconds(testTime.getSeconds() + testDuration);
 
@@ -77,6 +78,10 @@ var testModule = function(){
 
             $answerInput.on('click', function(){
                 setAnswer(this);
+            });
+
+            $answerBtn.on('click', function(){
+             
             });
         }
     }
@@ -136,9 +141,12 @@ var createTestModule = function() {
         createTestModule().init();
     }
     // Init test module
-    if ($('#passedTestModel').length || $('#resultTestModel').length){
+    if ($('#resultTestModel').length){
         testModule().init();
     }
+    $(document).on('timer', function(e, time){
+        testModule(time).init();
+    });
 
 })();
 

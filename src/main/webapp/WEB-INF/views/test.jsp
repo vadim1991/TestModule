@@ -92,6 +92,11 @@
         </c:forEach>
     </div>
 </form:form>
-<jsp:include page="../views/common/footer.jsp"></jsp:include>
+<jsp:include page="../views/common/footer.jsp">
+    <jsp:param name="footerClass" value="hidden"/>
+</jsp:include>
+    <script>
+        $(document).trigger('timer', ${timer});
+    </script>
 </body>
 </html>
