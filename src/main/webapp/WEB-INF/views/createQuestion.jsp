@@ -19,7 +19,7 @@
                     <label for="title" class="col-lg-2 control-label">Title</label>
 
                     <div class="col-lg-10">
-                        <form:input path="title" type="text" class="form-control" cssClass="form-control"
+                        <form:input path="title" type="text" id="title" class="form-control" cssClass="form-control"
                                     placeholder="Title"/>
                     </div>
                 </div>
@@ -59,23 +59,38 @@
                     </div>
                 </div>
                 <c:set var="index" scope="request" value="2"/>
-                <div class="col-sm-4 col-sm-offset-9">
-                    <a id="add" class="btn btn-fab btn-fab-mini btn-raised btn-primary mdi-content-add btn-sm text-right"><div class="ripple-wrapper"></div></a>
-                    <a id="remove-last" class="btn btn-fab btn-fab-mini btn-raised btn-material-red-A200 mdi-content-clear btn-sm text-right"></a>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-9">
+                        <button type="button" id="add" class="btn btn-primary btn-flat btn-sm">
+                            <i class="mdi-content-add"></i>
+                            <span class="btn-text"> Add </span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                        <button type="button" id="remove-last" class="btn btn-danger btn-flat btn-sm">
+                            <i class="mdi-content-clear"></i>
+                            <span class="btn-text"> Remove </span>
+                            <div class="ripple-wrapper"></div>
+                        </button>
+                    </div>
                 </div>
                 <div id="answersDiv">
                 <c:forEach var="i" begin="0" end="${index}">
                 <div class="form-group">
                         <label class="col-sm-2 control-label" id="answerLabel${i + 1}">Answer ${i + 1}</label>
 
-                        <div class="answers col-sm-8" id="answerBlock${i + 1}">
+                        <div class="answers col-sm-9" id="answerBlock${i + 1}">
                             <form:input path="answers" class="form-control"
                                         type="text"
                                         placeholder="answer"/>
                         </div>
-                        <div class="ansButton checkbox col-sm-2">
+                        <div class="ansButton checkbox col-sm-1">
                             <label>
                                 <input class="button" type="checkbox" name="rightAnswers" value="${i}"/>
+                            </label>
+                        </div>
+                        <div class="ansButton radio radio-primary" style="display: none;">
+                            <label>
+                                <input class="button" type="radio" name="rightAnswers" value="${i}"/>
                             </label>
                         </div>
                     <c:set var="index" value="${index + 1}"/>
@@ -93,70 +108,5 @@
     </div>
 </div>
 <jsp:include page="../views/common/footer.jsp"></jsp:include>
-<script>
-    $(document).ready(function () {
-        $.material.init();
-    });
-
-</script>
-<script>
-    $("#add").click(function () {
-        var answerDiv = $("#answersDiv");
-        var answers = $(".answers");
-        var sizeAnswers = answers.size();
-        var lastElem = $("#answerBlock" + (sizeAnswers));
-        var clone = lastElem.clone();
-        var button = clone.find(".button");
-        clone.attr("id", "answerBlock" + (sizeAnswers + 1));
-        button.attr("value", sizeAnswers);
-        answerDiv.append('<label class="col-lg-2 control-label" id=answerLabel' + (sizeAnswers + 1) + '>Answer ' + (sizeAnswers + 1) + '</label>');
-        answerDiv.append(clone);
-    });
-</script>
-<script>
-    $("#remove-last").click(function () {
-        var answers = $(".answers");
-        var sizeAnswers = answers.size();
-        if (sizeAnswers > 2) {
-            var lastElem = $("#answerBlock" + (sizeAnswers));
-            var lastLabel = $("#answerLabel" + (sizeAnswers));
-            lastElem.remove();
-            lastLabel.remove();
-        }
-    });
-</script>
-<script>
-    $(".type").change(function () {
-        var answers = $(".answers");
-        if ($(this).attr("value") == "RADIO") {
-            answers.each(function (index, element) {
-                var elem = $(element);
-                var checkbox = elem.find(".checkbox");
-                var button = elem.find(".button");
-                var codeRadio = setupRadio(button.attr("value"));
-                checkbox.remove();
-                elem.append(codeRadio);
-            });
-        }
-        if ($(this).attr("value") == "CHECKBOX") {
-            answers.each(function (index, element) {
-                var elem = $(element);
-                var radio = elem.find(".radio");
-                var button = elem.find(".button");
-                var codeCheckbox = setupCheckBox(button.attr("value"));
-                radio.remove();
-                elem.append(codeCheckbox);
-            });
-        }
-    });
-
-    function setupRadio(value) {
-        return '<div class="ansButton radio radio-primary"><label><input class="button" type="radio" name="rightAnswers"  value=' + value + '><span class="circle"></span><span class="check"></span></label></div>';
-    }
-
-    function setupCheckBox(value) {
-        return '<div class="ansButton checkbox"><label><input class="button" type="checkbox" name="rightAnswers" value=' + value + '><span class="checkbox-material"><span class="check"></span></span></label></div>';
-    }
-</script>
 </body>
 </html>

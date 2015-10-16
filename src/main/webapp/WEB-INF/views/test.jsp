@@ -10,168 +10,88 @@
 </head>
 <body>
 <form:form action="/test/check" modelAttribute="passedTestModel" method="post">
-
     <div class="container">
-        <div class="text-center testing">
+        <%--Page title start--%>
+        <div class="col-sm-12 text-center">
             <h1>Тестирование</h1>
-
-            <div>
-                Осталось времени:
-                <span id="timer" class="timer"></span>
-            </div>
-            <input type="submit" class="btn btn-success" id="endTest" name="ok" value="Закончить тест">
-
         </div>
+        <%--Page title end--%>
 
-        <div class="row">
-            <div class="sidebar">
-                <ul class="items">
-                    <c:forEach items="${questions}" var="question" varStatus="i">
-                        <li>
-                            <button type="button" id="first${i.index}" value="${i.index}"
-                                    class='buttons btn btn-material-grey-300 btn-sm answer-button'>
-                                Вопрос ${i.index + 1}</button>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
-            <div class="col-xs-9">
+        <%--Questions list start --%>
+        <div class="col-sm-12 text-center">
+            <ul class="pagination" id="test-list">
                 <c:forEach items="${questions}" var="question" varStatus="i">
-                    <c:set var="buttonClass" value="checkbox"></c:set>
-                    <c:if test="${question.questionType eq RADIO}">
-                        <c:set var="buttonClass" value="radio"></c:set>
-                    </c:if>
-                    <input type="hidden" name="passedQuestions[${i.index}].id" value="${question.id}">
-
-                    <div id="test${i.index}" class="test hidden">
-                        <div class="question">
-                            <p>
-                                <span class="questionTitle">${question.title}</span>
-                            </p>
-
-                            <p>
-                            <pre class="java">${question.questionContent}</pre>
-                            </p>
-                        </div>
-                        <div class="answer">
-                            <div id="${question.id}">
-                                <span>Варианты ответа: </span>
-                                <c:forEach items="${question.answers}" var="answer" varStatus="j">
-                                    <div class="${buttonClass}">
-                                        <label>
-                                            <input type="${buttonClass}" id="${question.id}${answer.id}"
-                                                   name="passedQuestions[${i.index}].userAnswers" value="${answer.id}">
-                                            <span class="answer-text">${answer.answerText}</span>
-                                        </label>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                        <a id="${i.index + 1}" class='confirm btn btn-success btn-sm'>Ответить</a>
-                    </div>
+                    <li>
+                        <a href="#" role="button">${i.index + 1}</a>
+                    </li>
                 </c:forEach>
-            </div>
+            </ul>
+            <ul class="pagination">
+                <li>
+                    <a href="#" role="button" id="end-test">
+                        <i class="mdi-image-assistant-photo"></i>
+                        <span class="btn-text">Завершить тест</span>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#" role="button" class="btn-with-text">
+                        <i class="mdi-image-timer"></i>
+                        <span id="timer" class="btn-text">0:00</span>
+                    </a>
+                </li>
+            </ul>
         </div>
+        <%--Questions list end --%>
+
+        <c:forEach items="${questions}" var="question" varStatus="i">
+            <div class="container question" data-question='${i.index + 1}' style="display:none;">
+                <%--Question text start--%>
+                <div class="col-sm-9">
+                    <div class="row well bs-component shadow-z-1">
+                        <c:set var="buttonClass" value="checkbox"></c:set>
+                        <c:if test="${question.questionType eq RADIO}">
+                            <c:set var="buttonClass" value="radio"></c:set>
+                        </c:if>
+                        <input type="hidden" name="passedQuestions[${i.index}].id" value="${question.id}">
+                        <div class="question-title col-sm-12">
+                            <span class="title">${question.title}</span>
+                        </div>
+                        <div class="question-text col-sm-12">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat tempus sapien, et feugiat eros hendrerit eget?</p>
+                        </div>
+                        <div class="question-code col-sm-12">
+                            <pre class="java">${question.questionContent}</pre>
+                        </div>
+                    </div>
+                </div>
+                <%--Question text end--%>
+
+                <%--Answers block start--%>
+                <div class="col-sm-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Варианты ответа:</h3>
+                        </div>
+                        <div class="panel-body" id="${question.id}">
+                            <c:forEach items="${question.answers}" var="answer" varStatus="j">
+                                <div class="${buttonClass}">
+                                    <label>
+                                        <input class="answer" type="${buttonClass}" data-id="${question.id}${answer.id}"
+                                        name="passedQuestions[${i.index}].userAnswers" value="${answer.id}">
+                                        <span class="answer-text">${answer.answerText}</span>
+                                    </label>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                    <button data-id="${i.index + 1}" class='confirm btn btn-success submit-btn'>Ответить</button>
+                </div>
+                <%--Answers block end--%>
+            </div>
+
+        </c:forEach>
     </div>
 </form:form>
-<div class="clearfix"></div>
+<jsp:include page="../views/common/footer.jsp"></jsp:include>
 </body>
-<script>
-    $(document).ready(function () {
-        $.material.init();
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var checkbox = $('input[type="checkbox"]'), radio = $('input[type="radio"]'), checkboxCookieName = 'checkbox-state';
-
-        checkbox.each(function () {
-            if ($.cookie(checkboxCookieName + $(this).attr('id')) == "true") {
-                $(this).attr('checked', $.cookie(checkboxCookieName + $(this).attr('id')));
-            }
-        });
-        radio.each(function () {
-            if ($(this).attr("value") == $.cookie(checkboxCookieName + '|' + $(this).attr('name'))) {
-                $(this).attr('checked', true);
-            }
-        });
-        checkbox.click(function () {
-            $.cookie(checkboxCookieName + $(this).attr('id'), $(this).prop('checked'), {path: '/'});
-        });
-        radio.click(function () {
-            $.cookie(checkboxCookieName + '|' + $(this).attr('name'), $(this).attr("value"), {path: '/'});
-        });
-
-        $(".buttons").each(function () {
-            if ($.cookie('active' + $(this).attr('value')) == $(this).attr('value')) {
-                $(this).removeClass("btn-warning");
-                $(this).addClass("btn-success");
-            }
-        });
-        $(".buttons").click(function () {
-            $(".test").hide();
-            $(".buttons").removeClass("btn-material-grey-400");
-            $(this).addClass("btn-material-grey-400");
-            var id = $(this).attr("value");
-            var test = $("#test" + id + "");
-            test.removeClass("hidden");
-            $("#test" + id + "").show("slow");
-            $.cookie("current", id, {path: '/'});
-        });
-        $(".confirm").click(function () {
-            var idButton = $.cookie("current");
-            var next = ++idButton;
-            $("#first" + --idButton).removeClass("btn-material-grey-300");
-            $("#first" + idButton).addClass("btn-success");
-            $("#first" + next).click();
-            $.cookie("active" + idButton, idButton, {path: '/'});
-        });
-        var currentQuestion = $.cookie("current");
-        if (currentQuestion == undefined) {
-            $("#first0").click();
-        } else {
-            $("#first" + currentQuestion).click();
-        }
-    });
-
-</script>
-<script>
-    function startTimer(duration, display) {
-        var start = Date.now(),
-                diff,
-                minutes,
-                seconds;
-
-        function timer() {
-            // get the number of seconds that have elapsed since
-            // startTimer() was called
-            diff = duration - (((Date.now() - start) / 1000) | 0);
-
-            // does the same job as parseInt truncates the float
-            minutes = (diff / 60) | 0;
-            seconds = (diff % 60) | 0;
-
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-
-            display.textContent = minutes + ":" + seconds;
-
-            if (diff <= 0) {
-                // add one second so that the count down starts at the full duration
-                // example 05:00 not 04:59
-                $("#endTest").click();
-                start = Date.now() + 1000;
-            }
-        };
-        // we don't want to wait a full second before the timer starts
-        timer();
-        setInterval(timer, 1000);
-    }
-
-    window.onload = function () {
-        var fiveMinutes = "${timer}",
-                display = document.querySelector('#timer');
-        startTimer(fiveMinutes, display);
-    };
-</script>
 </html>

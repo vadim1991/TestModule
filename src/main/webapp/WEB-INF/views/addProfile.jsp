@@ -110,11 +110,6 @@
         </form>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        // This command is used to initialize some elements and make them work properly
-        $.material.init();
-    });
-</script>
+<jsp:include page="../views/common/footer.jsp"></jsp:include>
 </body>
 </html>

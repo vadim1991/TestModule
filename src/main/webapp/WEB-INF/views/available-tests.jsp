@@ -10,42 +10,44 @@
 </head>
 <body>
 <div class="container">
-    <table class="table table-striped table-hover table-responsive">
-        <thead>
-        <tr>
-            <th>TEST ID</th>
-            <th>TEST TITLE</th>
-            <th>TIME OF TEST</th>
-            <th>RUN TEST</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:if test="${empty availableTests}">
-            <div>
-                <h1>You haven`t available tests</h1>
-            </div>
-        </c:if>
-        <c:forEach items="${availableTests}" var="test" varStatus="i">
-            <c:set var="classTD" value="success"></c:set>
-            <c:if test="${i.index%2 == 0}">
-                <c:set var="classTD" value="warning"></c:set>
-            </c:if>
-            <tr class="${classTD}">
-                <td>${test.id}</td>
-                <td>${test.testTitle}</td>
-                <td>${test.timeOfTest / 60} min</td>
-                <td><a class="btn btn-fab btn-raised mdi-navigation-arrow-forward btn btn-material-teal-500"
-                       href="/run/test/${test.id}"></a></td>
+    <div class="jumbotron">
+        <h2>Available tests</h2>
+        <table class="table table-striped table-hover table-responsive">
+            <thead>
+            <tr>
+                <th>Test ID</th>
+                <th>Test title</th>
+                <th>Time of test</th>
+                <th>Run test</th>
             </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <c:if test="${empty availableTests}">
+                <div>
+                    <h1>You haven`t available tests</h1>
+                </div>
+            </c:if>
+            <c:forEach items="${availableTests}" var="test" varStatus="i">
+                <c:set var="classTD" value="success"></c:set>
+                <c:if test="${i.index%2 == 0}">
+                    <c:set var="classTD" value="warning"></c:set>
+                </c:if>
+                <tr class="${classTD}">
+                    <td>${test.id}</td>
+                    <td>${test.testTitle}</td>
+                    <td>${test.timeOfTest / 60} min</td>
+                    <td>
+                        <a href="/run/test/${test.id}" role="button" class="btn btn-primary btn-sm">
+                            <i class="mdi-navigation-arrow-forward"></i>
+                            <div class="ripple-wrapper"></div>
+                        </a>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </div>
 <jsp:include page="../views/common/footer.jsp"></jsp:include>
-<script>
-    $(document).ready(function () {
-        $.material.init();
-    });
-</script>
 </body>
 </html>

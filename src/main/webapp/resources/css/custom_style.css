@@ -1,55 +1,68 @@
+.hidden {
+    display: none;
+}
 .testing h1 {
     color: #07635A;
 }
-
-.correct-answer {
-    background: url(../images/correct.gif) no-repeat;
-    padding: 0 0 0 1.5em;
-    margin-left: 1.5em;
+.navbar-bottom {
+    margin-bottom: 0;
 }
-
+#end-test {
+    padding-bottom: 0;
+}
+.answer-text {
+    vertical-align: super;
+}
+.wrong-icon {
+    position: relative;
+}
+.cross-icon {
+    position: absolute;
+    left: 0;
+    top: -9px;
+}
+.right-answer {
+    color: #4caf50;
+}
 .wrong-answer {
-    padding: 0 0 0 1.5em;
-    margin-left: 1.5em;
+    color: #f44336;
 }
-
+.wrong-answer .answer-text {
+    text-decoration: line-through;
+}
 .test {
     margin-bottom: 2em;
     padding: 1em;
 }
-
-.right-question-title {
-    background: url(../images/answered.gif) no-repeat;
-    padding: 0 0 0 1.5em;
+.list-group .list-group-item .row-content .least-content {
+    top: 5px;
 }
-
-.wrong-question-title {
-    background: url(../images/wrong.gif) no-repeat;
-    padding: 0 0 0 1.5em;
+.least-content .label {
+    font-size: 0.9em;
 }
-
-.correct {
-    background: #f5fff5;
-    zoom: 1;
-    padding: 10px 15px 5px 5px;
+/* Incorrect answers */
+.incorrect .list-group .list-group-item .row-action-primary i{
+    background-color: #f44336;
 }
-
-.incorrect {
-    background: #fff5f5;
-    zoom: 1;
-    padding: 10px 15px 5px 5px;
+.incorrect .java {
+    border-color: #f44336;
+    background: #fff8f8;
+}
+.incorrect .question-head .title {
+    font-weight: bold;
+}
+/* Correct answers */
+.correct .list-group .list-group-item .row-action-primary i{
+    background-color: #4caf50;
+}
+.correct .java {
+    border-color: #4caf50;
+    background: #f9ffeb;
 }
 
 .footer {
-    margin-bottom: 0em;
+    margin-bottom: 0;
 }
-
-.answers {
-    /*list-style: none;*/
-    /*margin-left: 30px;*/
-    /*padding-left: 0px;*/
-}
-
 .answers li {
     padding: 3px 0 5px 0;
     border-bottom: 1px solid #e1e1e1;
@@ -63,25 +76,33 @@
 .form-horizontal .checkbox {
     padding-top: 5px;
 }
-.java {
-    background-color: white;
-    margin: 5px 0;
+.question-head .title {
+    font-size: 1.2em;
+    vertical-align: super;
+    margin-left: 0.5em;
 }
-
-.question-text {
-    font-size: 1.3em;
-    padding-left: 25px;
-    margin: 0 5px 10px 5px;
-    position: relative;
+.question-head {
+    margin-bottom: 0.75em;
 }
-
+.question-topic .label {
+    font-size: 1em;
+}
 .question-result-block {
     margin: 15px 0;
     padding: 10px 15px 5px 5px;
 }
-
-.
-
+.pagination > li > a, .pagination > li > span {
+    line-height: 1.75;
+}
+.confirm {
+    width: 100%;
+}
+.pagination > li > a.btn-with-text,
+.pagination > li > a.btn-with-text:hover{
+    padding-bottom: 0;
+    color: #fff;
+    background-color: #5cb85c;
+}
 pre {
     display: block;
     padding: 9.5px;
@@ -94,12 +115,6 @@ pre {
     background-color: #f5f5f5;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.question-topic {
-    float: right;
-    margin-left: 10px;
-    color: #444;
 }
 
 .sidebar {
@@ -125,13 +140,14 @@ pre {
 .btn.btn-fab i {
     top: 0px;
 }
-
+.btn-text {
+    vertical-align: super;
+}
+.table .btn {
+    margin: 0;
+}
 .sidebar .items li .answer-button {
     margin-bottom: 0px;
-}
-
-.answer-text {
-    padding: 0 0 0 1.5em;
 }
 
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
