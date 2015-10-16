@@ -15,5 +15,11 @@
 <script type="text/javascript" src="/resources/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="/resources/bower_components/bootstrap-material-design/dist/js/material.js"></script>
 <script type="text/javascript" src="/resources/bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
-<script type="text/javascript" src="/resources/bower_components/bootstrap-paginator/src/bootstrap-paginator.js"></script>
+<script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/resources/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="/resources/js/main.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#" + "${param.page}").parent().addClass("active");
+    });
+</script>

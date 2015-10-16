@@ -148,5 +148,9 @@ var createTestModule = function() {
         testModule(time).init();
     });
 
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+
 })();
 

@@ -5,7 +5,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <jsp:include page="../views/common/head.jsp"></jsp:include>
     <title>Run Test</title>
 </head>
 <body>
@@ -78,13 +77,13 @@
                                     <label>
                                         <input class="answer" type="${buttonClass}" data-id="${question.id}${answer.id}"
                                         name="passedQuestions[${i.index}].userAnswers" value="${answer.id}">
-                                        <span class="answer-text">${answer.answerText}</span>
+                                        <span class="answer-text">${answer.answerText}11111111111111111111111111111111111111111111111111111111111111111111111</span>
                                     </label>
                                 </div>
                             </c:forEach>
                         </div>
                     </div>
-                    <button data-id="${i.index + 1}" class='confirm btn btn-success submit-btn'>Ответить</button>
+                    <a data-id="${i.index + 1}" class='confirm btn btn-success submit-btn'>Ответить</a>
                 </div>
                 <%--Answers block end--%>
             </div>
@@ -93,10 +92,14 @@
     </div>
 </form:form>
 <jsp:include page="../views/common/footer.jsp">
+    <jsp:param name="page" value="addQuestion"></jsp:param>
     <jsp:param name="footerClass" value="hidden"/>
 </jsp:include>
     <script>
         $(document).trigger('timer', ${timer});
     </script>
 </body>
+<script>
+    $(document).trigger('timer', ${timer})
+</script>
 </html>

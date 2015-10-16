@@ -61,6 +61,7 @@ public class TestController {
     @RequestMapping(value = CommonURLs.TEST_CHECK_URL, method = RequestMethod.POST)
     public String checkTest(@ModelAttribute(PASSED_TEST_MODEL) PassedTestModelAttribute passedModel, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        String profileID = (String) session.getAttribute(PROFILE_ID);
         PassedTest passedTestFromModel = getPassedTestFromModel(passedModel, session);
         passedTestService.save(passedTestFromModel);
         //profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());

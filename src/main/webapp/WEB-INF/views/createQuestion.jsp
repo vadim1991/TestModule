@@ -11,9 +11,16 @@
 <body>
 <div class="container">
     <div class="jumbotron">
+        <c:if test="${not empty msg}">
+            <div class="alert alert-dismissable alert-material-cyan-300">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <p>${msg}</p>
+            </div>
+        </c:if>
         <form:form class="form-horizontal" action="/create/question" method="post" modelAttribute="question">
             <fieldset>
                 <h2>Add new Question</h2>
+
                 <div>${success_add}</div>
                 <div class="form-group">
                     <label for="title" class="col-lg-2 control-label">Title</label>
@@ -64,38 +71,40 @@
                         <button type="button" id="add" class="btn btn-primary btn-flat btn-sm">
                             <i class="mdi-content-add"></i>
                             <span class="btn-text"> Add </span>
+
                             <div class="ripple-wrapper"></div>
                         </button>
                         <button type="button" id="remove-last" class="btn btn-danger btn-flat btn-sm">
                             <i class="mdi-content-clear"></i>
                             <span class="btn-text"> Remove </span>
+
                             <div class="ripple-wrapper"></div>
                         </button>
                     </div>
                 </div>
                 <div id="answersDiv">
-                <c:forEach var="i" begin="0" end="${index}">
-                <div class="form-group">
-                        <label class="col-sm-2 control-label" id="answerLabel${i + 1}">Answer ${i + 1}</label>
+                    <c:forEach var="i" begin="0" end="${index}">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" id="answerLabel${i + 1}">Answer ${i + 1}</label>
 
-                        <div class="answers col-sm-9" id="answerBlock${i + 1}">
-                            <form:input path="answers" class="form-control"
-                                        type="text"
-                                        placeholder="answer"/>
+                            <div class="answers col-sm-9" id="answerBlock${i + 1}">
+                                <form:input path="answers" class="form-control"
+                                            type="text"
+                                            placeholder="answer"/>
+                            </div>
+                            <div class="ansButton checkbox col-sm-1">
+                                <label>
+                                    <input class="button" type="checkbox" name="rightAnswers" value="${i}"/>
+                                </label>
+                            </div>
+                            <div class="ansButton radio radio-primary" style="display: none;">
+                                <label>
+                                    <input class="button" type="radio" name="rightAnswers" value="${i}"/>
+                                </label>
+                            </div>
+                            <c:set var="index" value="${index + 1}"/>
                         </div>
-                        <div class="ansButton checkbox col-sm-1">
-                            <label>
-                                <input class="button" type="checkbox" name="rightAnswers" value="${i}"/>
-                            </label>
-                        </div>
-                        <div class="ansButton radio radio-primary" style="display: none;">
-                            <label>
-                                <input class="button" type="radio" name="rightAnswers" value="${i}"/>
-                            </label>
-                        </div>
-                    <c:set var="index" value="${index + 1}"/>
-                </div>
-                </c:forEach>
+                    </c:forEach>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
@@ -107,6 +116,8 @@
         </form:form>
     </div>
 </div>
-<jsp:include page="../views/common/footer.jsp"></jsp:include>
+<jsp:include page="../views/common/footer.jsp">
+    <jsp:param name="page" value="addQuestion"></jsp:param>
+</jsp:include>
 </body>
 </html>

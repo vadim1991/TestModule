@@ -2,6 +2,8 @@ package com.englishschool.dao.passedtest;
 
 import com.englishschool.dao.generic.GenericMongoDBDaoImpl;
 import com.englishschool.entity.PassedTest;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,12 @@ public class PassedTestDaoImpl extends GenericMongoDBDaoImpl<PassedTest> impleme
 
     public PassedTestDaoImpl() {
         setClazz(PassedTest.class);
+    }
+
+    @Override
+    public PassedTest findById(String id) {
+        System.out.println("----------------- passed test DB");
+        return super.findById(id);
     }
 
     @Override

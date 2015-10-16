@@ -8,6 +8,8 @@ import com.englishschool.service.generic.GenericManagerImpl;
 import com.englishschool.service.test.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -8,5 +8,6 @@
     <bean id="jsonService" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
     <import resource="mongodb-app.xml"></import>
+    <import resource="spring-guava-cache.xml"></import>
 
 </beans>

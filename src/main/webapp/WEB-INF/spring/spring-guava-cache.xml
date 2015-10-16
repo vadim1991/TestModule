@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <cache:annotation-driven />
+
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.guava.GuavaCache">
+                    <constructor-arg value="profile"></constructor-arg>
+                    <constructor-arg ref="guavaCache"></constructor-arg>
+                </bean>
+                <bean class="org.springframework.cache.guava.GuavaCache">
+                    <constructor-arg value="tests"></constructor-arg>
+                    <constructor-arg ref="guavaCache"></constructor-arg>
+                </bean>
+                <bean class="org.springframework.cache.guava.GuavaCache">
+                    <constructor-arg value="passed-tests"></constructor-arg>
+                    <constructor-arg ref="guavaCache"></constructor-arg>
+                </bean>
+                <bean class="org.springframework.cache.guava.GuavaCache">
+                    <constructor-arg value="passedTask"></constructor-arg>
+                    <constructor-arg ref="guavaCache"></constructor-arg>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="guavaCacheBuilderSpec" class="com.google.common.cache.CacheBuilderSpec"
+          factory-method="parse" c:cacheBuilderSpecification="expireAfterWrite=600s,maximumSize=100" />
+
+    <bean id="guavaCacheBuilderFromSpec" class="com.google.common.cache.CacheBuilder"
+          factory-method="from" c:spec-ref="guavaCacheBuilderSpec" />
+
+    <bean id="guavaCache" factory-bean="guavaCacheBuilderFromSpec"
+          factory-method="build" />
+
+</beans>

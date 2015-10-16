@@ -45,6 +45,8 @@
         </table>
     </div>
 </div>
-<jsp:include page="../views/common/footer.jsp"></jsp:include>
+<jsp:include page="../views/common/footer.jsp">
+    <jsp:param name="page" value="passed"></jsp:param>
+</jsp:include>
 </body>
 </html>

@@ -20,6 +20,7 @@
         <joda.time>2.8.2</joda.time>
         <servlet.api>3.1.0</servlet.api>
         <mongo>1.8.0.RELEASE</mongo>
+        <guava>18.0</guava>
     </properties>
 
     <dependencies>
@@ -43,6 +44,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
         <dependency>
@@ -142,6 +148,14 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.api}</version>
         </dependency>
+
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava}</version>
+        </dependency>
+
 
     </dependencies>
 

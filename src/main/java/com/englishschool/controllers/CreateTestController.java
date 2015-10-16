@@ -25,19 +25,5 @@ public class CreateTestController {
     @Autowired
     private IQuestionService questionService;
 
-    @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.GET)
-    public ModelAndView addNewQuestion() {
-        Map<String, Object> model = new HashMap<>();
-        model.put(QUESTION, new QuestionModelAttribute());
-        return new ModelAndView(CREATE_QUESTION_JSP, model);
-    }
-
-    @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.POST)
-    public String addNewQuestion(@ModelAttribute(QUESTION) QuestionModelAttribute questionModelAttribute) {
-        Question question = questionService.getQuestionFromModel(questionModelAttribute);
-        questionService.save(question);
-        //new ModelAndView(CREATE_QUESTION_JSP, SUCCESS_MESSAGE, SUCCESS_CREATE_QUESTION)
-        return REDIRECT_CREATE_QUESTION_URL;
-    }
 
 }

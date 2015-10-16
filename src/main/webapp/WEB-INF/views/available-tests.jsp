@@ -12,7 +12,7 @@
 <div class="container">
     <div class="jumbotron">
         <h2>Available tests</h2>
-        <table class="table table-striped table-hover table-responsive">
+        <table id="example" class="table table-striped table-hover table-responsive">
             <thead>
             <tr>
                 <th>Test ID</th>
@@ -48,6 +48,8 @@
         </table>
     </div>
 </div>
-<jsp:include page="../views/common/footer.jsp"></jsp:include>
+<jsp:include page="../views/common/footer.jsp">
+    <jsp:param name="page" value="available"></jsp:param>
+</jsp:include>
 </body>
 </html>

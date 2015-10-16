@@ -2,9 +2,12 @@ package com.englishschool.dao.generic;
 
 import com.englishschool.datamodel.CommonConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class GenericMongoDBDaoImpl<T> implements GenericDao<T> {
 
     @Override
     public List<T> findAll() {
+        PageRequest pageRequest = new PageRequest(0, 10);
         return mongoOperations.findAll(getClazz());
     }
 

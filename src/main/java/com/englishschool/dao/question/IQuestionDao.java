@@ -2,6 +2,8 @@ package com.englishschool.dao.question;
 
 import com.englishschool.dao.generic.GenericDao;
 import com.englishschool.entity.Question;
+import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -11,5 +13,7 @@ import java.util.List;
 public interface IQuestionDao<T> extends GenericDao<T> {
 
     List<Question> findQuestionsByListId(List<String> ids);
+
+    Page<Question> findAllWithPagination(int pageNumber, int countOnPage);
 
 }

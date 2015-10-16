@@ -9,6 +9,7 @@ import com.englishschool.service.generic.GenericManagerImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
     @Override
     public List<Question> findQuestionsByListId(List<String> ids) {
         return dao.findQuestionsByListId(ids);
+    }
+
+    @Override
+    public Page<Question> findAllWithPagination(int pageNumber, int countOnPage) {
+        return dao.findAllWithPagination(pageNumber, countOnPage);
     }
 
     private void setAnswersToQuestion(Question question, QuestionModelAttribute questionModelAttribute) {

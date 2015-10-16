@@ -1,5 +1,6 @@
 package com.englishschool.entity;
 
+import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,6 +18,7 @@ public class Question implements Serializable {
     private String id;
     private String title;
     private String questionContent;
+    private String explanation;
     private List<Answer> answers;
     private QuestionType questionType;
 
@@ -64,30 +66,27 @@ public class Question implements Serializable {
         this.questionType = questionType;
     }
 
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Question question = (Question) o;
-
-        if (id != null ? !id.equals(question.id) : question.id != null) return false;
-        if (title != null ? !title.equals(question.title) : question.title != null) return false;
-        if (questionContent != null ? !questionContent.equals(question.questionContent) : question.questionContent != null)
-            return false;
-        if (answers != null ? !answers.equals(question.answers) : question.answers != null) return false;
-        return questionType == question.questionType;
-
+        return Objects.equal(id, question.id) &&
+                Objects.equal(title, question.title) &&
+                Objects.equal(questionContent, question.questionContent);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (questionContent != null ? questionContent.hashCode() : 0);
-        result = 31 * result + (answers != null ? answers.hashCode() : 0);
-        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
-        return result;
+        return Objects.hashCode(id, title, questionContent);
     }
 
     @Override
