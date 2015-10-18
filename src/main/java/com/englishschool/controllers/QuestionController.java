@@ -1,28 +1,28 @@
 package com.englishschool.controllers;
 
-import com.englishschool.datamodel.CommonConstants;
-import com.englishschool.datamodel.CommonMessages;
 import com.englishschool.entity.Question;
+import com.englishschool.entity.spring.DataTableBean;
 import com.englishschool.entity.spring.QuestionModelAttribute;
 import com.englishschool.service.question.IQuestionService;
-import com.google.common.base.Objects;
+import com.englishschool.validator.QuestionModelValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.englishschool.datamodel.CommonConstants.QUESTION;
-import static com.englishschool.datamodel.CommonConstants.SUCCESS_MESSAGE;
-import static com.englishschool.datamodel.CommonMessages.*;
+import static com.englishschool.datamodel.CommonConstants.*;
+import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_QUESTION;
+import static com.englishschool.datamodel.CommonMessages.SUCCESS_DELETE_QUESTION;
 import static com.englishschool.datamodel.CommonURLs.*;
 
 /**
@@ -33,34 +33,61 @@ public class QuestionController {
 
     public static final String QUESTION_PAGE_OBJECT = "questionPage";
     public static final String QUESTIONS = "questions";
+
+    @Autowired
+    private QuestionModelValidator questionValidator;
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(questionValidator);
+    }
     @Autowired
     private IQuestionService<Question> questionService;
-
-    @RequestMapping(value = "/questions/page/{pageNumber}", method = RequestMethod.GET)
-    public ModelAndView getQuestionByPage(@PathVariable("pageNumber") Integer pageNumber) {
-        Page<Question> questionPage = questionService.findAllWithPagination(pageNumber, 3);
-        System.out.println(questionPage.getContent());
-        System.out.println(questionPage.getTotalPages());
-        System.out.println(questionPage.hasNext());
-        Map<String, Object> model = new HashMap<>();
-        model.put(QUESTION_PAGE_OBJECT, questionPage);
-        return new ModelAndView(QUESTIONS, model);
-    }
 
     @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.GET)
     public ModelAndView addNewQuestion() {
         Map<String, Object> model = new HashMap<>();
         model.put(QUESTION, new QuestionModelAttribute());
-        return new ModelAndView(CREATE_QUESTION_JSP, model);
+        return new ModelAndView(CREATE_QUESTION_PAGE, model);
+    }
+
+    @RequestMapping(value = ALL_QUESTIONS_URL, method = RequestMethod.GET)
+    public String getAllQuestions() {
+//        List<Question> questions = questionService.findAll();
+//        model.put(QUESTIONS, questions);
+//        Map<String, Object> model = new HashMap<>();
+        return ALL_QUESTIONS_PAGE;
     }
 
     @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.POST)
-    public String addNewQuestion(@ModelAttribute(QUESTION) QuestionModelAttribute questionModelAttribute, final RedirectAttributes redirectAttributes) {
-        Question question = questionService.getQuestionFromModel(questionModelAttribute);
-        questionService.save(question);
-        redirectAttributes.addFlashAttribute("msg", SUCCESS_CREATE_QUESTION);
-        //new ModelAndView(CREATE_QUESTION_JSP, SUCCESS_MESSAGE, SUCCESS_CREATE_QUESTION)
+    public String addNewQuestion(@ModelAttribute(QUESTION) @Validated QuestionModelAttribute question, BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        System.out.println(question);
+        if (bindingResult.hasErrors()) {
+            return CREATE_QUESTION_PAGE;
+        }
+        Question questionBean = questionService.getQuestionFromModel(question);
+        questionService.save(questionBean);
+        redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_QUESTION);
         return REDIRECT_CREATE_QUESTION_URL;
+    }
+
+    @RequestMapping(value = UPDATE_QUESTION_GET_URL, method = RequestMethod.GET)
+    public ModelAndView updateQuestion(@PathVariable(ID) String id) {
+        Map<String, Object> model = new HashMap<>();
+        Question question = questionService.findById(id);
+        QuestionModelAttribute questionModelAttribute = questionService.convertQuestionToModel(question);
+        model.put(QUESTION, questionModelAttribute);
+        return new ModelAndView(UPDATE_QUESTION_PAGE, model);
+    }
+
+    @RequestMapping(value = DELETE_QUESTION_URL, method = RequestMethod.GET)
+    public String deleteQuestion(@PathVariable(ID) String id, final RedirectAttributes redirectAttributes) {
+        System.out.println("------------delete");
+        boolean deleteResult = questionService.deleteByID(id);
+        System.out.println("------------delete");
+        if (deleteResult) {
+            redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_DELETE_QUESTION);
+        }
+        return REDIRECT_QUESTIONS_URL;
     }
 
 }

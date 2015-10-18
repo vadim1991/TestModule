@@ -5,7 +5,7 @@
 
     <!-- Root Context: defines shared resources visible to all other web components -->
 
-    <bean id="jsonService" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean id="jsonObject" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
     <import resource="mongodb-app.xml"></import>
     <import resource="spring-guava-cache.xml"></import>

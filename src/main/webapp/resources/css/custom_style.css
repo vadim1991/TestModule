@@ -117,6 +117,10 @@ pre {
     border-radius: 4px;
 }
 
+.selected {
+    background-color:#009688
+}
+
 .sidebar {
     float: left;
     margin-left: 20px;
@@ -135,6 +139,11 @@ pre {
     height: 18px;
     font-size: 1.2em;
     color: #006359;
+}
+
+.datatable-block {
+    margin-right: 15px;
+    margin-left: 15px;
 }
 
 .btn.btn-fab i {

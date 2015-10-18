@@ -1,5 +1,6 @@
 package com.englishschool.controllers;
 
+import com.englishschool.datamodel.CommonURLs;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,10 +15,12 @@ import static com.englishschool.datamodel.CommonConstants.PROFILE_ID;
 @Controller
 public class LoginController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public static final String PATH = "/";
+
+    @RequestMapping(value = PATH, method = RequestMethod.GET)
     public String startApplication(HttpSession session) {
         session.setAttribute(PROFILE_ID, "11111");
-        return "redirect:/create/question";
+        return CommonURLs.REDIRECT_CREATE_QUESTION_URL;
     }
 
 }

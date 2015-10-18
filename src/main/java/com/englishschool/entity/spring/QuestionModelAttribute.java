@@ -1,6 +1,7 @@
 package com.englishschool.entity.spring;
 
 import com.englishschool.entity.QuestionType;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,9 +11,12 @@ import java.util.List;
  */
 public class QuestionModelAttribute implements Serializable {
 
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
     private QuestionType questionType;
+    private String explanation;
     private List<String> answers;
     private List<Integer> rightAnswers;
 
@@ -56,15 +60,23 @@ public class QuestionModelAttribute implements Serializable {
         this.rightAnswers = rightAnswers;
     }
 
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+
     @Override
     public String toString() {
         return "QuestionModelAttribute{" +
                 "title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", questionType=" + questionType +
+                ", explanation='" + explanation + '\'' +
                 ", answers=" + answers +
                 ", rightAnswers=" + rightAnswers +
                 '}';
     }
-
 }

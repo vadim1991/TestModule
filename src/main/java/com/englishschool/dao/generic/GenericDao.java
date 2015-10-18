@@ -7,14 +7,16 @@ import java.util.List;
  */
 public interface GenericDao<T> {
 
-    public T findById(String id);
+    T findById(String id);
 
-    public List<T> findAll();
+    List<T> findAll();
 
-    public void update(T entity);
+    void update(T entity);
 
-    public void save(T entity);
+    void save(T entity);
 
-    public void delete(T entity);
+    void delete(T entity);
+
+    boolean deleteByID(String id);
 
 }

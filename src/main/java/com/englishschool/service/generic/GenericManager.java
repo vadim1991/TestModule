@@ -17,4 +17,6 @@ public interface GenericManager<T> {
 
     public void delete(T entity);
 
+    boolean deleteByID(String id);
+
 }

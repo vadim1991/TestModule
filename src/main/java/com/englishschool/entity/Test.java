@@ -1,6 +1,6 @@
 package com.englishschool.entity;
 
-import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,7 +15,7 @@ public class Test implements Serializable {
 
     @Id
     private String id;
-    private DateTime creationDate;
+    private String creationDate;
     private List<String> questionIds;
     private int timeOfTest;
     private String testTitle;
@@ -28,11 +28,11 @@ public class Test implements Serializable {
         this.id = id;
     }
 
-    public DateTime getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(DateTime creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -44,14 +44,6 @@ public class Test implements Serializable {
         this.questionIds = questionIds;
     }
 
-    public String getTestTitle() {
-        return testTitle;
-    }
-
-    public void setTestTitle(String testTitle) {
-        this.testTitle = testTitle;
-    }
-
     public int getTimeOfTest() {
         return timeOfTest;
     }
@@ -60,27 +52,29 @@ public class Test implements Serializable {
         this.timeOfTest = timeOfTest;
     }
 
+    public String getTestTitle() {
+        return testTitle;
+    }
+
+    public void setTestTitle(String testTitle) {
+        this.testTitle = testTitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Test test = (Test) o;
-
-        if (id != null ? !id.equals(test.id) : test.id != null) return false;
-        if (creationDate != null ? !creationDate.equals(test.creationDate) : test.creationDate != null) return false;
-        if (questionIds != null ? !questionIds.equals(test.questionIds) : test.questionIds != null) return false;
-        return !(testTitle != null ? !testTitle.equals(test.testTitle) : test.testTitle != null);
-
+        return Objects.equal(timeOfTest, test.timeOfTest) &&
+                Objects.equal(id, test.id) &&
+                Objects.equal(creationDate, test.creationDate) &&
+                Objects.equal(questionIds, test.questionIds) &&
+                Objects.equal(testTitle, test.testTitle);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (questionIds != null ? questionIds.hashCode() : 0);
-        result = 31 * result + (testTitle != null ? testTitle.hashCode() : 0);
-        return result;
+        return Objects.hashCode(id, creationDate, questionIds, timeOfTest, testTitle);
     }
 
     @Override

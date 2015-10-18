@@ -41,6 +41,11 @@
                 class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
     </beans:bean>
 
+    <beans:bean class="org.springframework.context.support.ResourceBundleMessageSource"
+          id="messageSource">
+        <beans:property name="basename" value="validation" />
+    </beans:bean>
+
     <context:component-scan base-package="com.englishschool"/>
 
 </beans:beans>

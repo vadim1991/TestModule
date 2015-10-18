@@ -2,8 +2,11 @@ package com.englishschool.controllers;
 
 import com.englishschool.datamodel.CommonURLs;
 import com.englishschool.entity.*;
+import com.englishschool.entity.spring.DataTableBean;
 import com.englishschool.entity.spring.PassedQuestionModelAttribute;
 import com.englishschool.entity.spring.PassedTestModelAttribute;
+import com.englishschool.entity.spring.QuestionForDatatableBean;
+import com.englishschool.service.json.QuestionJsonServiceImpl;
 import com.englishschool.service.passedtest.IPassedTestService;
 import com.englishschool.service.profile.IProfileService;
 import com.englishschool.service.question.IQuestionService;
@@ -12,12 +15,14 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -31,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.englishschool.datamodel.CommonConstants.*;
+import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_TEST;
 
 /**
  * Created by Administrator on 10/1/2015.
@@ -38,6 +44,17 @@ import static com.englishschool.datamodel.CommonConstants.*;
 @Controller
 public class TestController {
 
+    public static final String TEST = "test";
+    public static final String REDIRECT_TEST_CREATE_GET_URL = "redirect:/test/create";
+    public static final String CREATE_TEST_PAGE = "create-test";
+    public static final String TEST_CREATE_URL = "/test/create";
+    public static final String QUESTION_ID = "questionID";
+    public static final String TITLE = "title";
+    public static final String QUESTION_TYPE = "questionType";
+    public static final String ORDER_0_COLUMN = "order[0][column]";
+    public static final String ORDER_0_DIR = "order[0][dir]";
+    public static final int SECONDS_FROM_MINUTE = 60;
+    public static final String SEARCH_VALUE = "search[value]";
     @Autowired
     private IQuestionService questionService;
     @Autowired
@@ -46,6 +63,8 @@ public class TestController {
     private IProfileService profileService;
     @Autowired
     private IPassedTestService passedTestService;
+    @Autowired
+    private QuestionJsonServiceImpl questionJsonService;
 
     @RequestMapping(value = RESULT_TEST_ID_URL, method = RequestMethod.GET)
     public ModelAndView showHistoryPassedTest(@PathVariable(ID) String passedTestID, HttpServletRequest request) throws ServletException, IOException {
@@ -64,10 +83,47 @@ public class TestController {
         String profileID = (String) session.getAttribute(PROFILE_ID);
         PassedTest passedTestFromModel = getPassedTestFromModel(passedModel, session);
         passedTestService.save(passedTestFromModel);
-        //profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());
+        profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());
         removeAllCookies(request, response);
         invalidateTestInfoFromSession(session);
         return "redirect:/result/test/" + passedTestFromModel.getId();
+    }
+
+    @RequestMapping(value = "/questions/pages", method = RequestMethod.GET)
+    public void getQuestionByPage(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String[] properties = {QUESTION_ID, TITLE, QUESTION_TYPE};
+        String orderColumn = request.getParameter(ORDER_0_COLUMN);
+        String order = null;
+        if (!orderColumn.isEmpty()) {
+            order = properties[Integer.parseInt(orderColumn)];
+        }
+        dataTableBean.setOrderColumn(order);
+        dataTableBean.setOrderParam(request.getParameter(ORDER_0_DIR));
+        dataTableBean.setSearchWord(request.getParameter(SEARCH_VALUE));
+        Page allWithPagination = questionService.findAllWithPagination(dataTableBean);
+        List<Question> questions = allWithPagination.getContent();
+        List<QuestionForDatatableBean> dataModelQuestions = questionService.convertQuestionsForDataTableBean(questions);
+        String questionsDataJson = questionJsonService.getQuestionsDataJson(dataModelQuestions, dataTableBean, (int) allWithPagination.getTotalElements());
+        System.out.println(questionsDataJson);
+        response.getWriter().write(questionsDataJson);
+    }
+
+    @RequestMapping(value = TEST_CREATE_URL, method = RequestMethod.GET)
+    public ModelAndView createTest() {
+        Map<String, Object> model = new HashMap<>();
+        Test test = new Test();
+        model.put(TEST, test);
+        return new ModelAndView(CREATE_TEST_PAGE, model);
+    }
+
+    @RequestMapping(value = TEST_CREATE_URL, method = RequestMethod.POST)
+    public String createTest(@ModelAttribute(TEST) Test test, final RedirectAttributes redirectAttributes) {
+        String createTime = convertDateToString(new DateTime());
+        test.setCreationDate(createTime);
+        testService.save(test);
+        redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_TEST);
+        System.out.println(test);
+        return REDIRECT_TEST_CREATE_GET_URL;
     }
 
     @RequestMapping(value = CommonURLs.AVAILABLE_TESTS_URL, method = RequestMethod.GET)
@@ -138,16 +194,17 @@ public class TestController {
             passedQuestion.setQuestion(question);
             passedQuestions.add(passedQuestion);
         }
-        passedTest.setEndTest(convertDateTOString(new DateTime()));
+        passedTest.setEndTest(convertDateToString(new DateTime()));
         passedTest.setPassedQuestions(passedQuestions);
         passedTest.setResult(countRight / questions.size() * 100);
         return passedTest;
     }
 
-    private String convertDateTOString(DateTime dateTime) {
+    private String convertDateToString(DateTime dateTime) {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
         return dateTime.toString(fmt);
     }
+
     private DateTime convertStringToDate(String dateTime) {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
         return DateTime.parse(dateTime, fmt);
@@ -201,7 +258,8 @@ public class TestController {
     private long getRemainingTime(PassedTest passedTest, Test currentTest) {
         DateTime startTestTime = convertStringToDate(passedTest.getStartTest());
         long delta = new DateTime().getMillis() - startTestTime.getMillis();
-        return currentTest.getTimeOfTest() - (delta) / MILLISECONDS_FROM_SECOND;
+        int timeOfTest = currentTest.getTimeOfTest() * SECONDS_FROM_MINUTE;
+        return timeOfTest - (delta) / MILLISECONDS_FROM_SECOND;
     }
 
     private ModelAndView checkTestFromSession(HttpSession session, Test currentTest, String testID) {
@@ -219,28 +277,6 @@ public class TestController {
         return null;
     }
 
-    private TestProfile getProfile() {
-        TestProfile testProfile = new TestProfile();
-        List<String> tests = new ArrayList<>();
-        testProfile.setId("11111");
-        Test test = getTest();
-        tests.add(test.getId());
-        testProfile.setAvailableTests(tests);
-        return testProfile;
-    }
-
-    private Test getTest() {
-        Test test = new Test();
-        List<String> questions = new ArrayList<>();
-        questions.add("5612c3c295de30f9fd2392f1");
-        questions.add("5612c3e295de30f9fd2392f2");
-        test.setId("12345");
-        test.setQuestionIds(questions);
-        test.setTimeOfTest(1200);
-        testService.save(test);
-        return test;
-    }
-
     private PassedTestModelAttribute getPassedTestModelAttribute(Test currentTest) {
         PassedTestModelAttribute passedTest = new PassedTestModelAttribute();
         List<PassedQuestionModelAttribute> passedQuestions = new ArrayList<>();
@@ -256,7 +292,7 @@ public class TestController {
         PassedTest passedTest = new PassedTest();
         passedTest.setId(currentTest.getId());
         passedTest.setTestId(currentTest.getId());
-        passedTest.setStartTest(convertDateTOString(new DateTime()));
+        passedTest.setStartTest(convertDateToString(new DateTime()));
         return passedTest;
     }
 

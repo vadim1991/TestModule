@@ -36,4 +36,9 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements
         dao.delete(entity);
     }
 
+    @Override
+    public boolean deleteByID(String id) {
+        return dao.deleteByID(id);
+    }
+
 }

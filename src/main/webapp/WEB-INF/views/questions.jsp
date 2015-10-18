@@ -11,15 +11,14 @@
 <body>
 <div class="container">
     <div class="jumbotron">
-        <h2>Passed tests</h2>
-        <table id="example" class="table table-striped table-hover table-responsive"
-               data-toggle="table"
-               data-url="/questions/page/"
-               data-height="400"
-               data-side-pagination="server"
-               data-pagination="true"
-               data-page-list="[5, 10, 20, 50, 100, 200]"
-               data-search="true">
+        <c:if test="${not empty msg}">
+            <div class="alert alert-dismissable alert-material-cyan-300">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <p>${msg}</p>
+            </div>
+        </c:if>
+        <h2>Questions</h2>
+        <table id="example" class="table table-striped table-hover table-responsive">
             <thead>
             <tr>
                 <th>Question ID</th>
@@ -29,25 +28,6 @@
                 <th>Delete question</th>
             </tr>
             </thead>
-            <tbody>
-            <c:forEach items="${questionPage.content}" var="question" varStatus="i">
-                <c:set var="classTD" value="success"></c:set>
-                <c:if test="${i.index%2 == 0}">
-                    <c:set var="classTD" value="warning"></c:set>
-                </c:if>
-                <tr class="${classTD}">
-                    <td>${question.id}</td>
-                    <td>${question.title}</td>
-                    <td>${question.questionType}</td>
-                    <td><a href="/question/update/${question.id}" role="button"
-                           class="btn btn-primary btn-sm">Update</a></td>
-                    <td>
-                        <a href="/question/delete/${question.id}" role="button"
-                           class="btn btn-danger btn-sm">Delete</a>
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
         </table>
     </div>
 </div>

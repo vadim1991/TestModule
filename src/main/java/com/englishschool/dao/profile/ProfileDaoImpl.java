@@ -26,7 +26,6 @@ public class ProfileDaoImpl extends GenericMongoDBDaoImpl<TestProfile> implement
     @Cacheable(value = "profile")
     @Override
     public TestProfile findById(String id) {
-        System.out.println("--------------------- profile DB");
         return super.findById(id);
     }
 

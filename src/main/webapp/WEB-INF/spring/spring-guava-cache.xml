@@ -40,6 +40,10 @@
                     <constructor-arg value="passedTask"></constructor-arg>
                     <constructor-arg ref="guavaCache"></constructor-arg>
                 </bean>
+                <bean class="org.springframework.cache.guava.GuavaCache">
+                    <constructor-arg value="questionPages"></constructor-arg>
+                    <constructor-arg ref="guavaCache"></constructor-arg>
+                </bean>
             </set>
         </property>
     </bean>

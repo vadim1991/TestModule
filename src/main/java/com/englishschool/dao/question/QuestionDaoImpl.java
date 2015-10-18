@@ -2,10 +2,11 @@ package com.englishschool.dao.question;
 
 import com.englishschool.dao.generic.GenericMongoDBDaoImpl;
 import com.englishschool.entity.Question;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import com.englishschool.entity.spring.DataTableBean;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -31,14 +32,37 @@ public class QuestionDaoImpl extends GenericMongoDBDaoImpl<Question> implements 
     }
 
     @Override
-    public Page<Question> findAllWithPagination(int pageNumber, int countOnPage) {
-        Pageable pageable = new PageRequest(pageNumber, countOnPage);
+    public Page<Question> findAllWithPagination(DataTableBean dataTableBean) {
+        Integer start = dataTableBean.getStart();
+        Integer length = dataTableBean.getLength();
+        Integer pageNumber = start / length;
+        Pageable pageable = new PageRequest(pageNumber, length);
         Query query = new Query();
         query.with(pageable);
+        Sort sortObject = getSortObject(dataTableBean.getOrderColumn(), dataTableBean.getOrderParam());
+        if (sortObject != null) {
+            query.with(sortObject);
+        }
+        String searchWord = dataTableBean.getSearchWord();
+        if (StringUtils.isNotBlank(searchWord)) {
+            query.addCriteria(Criteria.where("title").regex(searchWord));
+        }
         List<Question> questions = getMongoOperations().find(query, getClazz());
         long total = getMongoOperations().count(query, getClazz());
-        System.out.println(total);
-        Page<Question> questionPage = new PageImpl<Question>(questions, pageable, total);
+        Page<Question> questionPage = new PageImpl<>(questions, pageable, total);
         return questionPage;
     }
+
+    private Sort getSortObject(String orderColumn, String orderParam) {
+        Sort sort = null;
+        Sort.Direction sortParam = Sort.Direction.ASC;
+        if (orderParam != null && ("desc").equals(orderParam)) {
+            sortParam = Sort.Direction.DESC;
+        }
+        if (orderColumn != null) {
+            sort = new Sort(sortParam, orderColumn);
+        }
+        return sort;
+    }
+
 }
