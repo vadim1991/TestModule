@@ -2,10 +2,12 @@ package com.englishschool.service.question;
 
 import com.englishschool.dao.generic.GenericDao;
 import com.englishschool.dao.question.QuestionDaoImpl;
+import com.englishschool.datamodel.CacheConstants;
+import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.Answer;
 import com.englishschool.entity.Question;
 import com.englishschool.entity.spring.DataTableBean;
-import com.englishschool.entity.spring.QuestionForDatatableBean;
+import com.englishschool.entity.spring.QuestionForDataTableBean;
 import com.englishschool.entity.spring.QuestionModelAttribute;
 import com.englishschool.service.generic.GenericManagerImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -31,19 +33,19 @@ import static com.englishschool.datamodel.CommonConstants.UPDATE_LINK_FORMAT;
 public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDaoImpl> implements IQuestionService<Question> {
 
     @Autowired
-    @Qualifier("questionDao")
+    @Qualifier(CommonConstants.QUESTION_DAO)
     @Override
     public void setDao(GenericDao dao) {
         super.setDao(dao);
     }
 
-    @CacheEvict(value = "questionPages", allEntries = true)
+    @CacheEvict(value = CacheConstants.QUESTION_PAGES, allEntries = true)
     @Override
     public void save(Question entity) {
         super.save(entity);
     }
 
-    @CacheEvict(value = "questionPages", allEntries = true)
+    @CacheEvict(value = CacheConstants.QUESTION_PAGES, allEntries = true)
     @Override
     public boolean deleteByID(String id) {
         return super.deleteByID(id);
@@ -55,6 +57,7 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
         question.setTitle(questionModelAttribute.getTitle());
         question.setQuestionType(questionModelAttribute.getQuestionType());
         question.setQuestionContent(questionModelAttribute.getContent());
+        question.setCategory(questionModelAttribute.getCategory());
         setAnswersToQuestion(question, questionModelAttribute);
         return question;
     }
@@ -64,7 +67,7 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
         return dao.findQuestionsByListId(ids);
     }
 
-    @Cacheable(value = "questionPages")
+    @Cacheable(value = CacheConstants.QUESTION_PAGES)
     @Override
     public Page<Question> findAllWithPagination(DataTableBean dataTableBean) {
         return dao.findAllWithPagination(dataTableBean);
@@ -93,21 +96,21 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
     }
 
     @Override
-    public List<QuestionForDatatableBean> convertQuestionsForDataTableBean(List<Question> questions) {
-        List<QuestionForDatatableBean> questionForDatatableBeans = null;
+    public List<QuestionForDataTableBean> convertQuestionsForDataTableBean(List<Question> questions) {
+        List<QuestionForDataTableBean> questionForDataTableBeans = null;
         if (questions != null) {
-            questionForDatatableBeans = new ArrayList<>();
+            questionForDataTableBeans = new ArrayList<>();
             for (Question question : questions) {
-                QuestionForDatatableBean datatableBean = new QuestionForDatatableBean();
-                datatableBean.setQuestionID(question.getId());
-                datatableBean.setTitle(question.getTitle());
-                datatableBean.setQuestionType(question.getQuestionType().toString());
-                datatableBean.setUpdateLink(String.format(UPDATE_LINK_FORMAT, question.getId()));
-                datatableBean.setDeleteLink(String.format(DELETE_LINK_FORMAT, question.getId()));
-                questionForDatatableBeans.add(datatableBean);
+                QuestionForDataTableBean dataTableBean = new QuestionForDataTableBean();
+                dataTableBean.setQuestionID(question.getId());
+                dataTableBean.setTitle(question.getTitle());
+                dataTableBean.setCategory(question.getCategory());
+                dataTableBean.setUpdateLink(String.format(UPDATE_LINK_FORMAT, question.getId()));
+                dataTableBean.setDeleteLink(String.format(DELETE_LINK_FORMAT, question.getId()));
+                questionForDataTableBeans.add(dataTableBean);
             }
         }
-        return questionForDatatableBeans;
+        return questionForDataTableBeans;
     }
 
     private void setAnswersToQuestion(Question question, QuestionModelAttribute questionModelAttribute) {

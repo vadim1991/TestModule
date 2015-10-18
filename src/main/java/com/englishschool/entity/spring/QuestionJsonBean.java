@@ -1,7 +1,5 @@
 package com.englishschool.entity.spring;
 
-import com.englishschool.entity.Question;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,7 +11,7 @@ public class QuestionJsonBean implements Serializable {
     private Integer draw;
     private Integer recordsTotal;
     private Integer recordsFiltered;
-    private List<QuestionForDatatableBean> data;
+    private List<QuestionForDataTableBean> data;
 
     public Integer getDraw() {
         return draw;
@@ -39,11 +37,11 @@ public class QuestionJsonBean implements Serializable {
         this.recordsFiltered = recordsFiltered;
     }
 
-    public List<QuestionForDatatableBean> getData() {
+    public List<QuestionForDataTableBean> getData() {
         return data;
     }
 
-    public void setData(List<QuestionForDatatableBean> data) {
+    public void setData(List<QuestionForDataTableBean> data) {
         this.data = data;
     }
 

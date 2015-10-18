@@ -32,6 +32,24 @@
                     </div>
                 </div>
             </spring:bind>
+            <div class="form-group ${status.error ? 'has-error' : ''}">
+                <label class="col-sm-2 control-label">Category</label>
+                <div class="col-sm-5">
+                    <form:select path="category" class="form-control">
+                        <form:option value="NONE" label="--- Select ---" />
+                        <form:options items="${categories}" itemLabel="title" itemValue="title"/>
+                    </form:select>
+                    <form:errors path="category" class="control-label" />
+                </div>
+                <div class="col-sm-4 col-sm-offset-9">
+                    <a class="btn btn-primary btn-flat btn-sm" data-toggle="modal" data-target="#complete-dialog">
+                        <i class="mdi-content-add"></i>
+                        <span class="btn-text"> Add category </span>
+
+                        <div class="ripple-wrapper"></div>
+                    </a>
+                </div>
+            </div>
             <spring:bind path="content">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label for="textArea" class="col-lg-2 control-label">Content Question</label>
@@ -103,7 +121,8 @@
                                     </div>
                                     <div class="ansButton checkbox col-sm-1">
                                         <label>
-                                            <input class="button" type="checkbox" name="rightAnswers" value="${i.index}"/>
+                                            <input class="button" type="checkbox" name="rightAnswers"
+                                                   value="${i.index}"/>
                                         </label>
                                     </div>
                                     <div class="ansButton radio radio-primary" style="display: none;">
@@ -154,6 +173,7 @@
         </form:form>
     </div>
 </div>
+<jsp:include page="create-category.jsp"></jsp:include>
 <jsp:include page="../views/common/footer.jsp">
     <jsp:param name="page" value="addQuestion"></jsp:param>
 </jsp:include>

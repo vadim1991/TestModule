@@ -160,7 +160,7 @@ var createTestModule = function() {
             "columns": [
                 { "data": "questionID" },
                 { "data": "title" },
-                { "data": "questionType" },
+                { "data": "category" },
                 { "data": "updateLink" },
                 { "data": "deleteLink" }
             ],

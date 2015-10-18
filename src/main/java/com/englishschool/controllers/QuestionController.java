@@ -1,12 +1,12 @@
 package com.englishschool.controllers;
 
+import com.englishschool.entity.Category;
 import com.englishschool.entity.Question;
-import com.englishschool.entity.spring.DataTableBean;
 import com.englishschool.entity.spring.QuestionModelAttribute;
+import com.englishschool.service.category.ICategoryService;
 import com.englishschool.service.question.IQuestionService;
 import com.englishschool.validator.QuestionModelValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +30,8 @@ import static com.englishschool.datamodel.CommonURLs.*;
 @Controller
 public class QuestionController {
 
-    public static final String QUESTION_PAGE_OBJECT = "questionPage";
-    public static final String QUESTIONS = "questions";
-
+    @Autowired
+    private ICategoryService<Category> categoryService;
     @Autowired
     private QuestionModelValidator questionValidator;
     @InitBinder
@@ -45,17 +43,11 @@ public class QuestionController {
 
     @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.GET)
     public ModelAndView addNewQuestion() {
+        List<Category> categories = categoryService.findAll();
         Map<String, Object> model = new HashMap<>();
         model.put(QUESTION, new QuestionModelAttribute());
+        model.put(CATEGORIES, categories);
         return new ModelAndView(CREATE_QUESTION_PAGE, model);
-    }
-
-    @RequestMapping(value = ALL_QUESTIONS_URL, method = RequestMethod.GET)
-    public String getAllQuestions() {
-//        List<Question> questions = questionService.findAll();
-//        model.put(QUESTIONS, questions);
-//        Map<String, Object> model = new HashMap<>();
-        return ALL_QUESTIONS_PAGE;
     }
 
     @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.POST)

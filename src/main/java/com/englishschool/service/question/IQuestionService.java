@@ -2,7 +2,7 @@ package com.englishschool.service.question;
 
 import com.englishschool.entity.Question;
 import com.englishschool.entity.spring.DataTableBean;
-import com.englishschool.entity.spring.QuestionForDatatableBean;
+import com.englishschool.entity.spring.QuestionForDataTableBean;
 import com.englishschool.entity.spring.QuestionModelAttribute;
 import com.englishschool.service.generic.GenericManager;
 import org.springframework.data.domain.Page;
@@ -22,6 +22,6 @@ public interface IQuestionService<T> extends GenericManager<T> {
 
     QuestionModelAttribute convertQuestionToModel(Question question);
 
-    List<QuestionForDatatableBean> convertQuestionsForDataTableBean(List<Question> questions);
+    List<QuestionForDataTableBean> convertQuestionsForDataTableBean(List<Question> questions);
 
 }

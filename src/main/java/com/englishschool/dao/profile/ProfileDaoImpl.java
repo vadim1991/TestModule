@@ -8,9 +8,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static com.englishschool.datamodel.CacheConstants.PROFILE;
 
 /**
  * Created by Vadym_Vlasenko on 9/25/2015.
@@ -23,7 +23,7 @@ public class ProfileDaoImpl extends GenericMongoDBDaoImpl<TestProfile> implement
         setClazz(TestProfile.class);
     }
 
-    @Cacheable(value = "profile")
+    @Cacheable(value = PROFILE)
     @Override
     public TestProfile findById(String id) {
         return super.findById(id);

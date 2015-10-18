@@ -1,7 +1,7 @@
 package com.englishschool.service.json;
 
 import com.englishschool.entity.spring.DataTableBean;
-import com.englishschool.entity.spring.QuestionForDatatableBean;
+import com.englishschool.entity.spring.QuestionForDataTableBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface QuestionJsonService {
 
-    String getQuestionsDataJson(List<QuestionForDatatableBean> questionForDatatableBeans, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException;
+    String getQuestionsDataJson(List<QuestionForDataTableBean> questionForDataTableBeans, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException;
 
 }

@@ -21,4 +21,10 @@ public class CommonURLs {
     public static final String RUN_TEST_ID_URL = "/run/test/{id}";
     public static final String TEST_CHECK_URL = "/test/check";
     public static final String PASSED_TESTS_URL = "/passed/tests";
+    public static final String CATEGORY_CREATE_URL = "/category/create";
+    public static final String REDIRECT_TEST_CREATE_URL = "redirect:/test/create";
+    public static final String CREATE_TEST_PAGE = "create-test";
+    public static final String TEST_CREATE_URL = "/test/create";
+    public static final String REDIRECT_RESULT_TEST_URL = "redirect:/result/test/";
+    public static final String QUESTIONS_PAGES_URL = "/questions/pages";
 }

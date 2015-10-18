@@ -1,11 +1,11 @@
 package com.englishschool.controllers;
 
-import com.englishschool.datamodel.CommonURLs;
 import com.englishschool.entity.*;
 import com.englishschool.entity.spring.DataTableBean;
 import com.englishschool.entity.spring.PassedQuestionModelAttribute;
 import com.englishschool.entity.spring.PassedTestModelAttribute;
-import com.englishschool.entity.spring.QuestionForDatatableBean;
+import com.englishschool.entity.spring.QuestionForDataTableBean;
+import com.englishschool.service.category.ICategoryService;
 import com.englishschool.service.json.QuestionJsonServiceImpl;
 import com.englishschool.service.passedtest.IPassedTestService;
 import com.englishschool.service.profile.IProfileService;
@@ -37,6 +37,7 @@ import java.util.Map;
 
 import static com.englishschool.datamodel.CommonConstants.*;
 import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_TEST;
+import static com.englishschool.datamodel.CommonURLs.*;
 
 /**
  * Created by Administrator on 10/1/2015.
@@ -44,17 +45,6 @@ import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_TEST;
 @Controller
 public class TestController {
 
-    public static final String TEST = "test";
-    public static final String REDIRECT_TEST_CREATE_GET_URL = "redirect:/test/create";
-    public static final String CREATE_TEST_PAGE = "create-test";
-    public static final String TEST_CREATE_URL = "/test/create";
-    public static final String QUESTION_ID = "questionID";
-    public static final String TITLE = "title";
-    public static final String QUESTION_TYPE = "questionType";
-    public static final String ORDER_0_COLUMN = "order[0][column]";
-    public static final String ORDER_0_DIR = "order[0][dir]";
-    public static final int SECONDS_FROM_MINUTE = 60;
-    public static final String SEARCH_VALUE = "search[value]";
     @Autowired
     private IQuestionService questionService;
     @Autowired
@@ -65,6 +55,8 @@ public class TestController {
     private IPassedTestService passedTestService;
     @Autowired
     private QuestionJsonServiceImpl questionJsonService;
+    @Autowired
+    private ICategoryService<Category> categoryService;
 
     @RequestMapping(value = RESULT_TEST_ID_URL, method = RequestMethod.GET)
     public ModelAndView showHistoryPassedTest(@PathVariable(ID) String passedTestID, HttpServletRequest request) throws ServletException, IOException {
@@ -77,7 +69,7 @@ public class TestController {
         return new ModelAndView(RESULT_PAGE, PASSED_TEST, passedTest);
     }
 
-    @RequestMapping(value = CommonURLs.TEST_CHECK_URL, method = RequestMethod.POST)
+    @RequestMapping(value = TEST_CHECK_URL, method = RequestMethod.POST)
     public String checkTest(@ModelAttribute(PASSED_TEST_MODEL) PassedTestModelAttribute passedModel, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String profileID = (String) session.getAttribute(PROFILE_ID);
@@ -86,12 +78,12 @@ public class TestController {
         profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());
         removeAllCookies(request, response);
         invalidateTestInfoFromSession(session);
-        return "redirect:/result/test/" + passedTestFromModel.getId();
+        return REDIRECT_RESULT_TEST_URL + passedTestFromModel.getId();
     }
 
-    @RequestMapping(value = "/questions/pages", method = RequestMethod.GET)
+    @RequestMapping(value = QUESTIONS_PAGES_URL, method = RequestMethod.GET)
     public void getQuestionByPage(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String[] properties = {QUESTION_ID, TITLE, QUESTION_TYPE};
+        String[] properties = {QUESTION_ID, TITLE, CATEGORY};
         String orderColumn = request.getParameter(ORDER_0_COLUMN);
         String order = null;
         if (!orderColumn.isEmpty()) {
@@ -102,7 +94,7 @@ public class TestController {
         dataTableBean.setSearchWord(request.getParameter(SEARCH_VALUE));
         Page allWithPagination = questionService.findAllWithPagination(dataTableBean);
         List<Question> questions = allWithPagination.getContent();
-        List<QuestionForDatatableBean> dataModelQuestions = questionService.convertQuestionsForDataTableBean(questions);
+        List<QuestionForDataTableBean> dataModelQuestions = questionService.convertQuestionsForDataTableBean(questions);
         String questionsDataJson = questionJsonService.getQuestionsDataJson(dataModelQuestions, dataTableBean, (int) allWithPagination.getTotalElements());
         System.out.println(questionsDataJson);
         response.getWriter().write(questionsDataJson);
@@ -123,26 +115,26 @@ public class TestController {
         testService.save(test);
         redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_TEST);
         System.out.println(test);
-        return REDIRECT_TEST_CREATE_GET_URL;
+        return REDIRECT_TEST_CREATE_URL;
     }
 
-    @RequestMapping(value = CommonURLs.AVAILABLE_TESTS_URL, method = RequestMethod.GET)
+    @RequestMapping(value = AVAILABLE_TESTS_URL, method = RequestMethod.GET)
     public ModelAndView availableTests(HttpSession session) {
         //String profileID = (String) session.getAttribute(PROFILE_ID);
         List<String> availableTestIDs = profileService.getAvailableTests("11111");
         List<Test> availableTests = testService.getTestByListIDS(availableTestIDs);
-        return new ModelAndView(CommonURLs.AVAILABLE_TESTS_PAGE, AVAILABLE_TESTS, availableTests);
+        return new ModelAndView(AVAILABLE_TESTS_PAGE, AVAILABLE_TESTS, availableTests);
     }
 
-    @RequestMapping(value = CommonURLs.PASSED_TESTS_URL, method = RequestMethod.GET)
+    @RequestMapping(value = PASSED_TESTS_URL, method = RequestMethod.GET)
     public ModelAndView passedTests(HttpSession session) {
         String profileID = (String) session.getAttribute(PROFILE_ID);
         List<String> passedTestIDs = profileService.getPassedTests(profileID);
         List<PassedTest> passedTests = passedTestService.getPassedTestsByListIDS(passedTestIDs);
-        return new ModelAndView(CommonURLs.PASSED_TESTS_PAGE, PASSED_TESTS, passedTests);
+        return new ModelAndView(PASSED_TESTS_PAGE, PASSED_TESTS, passedTests);
     }
 
-    @RequestMapping(value = CommonURLs.RUN_TEST_ID_URL, method = RequestMethod.GET)
+    @RequestMapping(value = RUN_TEST_ID_URL, method = RequestMethod.GET)
     public ModelAndView runTestById(@PathVariable(ID) String testID, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String profileID = (String) session.getAttribute(PROFILE_ID);

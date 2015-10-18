@@ -55,7 +55,7 @@
                         <tr>
                             <th>Question ID</th>
                             <th>Question title</th>
-                            <th>Question type</th>
+                            <th>Question category</th>
                             <th>Update question</th>
                             <th>Delete question</th>
                         </tr>

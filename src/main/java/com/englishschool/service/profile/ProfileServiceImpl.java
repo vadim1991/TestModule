@@ -2,14 +2,12 @@ package com.englishschool.service.profile;
 
 import com.englishschool.dao.generic.GenericDao;
 import com.englishschool.dao.profile.ProfileDaoImpl;
-import com.englishschool.entity.Test;
+import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.TestProfile;
 import com.englishschool.service.generic.GenericManagerImpl;
 import com.englishschool.service.test.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,7 +23,7 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
     private ITestService testService;
 
     @Autowired
-    @Qualifier("profileDao")
+    @Qualifier(CommonConstants.PROFILE_DAO)
     @Override
     public void setDao(GenericDao dao) {
         super.setDao(dao);

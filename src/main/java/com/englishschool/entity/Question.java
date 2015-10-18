@@ -17,10 +17,11 @@ public class Question implements Serializable {
     @Id
     private String id;
     private String title;
+    private String category;
     private String questionContent;
     private String explanation;
     private List<Answer> answers;
-    private QuestionType questionType;
+    private String questionType;
 
     public Question() {
         answers = new ArrayList<>();
@@ -58,11 +59,11 @@ public class Question implements Serializable {
         this.answers = answers;
     }
 
-    public QuestionType getQuestionType() {
+    public String getQuestionType() {
         return questionType;
     }
 
-    public void setQuestionType(QuestionType questionType) {
+    public void setQuestionType(String questionType) {
         this.questionType = questionType;
     }
 
@@ -72,6 +73,14 @@ public class Question implements Serializable {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @Override
@@ -94,9 +103,9 @@ public class Question implements Serializable {
         return "Question{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
+                ", category=" + category +
                 ", questionContent='" + questionContent + '\'' +
-                ", answers=" + answers +
-                ", questionType=" + questionType +
+                ", explanation='" + explanation + '\'' +
                 '}';
     }
 

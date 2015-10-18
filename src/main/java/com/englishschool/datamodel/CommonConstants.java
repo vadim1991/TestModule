@@ -5,7 +5,6 @@ package com.englishschool.datamodel;
  */
 public class CommonConstants {
 
-    public static final String SUCCESS_MESSAGE = "success_add";
     public static final String QUESTION = "question";
     public static final String ID = "id";
     public static final String PASSED_TEST = "passedTest";
@@ -18,7 +17,6 @@ public class CommonConstants {
     public static final String ERROR_PAGE = "error";
     public static final String PASSED_TEST_PAGE = "passedTest";
     public static final String TEST_ID = "testID";
-    public static final String SESSION = "session";
     public static final String CURRENT_TEST_PAGE = "currentTest";
     public static final String PASSED_TEST_MODEL = "passedTestModel";
     public static final String RESULT_PAGE = "result";
@@ -32,4 +30,20 @@ public class CommonConstants {
     public static final String MSG_ATTRIBUTE = "msg";
     public static final String UPDATE_LINK_FORMAT = "<a href=/question/%s/update role=button class=btn btn-primary btn-sm>Update</a>";
     public static final String DELETE_LINK_FORMAT = "<a href=/question/%s/delete role=button class=btn btn-danger btn-sm>Delete</a>";
+    public static final String QUESTION_DAO = "questionDao";
+    public static final String PROFILE_DAO = "profileDao";
+    public static final String PASSED_TEST_DAO = "passedTestDao";
+    public static final String TEST_DAO = "testDao";
+    public static final String TEST = "test";
+    public static final String QUESTION_ID = "questionID";
+    public static final String TITLE = "title";
+    public static final String QUESTION_TYPE = "questionType";
+    public static final String ORDER_0_COLUMN = "order[0][column]";
+    public static final String ORDER_0_DIR = "order[0][dir]";
+    public static final int SECONDS_FROM_MINUTE = 60;
+    public static final String SEARCH_VALUE = "search[value]";
+    public static final String CATEGORIES = "categories";
+    public static final String CATEGORY_DAO = "categoryDao";
+    public static final String CATEGORY = "category";
+    public static final String DESC = "desc";
 }
