@@ -46,4 +46,6 @@ public class CommonConstants {
     public static final String CATEGORY_DAO = "categoryDao";
     public static final String CATEGORY = "category";
     public static final String DESC = "desc";
+    public static final String DATE_TIME_FORMAT = "MM/dd/yyyy HH:mm:ss";
+    public static final String TEST_TITLE = "testTitle";
 }

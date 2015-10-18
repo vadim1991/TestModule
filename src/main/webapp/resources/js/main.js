@@ -186,6 +186,42 @@ var createTestModule = function() {
             $(this).toggleClass('selected');
         } );
     } );
+    $(document).ready(function() {
 
+        var selected = [];
+
+        $('#tests-table').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "pagination": true,
+            "ajax": "/test/pages",
+            "columns": [
+                { "data": "id" },
+                { "data": "testTitle" },
+                { "data": "creationDate" },
+                { "data": "timeOfTest" }
+            ],
+            "rowCallback": function( row, data ) {
+                if ( $.inArray(data.id, selected) !== -1 ) {
+                    $(row).addClass('selected');
+                }
+            }
+
+        } );
+        $('#tests-table tbody').on('click', 'tr', function () {
+            var firstChild = $(this).children("td:first");
+            var id = firstChild.html();
+            var index = $.inArray(id, selected);
+
+            if ( index === -1 ) {
+                selected.push( id );
+            } else {
+                selected.splice( index, 1 );
+            }
+            $("#count-tests").html(selected.length);
+            $("#testIDs").attr("value", selected);
+            $(this).toggleClass('selected');
+        } );
+    } );
 })();
 

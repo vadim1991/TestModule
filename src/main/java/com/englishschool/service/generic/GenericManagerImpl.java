@@ -1,6 +1,8 @@
 package com.englishschool.service.generic;
 
 import com.englishschool.dao.generic.GenericDao;
+import com.englishschool.entity.datatable.DataTableBean;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -39,6 +41,11 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements
     @Override
     public boolean deleteByID(String id) {
         return dao.deleteByID(id);
+    }
+
+    @Override
+    public Page<T> findAllWithPagination(DataTableBean dataTableBean, String... fields) {
+        return dao.findAllWithPagination(dataTableBean, fields);
     }
 
 }

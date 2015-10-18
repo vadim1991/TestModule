@@ -6,8 +6,8 @@ import com.englishschool.datamodel.CacheConstants;
 import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.Answer;
 import com.englishschool.entity.Question;
-import com.englishschool.entity.spring.DataTableBean;
-import com.englishschool.entity.spring.QuestionForDataTableBean;
+import com.englishschool.entity.datatable.DataTableBean;
+import com.englishschool.entity.datatable.QuestionForDataTableBean;
 import com.englishschool.entity.spring.QuestionModelAttribute;
 import com.englishschool.service.generic.GenericManagerImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -69,8 +69,8 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
 
     @Cacheable(value = CacheConstants.QUESTION_PAGES)
     @Override
-    public Page<Question> findAllWithPagination(DataTableBean dataTableBean) {
-        return dao.findAllWithPagination(dataTableBean);
+    public Page<Question> findAllWithPagination(DataTableBean dataTableBean, String... fields) {
+        return super.findAllWithPagination(dataTableBean, fields);
     }
 
     @Override

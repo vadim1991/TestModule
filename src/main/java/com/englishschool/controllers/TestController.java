@@ -1,19 +1,17 @@
 package com.englishschool.controllers;
 
 import com.englishschool.entity.*;
-import com.englishschool.entity.spring.DataTableBean;
-import com.englishschool.entity.spring.PassedQuestionModelAttribute;
+import com.englishschool.entity.datatable.DataTableBean;
+import com.englishschool.entity.datatable.TestForDataTableBean;
+import com.englishschool.entity.spring.AssignTestBean;
 import com.englishschool.entity.spring.PassedTestModelAttribute;
-import com.englishschool.entity.spring.QuestionForDataTableBean;
-import com.englishschool.service.category.ICategoryService;
-import com.englishschool.service.json.QuestionJsonServiceImpl;
+import com.englishschool.entity.datatable.QuestionForDataTableBean;
+import com.englishschool.service.json.JsonServiceImpl;
 import com.englishschool.service.passedtest.IPassedTestService;
 import com.englishschool.service.profile.IProfileService;
 import com.englishschool.service.question.IQuestionService;
 import com.englishschool.service.test.ITestService;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -25,12 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +34,7 @@ import java.util.Map;
 import static com.englishschool.datamodel.CommonConstants.*;
 import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_TEST;
 import static com.englishschool.datamodel.CommonURLs.*;
+import static com.englishschool.service.helper.ServiceUtils.*;
 
 /**
  * Created by Administrator on 10/1/2015.
@@ -45,6 +42,8 @@ import static com.englishschool.datamodel.CommonURLs.*;
 @Controller
 public class TestController {
 
+    public static final String CREATION_DATE = "creationDate";
+    public static final String TIME_OF_TEST = "timeOfTest";
     @Autowired
     private IQuestionService questionService;
     @Autowired
@@ -54,9 +53,7 @@ public class TestController {
     @Autowired
     private IPassedTestService passedTestService;
     @Autowired
-    private QuestionJsonServiceImpl questionJsonService;
-    @Autowired
-    private ICategoryService<Category> categoryService;
+    private JsonServiceImpl jsonService;
 
     @RequestMapping(value = RESULT_TEST_ID_URL, method = RequestMethod.GET)
     public ModelAndView showHistoryPassedTest(@PathVariable(ID) String passedTestID, HttpServletRequest request) throws ServletException, IOException {
@@ -73,7 +70,7 @@ public class TestController {
     public String checkTest(@ModelAttribute(PASSED_TEST_MODEL) PassedTestModelAttribute passedModel, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String profileID = (String) session.getAttribute(PROFILE_ID);
-        PassedTest passedTestFromModel = getPassedTestFromModel(passedModel, session);
+        PassedTest passedTestFromModel = passedTestService.getAndCheckPassedTestFromModel(passedModel, session);
         passedTestService.save(passedTestFromModel);
         profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());
         removeAllCookies(request, response);
@@ -82,22 +79,27 @@ public class TestController {
     }
 
     @RequestMapping(value = QUESTIONS_PAGES_URL, method = RequestMethod.GET)
-    public void getQuestionByPage(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String[] properties = {QUESTION_ID, TITLE, CATEGORY};
-        String orderColumn = request.getParameter(ORDER_0_COLUMN);
-        String order = null;
-        if (!orderColumn.isEmpty()) {
-            order = properties[Integer.parseInt(orderColumn)];
-        }
-        dataTableBean.setOrderColumn(order);
-        dataTableBean.setOrderParam(request.getParameter(ORDER_0_DIR));
-        dataTableBean.setSearchWord(request.getParameter(SEARCH_VALUE));
-        Page allWithPagination = questionService.findAllWithPagination(dataTableBean);
-        List<Question> questions = allWithPagination.getContent();
+    public void getQuestionByPages(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String[] questionFields = {QUESTION_ID, TITLE, CATEGORY};
+        completeDataTableBeanFromRequest(request, questionFields, dataTableBean);
+        Page<Question> questionsPagination = questionService.findAllWithPagination(dataTableBean, questionFields);
+        List<Question> questions = questionsPagination.getContent();
         List<QuestionForDataTableBean> dataModelQuestions = questionService.convertQuestionsForDataTableBean(questions);
-        String questionsDataJson = questionJsonService.getQuestionsDataJson(dataModelQuestions, dataTableBean, (int) allWithPagination.getTotalElements());
+        String questionsDataJson = jsonService.questionsDataToJson(dataModelQuestions, dataTableBean, (int) questionsPagination.getTotalElements());
         System.out.println(questionsDataJson);
         response.getWriter().write(questionsDataJson);
+    }
+
+    @RequestMapping(value = TEST_PAGES_URL, method = RequestMethod.GET)
+    public void getTestByPages(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String[] testFields = {ID, TEST_TITLE, CREATION_DATE, TIME_OF_TEST};
+        completeDataTableBeanFromRequest(request, testFields, dataTableBean);
+        Page<Test> testPagination = testService.findAllWithPagination(dataTableBean, testFields);
+        List<Test> tests = testPagination.getContent();
+        List<TestForDataTableBean> dataModelTests = testService.convertTestsForDataTableBean(tests);
+        String testDataJson = jsonService.testsDataToJson(dataModelTests, dataTableBean, (int) testPagination.getTotalElements());
+        System.out.println(testDataJson);
+        response.getWriter().write(testDataJson);
     }
 
     @RequestMapping(value = TEST_CREATE_URL, method = RequestMethod.GET)
@@ -106,6 +108,14 @@ public class TestController {
         Test test = new Test();
         model.put(TEST, test);
         return new ModelAndView(CREATE_TEST_PAGE, model);
+    }
+
+    @RequestMapping(value = "/assign/tests", method = RequestMethod.GET)
+    public ModelAndView assignTests() {
+        Map<String, Object> model = new HashMap<>();
+        AssignTestBean assignTestBean = new AssignTestBean();
+        model.put("assignTest", assignTestBean);
+        return new ModelAndView("assign-test", model);
     }
 
     @RequestMapping(value = TEST_CREATE_URL, method = RequestMethod.POST)
@@ -120,8 +130,8 @@ public class TestController {
 
     @RequestMapping(value = AVAILABLE_TESTS_URL, method = RequestMethod.GET)
     public ModelAndView availableTests(HttpSession session) {
-        //String profileID = (String) session.getAttribute(PROFILE_ID);
-        List<String> availableTestIDs = profileService.getAvailableTests("11111");
+        String profileID = (String) session.getAttribute(PROFILE_ID);
+        List<String> availableTestIDs = profileService.getAvailableTests(profileID);
         List<Test> availableTests = testService.getTestByListIDS(availableTestIDs);
         return new ModelAndView(AVAILABLE_TESTS_PAGE, AVAILABLE_TESTS, availableTests);
     }
@@ -139,79 +149,11 @@ public class TestController {
         HttpSession session = request.getSession();
         String profileID = (String) session.getAttribute(PROFILE_ID);
         Test currentTest = (Test) session.getAttribute(CURRENT_TEST);
-        ModelAndView modelAndView = checkTestFromSession(session, currentTest, testID);
+        ModelAndView modelAndView = getTestFromSession(session, currentTest, testID);
         if (modelAndView == null) {
             modelAndView = getTestFromDB(session, profileID, testID);
         }
         return modelAndView;
-    }
-
-    private void invalidateTestInfoFromSession(HttpSession session) {
-        session.setAttribute(CURRENT_TEST, null);
-        session.setAttribute(PASSED_TEST, null);
-        session.setAttribute(QUESTIONS, null);
-    }
-
-    private PassedTest getPassedTestFromModel(PassedTestModelAttribute passedModel, HttpSession session) {
-        double countRight = 0;
-        List<PassedQuestionModelAttribute> passedModelQuestion = passedModel.getPassedQuestions();
-        PassedTest passedTest = (PassedTest) session.getAttribute(PASSED_TEST);
-        List<Question> questions = (List<Question>) session.getAttribute(QUESTIONS);
-        List<PassedQuestion> passedQuestions = new ArrayList<>();
-        for (int i = 0; i < passedModelQuestion.size(); i++) {
-            boolean rightAnswer = true;
-            Question question = questions.get(i);
-            PassedQuestion passedQuestion = new PassedQuestion();
-            PassedQuestionModelAttribute modelAttribute = passedModelQuestion.get(i);
-            List<Integer> userAnswers = modelAttribute.getUserAnswers();
-            List<Answer> answers = question.getAnswers();
-            List<UserAnswer> userAnswerList = new ArrayList<>();
-            for (int j = 0; j < answers.size(); j++) {
-                Answer answer = answers.get(j);
-                UserAnswer userAnswer = new UserAnswer();
-                userAnswer.setId(answer.getId());
-                userAnswer.setAnswerTest(answer.getAnswerText());
-                userAnswer.setRightAnswer(answer.isRightAnswer());
-                if (userAnswers != null) {
-                    userAnswer.setUserAnswer(userAnswers.contains(j));
-                }
-                rightAnswer &= userAnswer.isRightAnswer() == userAnswer.isUserAnswer() ? true : false;
-                userAnswerList.add(userAnswer);
-            }
-            if (rightAnswer) {
-                countRight++;
-            }
-            passedQuestion.setRightAnswer(rightAnswer);
-            passedQuestion.setUserAnswers(userAnswerList);
-            passedQuestion.setQuestion(question);
-            passedQuestions.add(passedQuestion);
-        }
-        passedTest.setEndTest(convertDateToString(new DateTime()));
-        passedTest.setPassedQuestions(passedQuestions);
-        passedTest.setResult(countRight / questions.size() * 100);
-        return passedTest;
-    }
-
-    private String convertDateToString(DateTime dateTime) {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
-        return dateTime.toString(fmt);
-    }
-
-    private DateTime convertStringToDate(String dateTime) {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss");
-        return DateTime.parse(dateTime, fmt);
-    }
-
-    private void removeAllCookies(HttpServletRequest request, HttpServletResponse response) {
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            String name = cookie.getName();
-            if (name.contains(CHECKBOX_STATE) || name.contains(CURRENT) || name.contains(ACTIVE)) {
-                cookie.setMaxAge(0);
-                cookie.setPath(request.getContextPath() + RIGHT_SLASH);
-                response.addCookie(cookie);
-            }
-        }
     }
 
     private ModelAndView getTestFromDB(HttpSession session, String profileID, String testID) {
@@ -223,7 +165,7 @@ public class TestController {
             List<String> passedTests = profile.getPassedTests();
             if (availableTests != null && availableTests.contains(testID)) {
                 Test currentTest = testService.findById(testID);
-                PassedTest passedTest = getPassedTest(currentTest);
+                PassedTest passedTest = passedTestService.getPassedTestFromTest(currentTest, profileID);
                 List<Question> questions = questionService.findQuestionsByListId(currentTest.getQuestionIds());
                 session.setAttribute(QUESTIONS, questions);
                 session.setAttribute(CURRENT_TEST, currentTest);
@@ -243,18 +185,11 @@ public class TestController {
         Map<String, Object> model = new HashMap<>();
         model.put(QUESTIONS, questions);
         model.put(TIMER, getRemainingTime(passedTest, currentTest));
-        model.put(PASSED_TEST_MODEL, getPassedTestModelAttribute(currentTest));
+        model.put(PASSED_TEST_MODEL, passedTestService.getPassedTestModelAttribute(currentTest));
         return model;
     }
 
-    private long getRemainingTime(PassedTest passedTest, Test currentTest) {
-        DateTime startTestTime = convertStringToDate(passedTest.getStartTest());
-        long delta = new DateTime().getMillis() - startTestTime.getMillis();
-        int timeOfTest = currentTest.getTimeOfTest() * SECONDS_FROM_MINUTE;
-        return timeOfTest - (delta) / MILLISECONDS_FROM_SECOND;
-    }
-
-    private ModelAndView checkTestFromSession(HttpSession session, Test currentTest, String testID) {
+    private ModelAndView getTestFromSession(HttpSession session, Test currentTest, String testID) {
         if (currentTest != null) {
             if (currentTest.getId().equals(testID)) {
                 PassedTest passedTest = (PassedTest) session.getAttribute(PASSED_TEST);
@@ -267,25 +202,6 @@ public class TestController {
             }
         }
         return null;
-    }
-
-    private PassedTestModelAttribute getPassedTestModelAttribute(Test currentTest) {
-        PassedTestModelAttribute passedTest = new PassedTestModelAttribute();
-        List<PassedQuestionModelAttribute> passedQuestions = new ArrayList<>();
-        for (int i = 0; i < currentTest.getQuestionIds().size(); i++) {
-            PassedQuestionModelAttribute passedQuestion = new PassedQuestionModelAttribute();
-            passedQuestions.add(passedQuestion);
-        }
-        passedTest.setPassedQuestions(passedQuestions);
-        return passedTest;
-    }
-
-    private PassedTest getPassedTest(Test currentTest) {
-        PassedTest passedTest = new PassedTest();
-        passedTest.setId(currentTest.getId());
-        passedTest.setTestId(currentTest.getId());
-        passedTest.setStartTest(convertDateToString(new DateTime()));
-        return passedTest;
     }
 
 }

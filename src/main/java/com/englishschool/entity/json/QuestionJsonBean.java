@@ -1,4 +1,6 @@
-package com.englishschool.entity.spring;
+package com.englishschool.entity.json;
+
+import com.englishschool.entity.datatable.QuestionForDataTableBean;
 
 import java.io.Serializable;
 import java.util.List;

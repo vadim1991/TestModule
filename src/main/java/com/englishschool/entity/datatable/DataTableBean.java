@@ -1,4 +1,4 @@
-package com.englishschool.entity.spring;
+package com.englishschool.entity.datatable;
 
 import com.google.common.base.Objects;
 

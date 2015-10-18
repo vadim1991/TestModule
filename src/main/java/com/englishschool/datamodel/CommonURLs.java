@@ -27,4 +27,5 @@ public class CommonURLs {
     public static final String TEST_CREATE_URL = "/test/create";
     public static final String REDIRECT_RESULT_TEST_URL = "redirect:/result/test/";
     public static final String QUESTIONS_PAGES_URL = "/questions/pages";
+    public static final String TEST_PAGES_URL = "/test/pages";
 }

@@ -9,6 +9,7 @@
   <link href="/resources/css/custom_style.css" rel="stylesheet"/>
 </head>
 <spring:url value="/" var="urlHome" />
+<spring:url value="/assign/tests" var="urlAssignTest" />
 <spring:url value="/question/create" var="urlAddQuestion" />
 <spring:url value="/test/create" var="urlAddTest" />
 <spring:url value="/result/test/12345" var="showResults" />
@@ -21,6 +22,7 @@
     </div>
     <div id="navbar">
       <ul class="nav navbar-nav navbar-right">
+        <li><a id="assignTest" href="${urlAssignTest}">Assign Test</a></li>
         <li><a id="addTest" href="${urlAddTest}">Add Test</a></li>
         <li><a id="addQuestion" href="${urlAddQuestion}">Add Question</a></li>
         <li><a id="available" href="${availableTests}">Available Tests</a></li>
