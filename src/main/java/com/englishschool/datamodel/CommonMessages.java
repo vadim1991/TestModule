@@ -7,6 +7,8 @@ public class CommonMessages {
 
     public static final String SUCCESS_CREATE_QUESTION = "The question has been created";
     public static final String SUCCESS_CREATE_TEST = "The test has been created";
+    public static final String SUCCESS_CREATE_PROFILE = "The profile has been created";
+    public static final String SUCCESS_CREATE_GROUP = "The group has been created";
     public static final String SUCCESS_CREATE_CATEGORY = "The new category has been created";
     public static final String SUCCESS_DELETE_QUESTION = "The question has been deleted";
 

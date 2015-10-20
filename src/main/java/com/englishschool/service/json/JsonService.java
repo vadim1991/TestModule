@@ -12,8 +12,6 @@ import java.util.List;
  */
 public interface JsonService {
 
-    String questionsDataToJson(List<QuestionForDataTableBean> questionForDataTableBeans, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException;
-
-    String testsDataToJson(List<TestForDataTableBean> testsForDataTableBeans, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException;
+    String dataToJson(List<?> data, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException;
 
 }

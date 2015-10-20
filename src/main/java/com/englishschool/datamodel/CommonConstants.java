@@ -48,4 +48,5 @@ public class CommonConstants {
     public static final String DESC = "desc";
     public static final String DATE_TIME_FORMAT = "MM/dd/yyyy HH:mm:ss";
     public static final String TEST_TITLE = "testTitle";
+    public static final String GROUP_ID = "groupId";
 }

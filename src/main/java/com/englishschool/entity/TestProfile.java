@@ -1,9 +1,11 @@
 package com.englishschool.entity;
 
+import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,13 +16,20 @@ public class TestProfile implements Serializable {
 
     @Id
     private String id;
-    private String login;
+    private String name;
+    private String surname;
     private String email;
+    private int age;
     private String password;
-    private int groupId;
+    private String groupId;
     private List<String> availableTests;
     private double averageMark;
     private List<String> passedTests;
+
+    public TestProfile() {
+        availableTests = new ArrayList<>();
+        passedTests = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
@@ -30,12 +39,20 @@ public class TestProfile implements Serializable {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
@@ -46,6 +63,14 @@ public class TestProfile implements Serializable {
         this.email = email;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -54,11 +79,11 @@ public class TestProfile implements Serializable {
         this.password = password;
     }
 
-    public int getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
@@ -90,44 +115,31 @@ public class TestProfile implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        TestProfile that = (TestProfile) o;
-
-        if (groupId != that.groupId) return false;
-        if (Double.compare(that.averageMark, averageMark) != 0) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (login != null ? !login.equals(that.login) : that.login != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        return !(password != null ? !password.equals(that.password) : that.password != null);
-
+        TestProfile profile = (TestProfile) o;
+        return Objects.equal(id, profile.id) &&
+                Objects.equal(name, profile.name) &&
+                Objects.equal(surname, profile.surname) &&
+                Objects.equal(email, profile.email);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + groupId;
-        temp = Double.doubleToLongBits(averageMark);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return Objects.hashCode(id, name, surname, email);
     }
 
     @Override
     public String toString() {
         return "TestProfile{" +
                 "id='" + id + '\'' +
-                ", login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
+                ", age=" + age +
                 ", password='" + password + '\'' +
-                ", groupId=" + groupId +
+                ", groupId='" + groupId + '\'' +
                 ", availableTests=" + availableTests +
                 ", averageMark=" + averageMark +
                 ", passedTests=" + passedTests +
                 '}';
     }
-
 }

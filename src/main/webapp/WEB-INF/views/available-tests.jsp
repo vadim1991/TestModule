@@ -35,7 +35,7 @@
                 <tr class="${classTD}">
                     <td>${test.id}</td>
                     <td>${test.testTitle}</td>
-                    <td>${test.timeOfTest / 60} min</td>
+                    <td>${test.timeOfTest} min</td>
                     <td>
                         <a href="/run/test/${test.id}" role="button" class="btn btn-primary btn-sm">
                             <i class="mdi-navigation-arrow-forward"></i>

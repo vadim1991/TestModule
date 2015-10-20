@@ -3,6 +3,7 @@ package com.englishschool.service.json;
 import com.englishschool.entity.datatable.DataTableBean;
 import com.englishschool.entity.datatable.QuestionForDataTableBean;
 import com.englishschool.entity.datatable.TestForDataTableBean;
+import com.englishschool.entity.json.DataTableJsonBean;
 import com.englishschool.entity.json.QuestionJsonBean;
 import com.englishschool.entity.json.TestJsonBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,24 +22,14 @@ public class JsonServiceImpl implements JsonService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Override
-    public String questionsDataToJson(List<QuestionForDataTableBean> questionForDataTableBeans, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException {
-        QuestionJsonBean questionJsonBean = new QuestionJsonBean();
-        questionJsonBean.setDraw(dataTableBean.getDraw());
-        questionJsonBean.setData(questionForDataTableBeans);
-        questionJsonBean.setRecordsTotal(totalCount);
-        questionJsonBean.setRecordsFiltered(totalCount);
-        return objectMapper.writeValueAsString(questionJsonBean);
-    }
 
-    @Override
-    public String testsDataToJson(List<TestForDataTableBean> testsForDataTableBeans, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException {
-        TestJsonBean testJsonBean = new TestJsonBean();
-        testJsonBean.setData(testsForDataTableBeans);
-        testJsonBean.setDraw(dataTableBean.getDraw());
-        testJsonBean.setRecordsFiltered(totalCount);
-        testJsonBean.setRecordsTotal(totalCount);
-        return objectMapper.writeValueAsString(testJsonBean);
+    public String dataToJson(List<?> data, DataTableBean dataTableBean, Integer totalCount) throws JsonProcessingException {
+        DataTableJsonBean jsonBean = new DataTableJsonBean();
+        jsonBean.setData(data);
+        jsonBean.setDraw(dataTableBean.getDraw());
+        jsonBean.setRecordsFiltered(totalCount);
+        jsonBean.setRecordsTotal(totalCount);
+        return objectMapper.writeValueAsString(jsonBean);
     }
 
 }

@@ -2,16 +2,18 @@ package com.englishschool.service.profile;
 
 import com.englishschool.dao.generic.GenericDao;
 import com.englishschool.dao.profile.ProfileDaoImpl;
-import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.TestProfile;
+import com.englishschool.entity.datatable.ProfileDataTableBean;
+import com.englishschool.entity.spring.AssignTestBean;
 import com.englishschool.service.generic.GenericManagerImpl;
-import com.englishschool.service.test.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static com.englishschool.datamodel.CommonConstants.GROUP_ID;
+import static com.englishschool.datamodel.CommonConstants.PROFILE_DAO;
 
 /**
  * Created by Administrator on 10/5/2015.
@@ -20,10 +22,7 @@ import java.util.List;
 public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileDaoImpl> implements IProfileService {
 
     @Autowired
-    private ITestService testService;
-
-    @Autowired
-    @Qualifier(CommonConstants.PROFILE_DAO)
+    @Qualifier(PROFILE_DAO)
     @Override
     public void setDao(GenericDao dao) {
         super.setDao(dao);
@@ -63,6 +62,10 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
         return result;
     }
 
+    public List<TestProfile> getAll() {
+        return dao.findAll();
+    }
+
     @Override
     public List<String> getAvailableTests(String profileID) {
         TestProfile profile = findById(profileID);
@@ -75,5 +78,59 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
         TestProfile profile = findById(profileID);
         List<String> passedTests = profile.getPassedTests();
         return passedTests == null ? new ArrayList<String>() : passedTests;
+    }
+
+    @Override
+    public List<ProfileDataTableBean> convertProfileForDataTableBean(List<TestProfile> profiles) {
+        List<ProfileDataTableBean> profileForDataTableBeans = null;
+        if (profiles != null) {
+            profileForDataTableBeans = new ArrayList<>();
+            for (TestProfile profile : profiles) {
+                ProfileDataTableBean profileDataTableBean = new ProfileDataTableBean();
+                profileDataTableBean.setId(profile.getId());
+                profileDataTableBean.setAge(profile.getAge());
+                profileDataTableBean.setEmail(profile.getEmail());
+                profileDataTableBean.setName(profile.getName());
+                profileDataTableBean.setSurname(profile.getSurname());
+                profileForDataTableBeans.add(profileDataTableBean);
+            }
+        }
+        return profileForDataTableBeans;
+    }
+
+    @Override
+    public void assignTestToProfiles(Set<TestProfile> testProfiles, List<String> testIDs) {
+        if (testProfiles != null) {
+            Set<TestProfile> resultProfiles = new HashSet<>();
+            for (TestProfile testProfile : testProfiles) {
+                List<String> availableTests = testProfile.getAvailableTests();
+                Set<String> availableTestsSet = new HashSet<>();
+                if (availableTests != null) {
+                    availableTestsSet.addAll(testProfile.getAvailableTests());
+                }
+                availableTestsSet.addAll(testIDs);
+                testProfile.setAvailableTests(new ArrayList<>(availableTestsSet));
+                save(testProfile);
+                resultProfiles.add(testProfile);
+            }
+            System.out.println(resultProfiles);
+            dao.saveMultiplyProfiles(resultProfiles);
+        }
+    }
+
+    @Override
+    public Set<TestProfile> getProfilesFromAssignBean(AssignTestBean assignTestBean) {
+        List<String> groupIDs = assignTestBean.getGroupIDs();
+        Set<TestProfile> testProfiles = new LinkedHashSet<>();
+        if (groupIDs != null) {
+            for (String groupId : groupIDs) {
+                testProfiles.addAll(dao.findUsersByCriteria(GROUP_ID, groupId));
+            }
+        }
+        List<String> profileIDs = assignTestBean.getProfileIDs();
+        if (profileIDs != null) {
+            testProfiles.addAll(dao.findProfilesByIDs(profileIDs));
+        }
+        return testProfiles;
     }
 }

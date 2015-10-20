@@ -10,7 +10,7 @@ public class AssignTestBean implements Serializable {
 
     private List<String> groupIDs;
     private List<String> profileIDs;
-    private List<String> testUDs;
+    private List<String> testIDs;
 
     public List<String> getGroupIDs() {
         return groupIDs;
@@ -28,12 +28,12 @@ public class AssignTestBean implements Serializable {
         this.profileIDs = profileIDs;
     }
 
-    public List<String> getTestUDs() {
-        return testUDs;
+    public List<String> getTestIDs() {
+        return testIDs;
     }
 
-    public void setTestUDs(List<String> testUDs) {
-        this.testUDs = testUDs;
+    public void setTestIDs(List<String> testIDs) {
+        this.testIDs = testIDs;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class AssignTestBean implements Serializable {
         return "AssignTestBean{" +
                 "groupIDs=" + groupIDs +
                 ", profileIDs=" + profileIDs +
-                ", testUDs=" + testUDs +
+                ", testUDs=" + testIDs +
                 '}';
     }
 

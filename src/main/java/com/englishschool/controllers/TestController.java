@@ -2,10 +2,10 @@ package com.englishschool.controllers;
 
 import com.englishschool.entity.*;
 import com.englishschool.entity.datatable.DataTableBean;
-import com.englishschool.entity.datatable.TestForDataTableBean;
-import com.englishschool.entity.spring.AssignTestBean;
-import com.englishschool.entity.spring.PassedTestModelAttribute;
 import com.englishschool.entity.datatable.QuestionForDataTableBean;
+import com.englishschool.entity.datatable.TestForDataTableBean;
+import com.englishschool.entity.spring.PassedTestModelAttribute;
+import com.englishschool.service.group.IGroupService;
 import com.englishschool.service.json.JsonServiceImpl;
 import com.englishschool.service.passedtest.IPassedTestService;
 import com.englishschool.service.profile.IProfileService;
@@ -54,6 +54,8 @@ public class TestController {
     private IPassedTestService passedTestService;
     @Autowired
     private JsonServiceImpl jsonService;
+    @Autowired
+    private IGroupService<Group> groupService;
 
     @RequestMapping(value = RESULT_TEST_ID_URL, method = RequestMethod.GET)
     public ModelAndView showHistoryPassedTest(@PathVariable(ID) String passedTestID, HttpServletRequest request) throws ServletException, IOException {
@@ -85,7 +87,7 @@ public class TestController {
         Page<Question> questionsPagination = questionService.findAllWithPagination(dataTableBean, questionFields);
         List<Question> questions = questionsPagination.getContent();
         List<QuestionForDataTableBean> dataModelQuestions = questionService.convertQuestionsForDataTableBean(questions);
-        String questionsDataJson = jsonService.questionsDataToJson(dataModelQuestions, dataTableBean, (int) questionsPagination.getTotalElements());
+        String questionsDataJson = jsonService.dataToJson(dataModelQuestions, dataTableBean, (int) questionsPagination.getTotalElements());
         System.out.println(questionsDataJson);
         response.getWriter().write(questionsDataJson);
     }
@@ -97,7 +99,7 @@ public class TestController {
         Page<Test> testPagination = testService.findAllWithPagination(dataTableBean, testFields);
         List<Test> tests = testPagination.getContent();
         List<TestForDataTableBean> dataModelTests = testService.convertTestsForDataTableBean(tests);
-        String testDataJson = jsonService.testsDataToJson(dataModelTests, dataTableBean, (int) testPagination.getTotalElements());
+        String testDataJson = jsonService.dataToJson(dataModelTests, dataTableBean, (int) testPagination.getTotalElements());
         System.out.println(testDataJson);
         response.getWriter().write(testDataJson);
     }
@@ -108,14 +110,6 @@ public class TestController {
         Test test = new Test();
         model.put(TEST, test);
         return new ModelAndView(CREATE_TEST_PAGE, model);
-    }
-
-    @RequestMapping(value = "/assign/tests", method = RequestMethod.GET)
-    public ModelAndView assignTests() {
-        Map<String, Object> model = new HashMap<>();
-        AssignTestBean assignTestBean = new AssignTestBean();
-        model.put("assignTest", assignTestBean);
-        return new ModelAndView("assign-test", model);
     }
 
     @RequestMapping(value = TEST_CREATE_URL, method = RequestMethod.POST)
