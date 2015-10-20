@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
+    <jsp:include page="../views/common/head.jsp"></jsp:include>
     <title>Run Test</title>
 </head>
 <body>

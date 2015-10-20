@@ -132,6 +132,116 @@ var createTestModule = function() {
     };
 };
 
+function createQuestionDataTable() {
+    var selected = [];
+    $('#questions-table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "pagination": true,
+        "ajax": "/questions/pages",
+        "columns": [
+            { "data": "questionID" },
+            { "data": "title" },
+            { "data": "category" },
+            { "data": "updateLink" },
+            { "data": "deleteLink" }
+        ],
+        "rowCallback": function( row, data ) {
+            if ( $.inArray(data.questionID, selected) !== -1 ) {
+                $(row).addClass('selected');
+            }
+        }
+
+    } );
+    $('#questions-table tbody').on('click', 'tr', function () {
+        var firstChild = $(this).children("td:first");
+        var id = firstChild.html();
+        var index = $.inArray(id, selected);
+
+        if ( index === -1 ) {
+            selected.push( id );
+        } else {
+            selected.splice( index, 1 );
+        }
+        $("#count-questions").html(selected.length);
+        $("#questionIDs").attr("value", selected);
+        $(this).toggleClass('selected');
+    } );
+};
+
+function createTestDataTable() {
+    var selected = [];
+    $('#tests-table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "pagination": true,
+        "ajax": "/test/pages",
+        "columns": [
+            { "data": "id" },
+            { "data": "testTitle" },
+            { "data": "creationDate" },
+            { "data": "timeOfTest" }
+        ],
+        "rowCallback": function( row, data ) {
+            if ( $.inArray(data.id, selected) !== -1 ) {
+                $(row).addClass('selected');
+            }
+        }
+
+    } );
+    $('#tests-table tbody').on('click', 'tr', function () {
+        var firstChild = $(this).children("td:first");
+        var id = firstChild.html();
+        var index = $.inArray(id, selected);
+
+        if ( index === -1 ) {
+            selected.push( id );
+        } else {
+            selected.splice( index, 1 );
+        }
+        $("#count-tests").html(selected.length);
+        $("#testIDs").attr("value", selected);
+        $(this).toggleClass('selected');
+    } );
+};
+
+function createProfileDataTable() {
+    var selected = [];
+    $('#profile-table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "pagination": true,
+        "ajax": "/profile/pages",
+        "columns": [
+            { "data": "id" },
+            { "data": "name" },
+            { "data": "surname" },
+            { "data": "email"},
+            { "data": "age" }
+        ],
+        "rowCallback": function( row, data ) {
+            if ( $.inArray(data.id, selected) !== -1 ) {
+                $(row).addClass('selected');
+            }
+        }
+
+    } );
+    $('#profile-table tbody').on('click', 'tr', function () {
+        var firstChild = $(this).children("td:first");
+        var id = firstChild.html();
+        var index = $.inArray(id, selected);
+
+        if ( index === -1 ) {
+            selected.push( id );
+        } else {
+            selected.splice( index, 1 );
+        }
+        $("#count-profiles").html(selected.length);
+        $("#profileIDs").attr("value", selected);
+        $(this).toggleClass('selected');
+    } );
+};
+
 (function(){
     // Init material design
     $.material.init();
@@ -149,79 +259,10 @@ var createTestModule = function() {
     });
 
     $(document).ready(function() {
+        createQuestionDataTable();
+        createTestDataTable();
+        createProfileDataTable();
+    });
 
-        var selected = [];
-
-        $('#questions-table').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "pagination": true,
-            "ajax": "/questions/pages",
-            "columns": [
-                { "data": "questionID" },
-                { "data": "title" },
-                { "data": "category" },
-                { "data": "updateLink" },
-                { "data": "deleteLink" }
-            ],
-            "rowCallback": function( row, data ) {
-                if ( $.inArray(data.questionID, selected) !== -1 ) {
-                    $(row).addClass('selected');
-                }
-            }
-
-        } );
-        $('#questions-table tbody').on('click', 'tr', function () {
-            var firstChild = $(this).children("td:first");
-            var id = firstChild.html();
-            var index = $.inArray(id, selected);
-
-            if ( index === -1 ) {
-                selected.push( id );
-            } else {
-                selected.splice( index, 1 );
-            }
-            $("#count-questions").html(selected.length);
-            $("#questionIDs").attr("value", selected);
-            $(this).toggleClass('selected');
-        } );
-    } );
-    $(document).ready(function() {
-
-        var selected = [];
-
-        $('#tests-table').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "pagination": true,
-            "ajax": "/test/pages",
-            "columns": [
-                { "data": "id" },
-                { "data": "testTitle" },
-                { "data": "creationDate" },
-                { "data": "timeOfTest" }
-            ],
-            "rowCallback": function( row, data ) {
-                if ( $.inArray(data.id, selected) !== -1 ) {
-                    $(row).addClass('selected');
-                }
-            }
-
-        } );
-        $('#tests-table tbody').on('click', 'tr', function () {
-            var firstChild = $(this).children("td:first");
-            var id = firstChild.html();
-            var index = $.inArray(id, selected);
-
-            if ( index === -1 ) {
-                selected.push( id );
-            } else {
-                selected.splice( index, 1 );
-            }
-            $("#count-tests").html(selected.length);
-            $("#testIDs").attr("value", selected);
-            $(this).toggleClass('selected');
-        } );
-    } );
 })();
 
