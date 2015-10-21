@@ -81,7 +81,7 @@ var testModule = function(time){
             });
 
             $answerBtn.on('click', function(){
-
+                $('#test-list').bootstrapPaginator("showNext");
             });
         }
     }

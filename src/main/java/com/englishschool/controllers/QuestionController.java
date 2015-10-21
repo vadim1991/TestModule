@@ -73,13 +73,11 @@ public class QuestionController {
 
     @RequestMapping(value = DELETE_QUESTION_URL, method = RequestMethod.GET)
     public String deleteQuestion(@PathVariable(ID) String id, final RedirectAttributes redirectAttributes) {
-        System.out.println("------------delete");
         boolean deleteResult = questionService.deleteByID(id);
-        System.out.println("------------delete");
         if (deleteResult) {
             redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_DELETE_QUESTION);
         }
-        return REDIRECT_QUESTIONS_URL;
+        return REDIRECT_TEST_CREATE_URL;
     }
 
 }

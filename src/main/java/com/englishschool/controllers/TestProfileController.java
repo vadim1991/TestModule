@@ -64,6 +64,7 @@ public class TestProfileController {
     @RequestMapping(value = "/profile/create", method = RequestMethod.POST)
     public String createProfile(@ModelAttribute("profile") TestProfile profile, final RedirectAttributesModelMap redirectAttributesModelMap) {
         System.out.println(profile);
+        profile.setPassword("11111");
         profileService.save(profile);
         redirectAttributesModelMap.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_PROFILE);
         return "redirect:/profile/create";

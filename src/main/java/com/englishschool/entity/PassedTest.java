@@ -16,7 +16,7 @@ public class PassedTest implements Serializable {
     @Id
     private String id;
     private String testId;
-    private double result;
+    private int result;
     private List<PassedQuestion> passedQuestions;
     private String startTest;
     private String endTest;
@@ -41,11 +41,11 @@ public class PassedTest implements Serializable {
         this.testId = testId;
     }
 
-    public double getResult() {
+    public int getResult() {
         return result;
     }
 
-    public void setResult(double result) {
+    public void setResult(int result) {
         this.result = result;
     }
 

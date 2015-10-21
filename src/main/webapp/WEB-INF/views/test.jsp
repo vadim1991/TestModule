@@ -54,10 +54,10 @@
                         </c:if>
                         <input type="hidden" name="passedQuestions[${i.index}].id" value="${question.id}">
                         <div class="question-title col-sm-12">
-                            <span class="title">${question.title}</span>
+                            <span class="title">Question ${i.index + 1}</span>
                         </div>
                         <div class="question-text col-sm-12">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat tempus sapien, et feugiat eros hendrerit eget?</p>
+                            <p>${question.title}</p>
                         </div>
                         <div class="question-code col-sm-12">
                             <pre class="java">${question.questionContent}</pre>
@@ -78,7 +78,7 @@
                                     <label>
                                         <input class="answer" type="${buttonClass}" data-id="${question.id}${answer.id}"
                                         name="passedQuestions[${i.index}].userAnswers" value="${answer.id}">
-                                        <span class="answer-text">${answer.answerText}11111111111111111111111111111111111111111111111111111111111111111111111</span>
+                                        <span class="answer-text">${answer.answerText}</span>
                                     </label>
                                 </div>
                             </c:forEach>

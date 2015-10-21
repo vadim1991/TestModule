@@ -100,7 +100,7 @@ public class PassedTestServiceImpl extends GenericManagerImpl<PassedTest, Passed
         }
         passedTest.setEndTest(convertDateToString(new DateTime()));
         passedTest.setPassedQuestions(passedQuestions);
-        passedTest.setResult(countRight / questions.size() * 100);
+        passedTest.setResult((int) (countRight / questions.size() * 100));
         return passedTest;
     }
 
