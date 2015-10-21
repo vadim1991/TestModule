@@ -18,9 +18,9 @@ var testModule = function(time){
             currentPage: 1,
             totalPages: questionsLength,
             bootstrapMajorVersion: 3,
-            onPageClicked: function(e,originalEvent,type,page){
+            onPageChanged: function(e, oldPage, newPage){
                 $questions.hide();
-                $questions.filter('[data-question=' + page + ']').show();
+                $questions.filter('[data-question=' + newPage + ']').show();
             }
         };
         $pagination.bootstrapPaginator(options);

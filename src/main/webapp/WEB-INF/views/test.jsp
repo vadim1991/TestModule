@@ -46,28 +46,30 @@
         <c:forEach items="${questions}" var="question" varStatus="i">
             <div class="container question" data-question='${i.index + 1}' style="display:none;">
                 <%--Question text start--%>
-                <div class="col-sm-9">
-                    <div class="row well bs-component shadow-z-1">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
                         <c:set var="buttonClass" value="checkbox"></c:set>
                         <c:if test="${question.questionType eq RADIO}">
                             <c:set var="buttonClass" value="radio"></c:set>
                         </c:if>
                         <input type="hidden" name="passedQuestions[${i.index}].id" value="${question.id}">
-                        <div class="question-title col-sm-12">
+                        <div class="panel-heading">
                             <span class="title">Question ${i.index + 1}</span>
                         </div>
-                        <div class="question-text col-sm-12">
-                            <p>${question.title}</p>
-                        </div>
-                        <div class="question-code col-sm-12">
-                            <pre class="java">${question.questionContent}</pre>
+                        <div class="panel-body">
+                            <div class="question-text col-sm-12">
+                                <p>${question.title}</p>
+                            </div>
+                            <div class="question-code col-sm-12">
+                                <pre class="java">${question.questionContent}</pre>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <%--Question text end--%>
 
                 <%--Answers block start--%>
-                <div class="col-sm-3">
+                <div class="col-sm-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h3 class="panel-title">Варианты ответа:</h3>
@@ -78,8 +80,8 @@
                                     <label>
                                         <input class="answer" type="${buttonClass}" data-id="${question.id}${answer.id}"
                                         name="passedQuestions[${i.index}].userAnswers" value="${answer.id}">
-                                        <span class="answer-text">${answer.answerText}</span>
                                     </label>
+                                    <span class="answer-text">${answer.answerText}</span>
                                 </div>
                             </c:forEach>
                         </div>
@@ -100,7 +102,4 @@
         $(document).trigger('timer', ${timer});
     </script>
 </body>
-<script>
-    $(document).trigger('timer', ${timer})
-</script>
 </html>

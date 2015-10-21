@@ -22,7 +22,6 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="${urlHome}">Home Page</a>
-            <a class="navbar-brand" href="${availableTests}">Home Page</a>
         </div>
         <div id="navbar">
             <ul class="nav navbar-nav navbar-right">

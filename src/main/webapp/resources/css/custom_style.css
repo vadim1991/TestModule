@@ -1,18 +1,30 @@
+/* Common styles */
 .hidden {
     display: none;
 }
 .testing h1 {
     color: #07635A;
 }
+
+/* Navbar */
 .navbar-bottom {
     margin-bottom: 0;
 }
+
+/* Footer */
+.footer {
+    margin-bottom: 0;
+}
+
+/* Buttons */
 #end-test {
     padding-bottom: 0;
 }
-.answer-text {
-    vertical-align: super;
+.confirm {
+    float: right;
 }
+
+/* Icons */
 .wrong-icon {
     position: relative;
 }
@@ -21,26 +33,39 @@
     left: 0;
     top: -9px;
 }
+
+/* Add question */
+.test {
+    margin-bottom: 2em;
+    padding: 1em;
+}
+.answer-text {
+    vertical-align: middle;
+    display: inline-block;
+    width: 90%;
+    word-wrap: break-word;
+}
+
+/* Test */
+/* Right answer */
 .right-answer {
     color: #4caf50;
 }
+.correct .list-group .list-group-item .row-action-primary i{
+    background-color: #4caf50;
+}
+.correct .java {
+    border-color: #4caf50;
+    background: #f9ffeb;
+}
+/* Result */
+/* Wrong answer */
 .wrong-answer {
     color: #f44336;
 }
 .wrong-answer .answer-text {
     text-decoration: line-through;
 }
-.test {
-    margin-bottom: 2em;
-    padding: 1em;
-}
-.list-group .list-group-item .row-content .least-content {
-    top: 5px;
-}
-.least-content .label {
-    font-size: 0.9em;
-}
-/* Incorrect answers */
 .incorrect .list-group .list-group-item .row-action-primary i{
     background-color: #f44336;
 }
@@ -51,24 +76,18 @@
 .incorrect .question-head .title {
     font-weight: bold;
 }
-/* Correct answers */
-.correct .list-group .list-group-item .row-action-primary i{
-    background-color: #4caf50;
+.list-group .list-group-item .row-content .least-content {
+    top: 5px;
 }
-.correct .java {
-    border-color: #4caf50;
-    background: #f9ffeb;
+.least-content .label {
+    font-size: 0.9em;
 }
-
-.footer {
-    margin-bottom: 0;
-}
+/* Form */
 .answers li {
     padding: 3px 0 5px 0;
     border-bottom: 1px solid #e1e1e1;
     position: relative;
 }
-
 .answers li.last {
     border: 0;
     padding-bottom: 10px;
@@ -94,9 +113,7 @@
 .pagination > li > a, .pagination > li > span {
     line-height: 1.75;
 }
-.confirm {
-    width: 100%;
-}
+
 .pagination > li > a.btn-with-text,
 .pagination > li > a.btn-with-text:hover{
     padding-bottom: 0;
