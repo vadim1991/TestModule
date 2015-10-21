@@ -2,6 +2,7 @@ package com.englishschool.service.profile;
 
 import com.englishschool.dao.generic.GenericDao;
 import com.englishschool.dao.profile.ProfileDaoImpl;
+import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.TestProfile;
 import com.englishschool.entity.datatable.ProfileDataTableBean;
 import com.englishschool.entity.spring.AssignTestBean;
@@ -21,6 +22,8 @@ import static com.englishschool.datamodel.CommonConstants.PROFILE_DAO;
 @Service
 public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileDaoImpl> implements IProfileService {
 
+    public static final String EMAIL = "email";
+
     @Autowired
     @Qualifier(PROFILE_DAO)
     @Override
@@ -33,8 +36,9 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
         boolean result = false;
         TestProfile profile = findById(profileID);
         if (profile != null) {
+            String testID = passedTestID.replaceAll(profileID, CommonConstants.EMPTY);
             List<String> availableTests = profile.getAvailableTests();
-            availableTests.remove(passedTestID);
+            availableTests.remove(testID);
             List<String> passedTests = profile.getPassedTests();
             if (passedTests != null) {
                 passedTests.add(passedTestID);
@@ -132,5 +136,11 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
             testProfiles.addAll(dao.findProfilesByIDs(profileIDs));
         }
         return testProfiles;
+    }
+
+    @Override
+    public TestProfile findByEmail(String email) {
+        List<TestProfile> usersByCriteria = dao.findUsersByCriteria(EMAIL, email);
+        return usersByCriteria != null ? usersByCriteria.get(0) : null;
     }
 }

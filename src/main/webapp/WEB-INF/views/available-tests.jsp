@@ -24,7 +24,7 @@
             <tbody>
             <c:if test="${empty availableTests}">
                 <div>
-                    <h1>You haven`t available tests</h1>
+                    <h3>You haven`t available tests</h3>
                 </div>
             </c:if>
             <c:forEach items="${availableTests}" var="test" varStatus="i">

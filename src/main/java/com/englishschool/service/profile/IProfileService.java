@@ -29,4 +29,6 @@ public interface IProfileService extends GenericManager<TestProfile> {
 
     Set<TestProfile> getProfilesFromAssignBean(AssignTestBean assignTestBean);
 
+    TestProfile findByEmail(String email);
+
 }
