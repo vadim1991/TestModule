@@ -16,6 +16,24 @@
     margin-bottom: 0;
 }
 
+.java__keyword {
+    color: navy;
+    font-weight: bold;
+}
+
+pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.java__number {
+    color: red;
+}
+
 /* Buttons */
 #end-test {
     padding-bottom: 0;

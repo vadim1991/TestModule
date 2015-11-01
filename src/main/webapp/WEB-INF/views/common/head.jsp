@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
     <link href="/resources/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
     <link href="/resources/bower_components/bootstrap-material-design/dist/css/roboto.css" rel="stylesheet"/>
@@ -18,6 +19,7 @@
 <spring:url value="/result/test/12345" var="showResults"/>
 <spring:url value="/available/tests" var="availableTests"/>
 <spring:url value="/passed/tests" var="passedTests"/>
+<spring:url value="/logout" var="logout"/>
 <nav class="navbar navbar">
     <div class="container">
         <div class="navbar-header">
@@ -25,12 +27,17 @@
         </div>
         <div id="navbar">
             <ul class="nav navbar-nav navbar-right">
-                <li><a id="assignTest" href="${urlAssignTest}">Assign Test</a></li>
-                <li><a id="addProfile" href="${addProfileUrl}">Add Profile</a></li>
-                <li><a id="addTest" href="${urlAddTest}">Add Test</a></li>
-                <li><a id="addQuestion" href="${urlAddQuestion}">Add Question</a></li>
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+                    <li><a id="assignTest" href="${urlAssignTest}">Assign Test</a></li>
+                    <li><a id="addProfile" href="${addProfileUrl}">Add Profile</a></li>
+                    <li><a id="addTest" href="${urlAddTest}">Add Test</a></li>
+                    <li><a id="addQuestion" href="${urlAddQuestion}">Add Question</a></li>
+                </sec:authorize>
                 <li><a id="available" href="${availableTests}">Available Tests</a></li>
                 <li><a id="passed" href="${passedTests}">Passed Tests</a></li>
+                <sec:authorize access="isAuthenticated()">
+                    <li><a id="logout" href="${logout}">Logout</a></li>
+                </sec:authorize>
             </ul>
         </div>
     </div>

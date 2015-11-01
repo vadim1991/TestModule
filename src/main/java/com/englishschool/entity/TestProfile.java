@@ -2,11 +2,14 @@ package com.englishschool.entity;
 
 import com.google.common.base.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Vadym_Vlasenko on 9/25/2015.
@@ -18,10 +21,12 @@ public class TestProfile implements Serializable {
     private String id;
     private String name;
     private String surname;
+    @Indexed(unique = true)
     private String email;
     private int age;
     private String password;
     private String groupId;
+    private Set<Role> roles;
     private List<String> availableTests;
     private double averageMark;
     private List<String> passedTests;
@@ -29,6 +34,8 @@ public class TestProfile implements Serializable {
     public TestProfile() {
         availableTests = new ArrayList<>();
         passedTests = new ArrayList<>();
+        roles = new HashSet<>();
+        roles.add(Role.ROLE_USER);
     }
 
     public String getId() {
@@ -111,6 +118,14 @@ public class TestProfile implements Serializable {
         this.passedTests = passedTests;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,9 +152,11 @@ public class TestProfile implements Serializable {
                 ", age=" + age +
                 ", password='" + password + '\'' +
                 ", groupId='" + groupId + '\'' +
+                ", roles=" + roles +
                 ", availableTests=" + availableTests +
                 ", averageMark=" + averageMark +
                 ", passedTests=" + passedTests +
                 '}';
     }
+
 }

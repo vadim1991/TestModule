@@ -1,78 +1,209 @@
-h1 {
-    height: 100px;
-    width: 100%;
-    font-size: 18px;
-    background: #18aa8d;
-    color: white;
-    line-height: 150%;
-    border-radius: 3px 3px 0 0;
-    box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2);
+@import url(http://fonts.googleapis.com/css?family=Dosis:300|Lato:300,400,600,700|Roboto+Condensed:300,700|Open+Sans+Condensed:300,600|Open+Sans:400,300,600,700|Maven+Pro:400,700);
+@import url("http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-form {
-    box-sizing: border-box;
-    width: 260px;
-    margin: 100px auto 0;
-    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
-    padding-bottom: 40px;
-    border-radius: 3px;
-}
-form h1 {
-    box-sizing: border-box;
-    padding: 20px;
+html {
+    background: black;
 }
 
-input {
-    margin: 40px 25px;
-    width: 200px;
+body {
+    font-family: "Open Sans";
+    font-size: 16px;
+    color: White;
+    font-smoothing: antialiased;
+    font-weight: 600;
+}
+
+a {
+    color: #BBB;
+}
+
+.content:before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
     display: block;
-    border: none;
-    padding: 10px 0;
-    border-bottom: solid 1px #1abc9c;
-    -webkit-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-    transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 96%, #1abc9c 4%);
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #1abc9c 4%);
-    background-position: -200px 0;
-    background-size: 200px 100%;
-    background-repeat: no-repeat;
-    color: #0e6252;
-}
-input:focus, input:valid {
-    box-shadow: none;
-    outline: none;
-    background-position: 0 0;
-}
-input:focus::-webkit-input-placeholder, input:valid::-webkit-input-placeholder {
-    color: #1abc9c;
-    font-size: 11px;
-    -webkit-transform: translateY(-20px);
-    transform: translateY(-20px);
-    visibility: visible !important;
+    background-color: black;
+    background-image: url("http://i.imgur.com/Ho6hQWs.jpg");
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
 }
 
-button {
+.content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 540px;
+    height: 540px;
+    background-color: rgba(10, 10, 10, 0.5);
+    margin: auto auto;
+    padding: 40px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -moz-box-shadow: 0 0 10px black;
+    -webkit-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+}
+
+.content .title {
+    text-align: center;
+    font-size: 2.0rem;
+    font-weight: 600;
+    padding-bottom: 30px;
+}
+
+.content input {
+    width: 100%;
+    font-size: 1.2rem;
+    font-family: "Open Sans";
+    margin: 25px 0px;
     border: none;
-    background: #1abc9c;
+    padding: 10px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.content input[type=checkbox] {
+    display: none;
+}
+
+.content label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
-    border-radius: 3px;
-    padding: 6px;
-    width: 200px;
-    color: white;
-    margin-left: 25px;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
-}
-button:hover {
-    -webkit-transform: translateY(-3px);
-    -ms-transform: translateY(-3px);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-left: 5px;
+    margin-right: 10px;
+    top: 5px;
 }
 
-input:focus::-webkit-input-placeholder, input:valid::-webkit-input-placeholder {
-    color: #1abc9c;
-    font-size: 11px;
-    -webkit-transform: translateY(-20px);
-    transform: translateY(-20px);
-    visibility: visible !important;
+.content label:before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background-color: #aaa;
+    -moz-box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 1px 0px 0px rgba(255, 255, 255, 0.8);
+    -webkit-box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 1px 0px 0px rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 1px 0px 0px rgba(255, 255, 255, 0.8);
+}
+
+.content input[type=checkbox]:checked + label:before {
+    content: "\2713";
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    color: Black;
+    text-align: center;
+    line-height: 20px;
+}
+
+.content span {
+    font-size: 0.9rem;
+}
+
+.content button {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 10px;
+    margin: 20px 0px;
+    background-color: #66A756;
+    color: White;
+    border: none;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.content .social {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.content .social span {
+    display: inline-block;
+    vertical-align: baseline;
+    padding: 0 20px;
+}
+
+.content .social span:before, .content .social span:after {
+    content: '';
+    display: block;
+    width: 500px;
+    position: absolute;
+    top: 0.9em;
+    border-top: 1px solid White;
+}
+
+.content .social span:before {
+    right: 75%;
+}
+
+.content .social span:after {
+    left: 75%;
+}
+
+.content .buttons {
+    width: 100%;
+    margin: 30px 0px;
+}
+
+.content .buttons button {
+    float: left;
+    width: 30%;
+    margin: 0px 1.5%;
+}
+
+.content .buttons button i {
+    padding-right: 7px;
+}
+
+.content .buttons button.facebook {
+    background-color: #4464B2;
+}
+
+.content .buttons button.twitter {
+    background-color: #28A9E0;
+}
+
+.content .buttons button.google {
+    background-color: #DA4735;
+}
+
+.content .buttons:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.content .already {
+    text-align: center;
+    font-size: 0.9rem;
 }

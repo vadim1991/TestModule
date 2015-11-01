@@ -10,29 +10,33 @@
 
         <intercept-url pattern="/login" access="permitAll"/>
         <intercept-url pattern="/resources/**" access="permitAll"/>
+        <intercept-url pattern="/authorization" access="permitAll"/>
 
-        <intercept-url pattern="/available/**" access="hasAnyRole('ROLE_USER')"/>
+        <intercept-url pattern="/available/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')"/>
+        <intercept-url pattern="/test/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')"/>
         <intercept-url pattern="/run/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')"/>
         <intercept-url pattern="/passed/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')"/>
         <intercept-url pattern="/result/**" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')"/>
         <intercept-url pattern="/myprofile" access="hasAnyRole('ROLE_USER, ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN')"/>
         <form-login login-page="/login"
-                    default-target-url="/available/tests"
+                    default-target-url="/authorization"
                     username-parameter="email"
                     password-parameter="password"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=true"/>
-        <logout logout-url="/logout" logout-success-url="/"/>
+        <logout logout-url="/logout" logout-success-url="/" invalidate-session="true"/>
     </http>
 
 
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="vadim" password="vadim1991" authorities="ROLE_USER"/>
-                <user name="admin" password="admin" authorities="ROLE_ADMIN"/>
-            </user-service>
+        <authentication-provider user-service-ref="userDetailsService">
+        <!--<authentication-provider>-->
+            <!--<user-service id="userDetailsService">-->
+
+                <!--<user name="vadim" password="vadim1991" authorities="ROLE_USER"/>-->
+                <!--<user name="admin" password="admin" authorities="ROLE_ADMIN"/>-->
+            <!--</user-service>-->
         </authentication-provider>
     </authentication-manager>
 </beans:beans>

@@ -1,7 +1,8 @@
 package com.englishschool.service.security;
 
-import com.englishschool.dao.profile.IProfileDao;
+import com.englishschool.entity.Role;
 import com.englishschool.entity.TestProfile;
+import com.englishschool.service.profile.IProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,43 +22,30 @@ import java.util.Set;
 @Service("userDetailsService")
 public class ProfileDetailService implements UserDetailsService {
 
-    //get user from the database, via Hibernate
+    public static final String EMAIL = "email";
+
     @Autowired
-    private IProfileDao<TestProfile> profileDao;
+    private IProfileService profileService;
 
     @Override
-    public UserDetails loadUserByUsername(final String username)
-            throws UsernameNotFoundException {
-
-        TestProfile user = (TestProfile) profileDao.findUsersByCriteria("email", username);
-        List<GrantedAuthority> authorities =
-                buildUserAuthority();
-
-        return buildUserForAuthentication(user, authorities);
-
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        TestProfile profile = profileService.findByEmail(username);
+        List<GrantedAuthority> authorities = buildUserAuthority(profile);
+        return buildUserForAuthentication(profile, authorities);
     }
 
-    // Converts com.mkyong.users.model.User user to
-    // org.springframework.security.core.userdetails.User
-    private User buildUserForAuthentication(TestProfile profile,
-                                            List<GrantedAuthority> authorities) {
+    private User buildUserForAuthentication(TestProfile profile, List<GrantedAuthority> authorities) {
         return new User(profile.getEmail(), profile.getPassword(),
                 true, true, true, true, authorities);
     }
 
-    private List<GrantedAuthority> buildUserAuthority() {
-
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-
-        // Build user's authorities
-//        for (UserRole userRole : userRoles) {
-//            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
-//        }
-//
-        List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-        setAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        Result.addAll(setAuths);
-        return Result;
+    private List<GrantedAuthority> buildUserAuthority(TestProfile profile) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        Set<Role> roles = profile.getRoles();
+        for (Role role : roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.name()));
+        }
+        return grantedAuthorities;
     }
 
 }

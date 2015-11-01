@@ -25,7 +25,6 @@ public class CommonConstants {
     public static final String RIGHT_SLASH = "/";
     public static final String ACTIVE = "active";
     public static final String AVAILABLE_TESTS = "availableTests";
-    public static final String RESULT_TEST_ID_URL = "/result/test/{id}";
     public static final String PASSED_TESTS = "passedTests";
     public static final String MSG_ATTRIBUTE = "msg";
     public static final String UPDATE_LINK_FORMAT = "<a href=/question/%s/update role=button class=btn btn-primary btn-sm>Update</a>";

@@ -49,7 +49,7 @@
                 <div class="col-sm-12">
                     <div class="panel panel-default">
                         <c:set var="buttonClass" value="checkbox"></c:set>
-                        <c:if test="${question.questionType eq RADIO}">
+                        <c:if test="${question.questionType eq 'RADIO'}">
                             <c:set var="buttonClass" value="radio"></c:set>
                         </c:if>
                         <input type="hidden" name="passedQuestions[${i.index}].id" value="${question.id}">

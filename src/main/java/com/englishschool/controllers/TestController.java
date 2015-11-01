@@ -14,9 +14,6 @@ import com.englishschool.service.test.ITestService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -125,11 +122,8 @@ public class TestController {
 
     @RequestMapping(value = AVAILABLE_TESTS_URL, method = RequestMethod.GET)
     public ModelAndView availableTests(HttpSession session) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //TestProfile profile = profileService.findByEmail(authentication.getName());
-        //String profileID = profile.getId();
-        session.setAttribute(PROFILE_ID, "11111");
-        List<String> availableTestIDs = profileService.getAvailableTests("11111");
+        String profileID = (String) session.getAttribute(PROFILE_ID);
+        List<String> availableTestIDs = profileService.getAvailableTests(profileID);
         List<Test> availableTests = testService.getTestByListIDS(availableTestIDs);
         return new ModelAndView(AVAILABLE_TESTS_PAGE, AVAILABLE_TESTS, availableTests);
     }
