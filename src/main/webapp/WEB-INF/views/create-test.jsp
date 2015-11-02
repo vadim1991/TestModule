@@ -45,24 +45,28 @@
                 </div>
             </spring:bind>
             <form:hidden path="questionIds" id="questionIDs"></form:hidden>
-            <div class="form-group">
-                <div class="datatable-block">
-                    <p>Questions</p>
-                    <p>Chooses questions : <span id="count-questions">0</span></p>
-                    <table id="questions-table" class="table table-striped table-hover table-bordered" cellspacing="0"
-                           width="100%">
-                        <thead>
-                        <tr>
-                            <th>Question ID</th>
-                            <th>Question title</th>
-                            <th>Question category</th>
-                            <th>Update question</th>
-                            <th>Delete question</th>
-                        </tr>
-                        </thead>
-                    </table>
+            <spring:bind path="questionIds">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <div class="datatable-block">
+                        <p>Questions</p>
+                        <p>Chooses questions : <span id="count-questions">0</span></p>
+                        <span class="text-danger"><form:errors path="questionIds" class="control-label"/></span>
+                        <table id="questions-table" class="table table-striped table-hover table-bordered"
+                               cellspacing="0"
+                               width="100%">
+                            <thead>
+                            <tr>
+                                <th>Question ID</th>
+                                <th>Question title</th>
+                                <th>Question category</th>
+                                <th>Update question</th>
+                                <th>Delete question</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            </spring:bind>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     <a href="/test/create" class="btn btn-default">Cancel</a>

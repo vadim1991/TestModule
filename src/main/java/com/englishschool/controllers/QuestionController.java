@@ -33,11 +33,7 @@ public class QuestionController {
     @Autowired
     private ICategoryService<Category> categoryService;
     @Autowired
-    private QuestionModelValidator questionValidator;
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(questionValidator);
-    }
+    private QuestionModelValidator validator;
     @Autowired
     private IQuestionService<Question> questionService;
 
@@ -51,7 +47,8 @@ public class QuestionController {
     }
 
     @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.POST)
-    public String addNewQuestion(@ModelAttribute(QUESTION) @Validated QuestionModelAttribute question, BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+    public String addNewQuestion(@ModelAttribute(QUESTION) QuestionModelAttribute question, BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        validator.validate(question, bindingResult);
         System.out.println(question);
         if (bindingResult.hasErrors()) {
             return CREATE_QUESTION_PAGE;

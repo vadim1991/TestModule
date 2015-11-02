@@ -11,10 +11,12 @@ import com.englishschool.service.passedtest.IPassedTestService;
 import com.englishschool.service.profile.IProfileService;
 import com.englishschool.service.question.IQuestionService;
 import com.englishschool.service.test.ITestService;
+import com.englishschool.validator.TestValidator;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +56,8 @@ public class TestController {
     private IPassedTestService passedTestService;
     @Autowired
     private JsonServiceImpl jsonService;
+    @Autowired
+    private TestValidator testValidator;
 
     @RequestMapping(value = QUESTIONS_PAGES_URL, method = RequestMethod.GET)
     public void getQuestionByPages(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -106,12 +110,15 @@ public class TestController {
     }
 
     @RequestMapping(value = TEST_CREATE_URL, method = RequestMethod.POST)
-    public String createTest(@ModelAttribute(TEST) Test test, final RedirectAttributes redirectAttributes) {
+    public String createTest(@ModelAttribute(TEST) Test test, final RedirectAttributes redirectAttributes, BindingResult result) {
         String createTime = convertDateToString(new DateTime());
         test.setCreationDate(createTime);
+        testValidator.validate(test, result);
+        if (result.hasErrors()) {
+            return CREATE_TEST_PAGE;
+        }
         testService.save(test);
         redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_TEST);
-        System.out.println(test);
         return REDIRECT_TEST_CREATE_URL;
     }
 

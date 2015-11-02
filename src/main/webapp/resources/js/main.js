@@ -131,17 +131,13 @@ var createTestModule = function() {
         }
     };
 };
-function deleteItemFromDataTable(selected) {
-    $("#deleteLink").click(function () {
-
-    });
-};
 
 function createQuestionDataTable() {
     var IDs = $("#questionIDs").val();
     var selected = [];
-    if (IDs != undefined) {
+    if (IDs.length != 0) {
         selected = IDs.split(",");
+        $("#count-questions").html(selected.length);
     }
     $('#questions-table').DataTable( {
         "processing": true,

@@ -44,7 +44,6 @@ public class QuestionModelValidator implements Validator {
                 }
             }
         }
-        System.out.println(validAnswers);
         return validAnswers;
     }
 
