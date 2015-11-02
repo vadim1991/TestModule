@@ -2,11 +2,15 @@ package com.englishschool.controllers;
 
 import com.englishschool.entity.Category;
 import com.englishschool.entity.Question;
+import com.englishschool.entity.datatable.DataTableBean;
+import com.englishschool.entity.datatable.QuestionForDataTableBean;
 import com.englishschool.entity.spring.QuestionModelAttribute;
 import com.englishschool.service.category.ICategoryService;
+import com.englishschool.service.json.JsonService;
 import com.englishschool.service.question.IQuestionService;
 import com.englishschool.validator.QuestionModelValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +30,7 @@ import static com.englishschool.datamodel.CommonConstants.*;
 import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_QUESTION;
 import static com.englishschool.datamodel.CommonMessages.SUCCESS_DELETE_QUESTION;
 import static com.englishschool.datamodel.CommonURLs.*;
+import static com.englishschool.service.helper.ServiceUtils.completeDataTableBeanFromRequest;
 
 /**
  * Created by Vadym_Vlasenko on 10/16/2015.
@@ -36,6 +44,8 @@ public class QuestionController {
     private QuestionModelValidator validator;
     @Autowired
     private IQuestionService<Question> questionService;
+    @Autowired
+    private JsonService jsonService;
 
     @RequestMapping(value = CREATE_QUESTION_URL, method = RequestMethod.GET)
     public ModelAndView addNewQuestion() {
@@ -66,6 +76,17 @@ public class QuestionController {
         QuestionModelAttribute questionModelAttribute = questionService.convertQuestionToModel(question);
         model.put(QUESTION, questionModelAttribute);
         return new ModelAndView(UPDATE_QUESTION_PAGE, model);
+    }
+
+    @RequestMapping(value = QUESTIONS_PAGES_URL, method = RequestMethod.GET)
+    public void getQuestionByPages(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String[] questionFields = {QUESTION_ID, TITLE, CATEGORY};
+        completeDataTableBeanFromRequest(request, questionFields, dataTableBean);
+        Page<Question> questionsPagination = questionService.findAllWithPagination(dataTableBean, questionFields);
+        List<Question> questions = questionsPagination.getContent();
+        List<QuestionForDataTableBean> dataModelQuestions = questionService.convertQuestionsForDataTableBean(questions);
+        String questionsDataJson = jsonService.dataToJson(dataModelQuestions, dataTableBean, (int) questionsPagination.getTotalElements());
+        response.getWriter().write(questionsDataJson);
     }
 
     @RequestMapping(value = DELETE_QUESTION_URL, method = RequestMethod.GET)

@@ -59,18 +59,7 @@ public class TestController {
     @Autowired
     private TestValidator testValidator;
 
-    @RequestMapping(value = QUESTIONS_PAGES_URL, method = RequestMethod.GET)
-    public void getQuestionByPages(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String[] questionFields = {QUESTION_ID, TITLE, CATEGORY};
-        completeDataTableBeanFromRequest(request, questionFields, dataTableBean);
-        Page<Question> questionsPagination = questionService.findAllWithPagination(dataTableBean, questionFields);
-        List<Question> questions = questionsPagination.getContent();
-        List<QuestionForDataTableBean> dataModelQuestions = questionService.convertQuestionsForDataTableBean(questions);
-        String questionsDataJson = jsonService.dataToJson(dataModelQuestions, dataTableBean, (int) questionsPagination.getTotalElements());
-        response.getWriter().write(questionsDataJson);
-    }
-
-    @RequestMapping(value = "test/{id}/update")
+    @RequestMapping(value = "test/{id}/update", method = RequestMethod.GET)
     public ModelAndView updateTest(@PathVariable(ID) String testID) {
         Test test = testService.findById(testID);
         Map<String, Object> model = new HashMap<>();
@@ -113,6 +102,7 @@ public class TestController {
     public String createTest(@ModelAttribute(TEST) Test test, final RedirectAttributes redirectAttributes, BindingResult result) {
         String createTime = convertDateToString(new DateTime());
         test.setCreationDate(createTime);
+        System.out.println(test);
         testValidator.validate(test, result);
         if (result.hasErrors()) {
             return CREATE_TEST_PAGE;

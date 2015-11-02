@@ -20,6 +20,7 @@
         <form:form class="form-horizontal" action="/test/create" method="post" modelAttribute="test">
 
             <h2>Add new Test</h2>
+            <input name="id" type="hidden" value="${test.id}">
 
             <spring:bind path="testTitle">
                 <div class="form-group ${status.error ? 'has-error' : ''}">

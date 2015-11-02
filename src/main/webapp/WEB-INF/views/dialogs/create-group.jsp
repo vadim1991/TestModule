@@ -14,7 +14,7 @@
             <label for="groupName" class="col-lg-2 control-label">Title</label>
 
             <div class="col-lg-10">
-              <input name="groupName" type="text" id="groupName" class="form-control"
+              <input name="groupName" data-validate="required" type="text" id="groupName" class="form-control"
                      placeholder="title"/>
               <span class="text-danger"></span>
             </div>

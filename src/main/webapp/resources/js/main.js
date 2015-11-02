@@ -135,10 +135,10 @@ var createTestModule = function() {
 function createQuestionDataTable() {
     var IDs = $("#questionIDs").val();
     var selected = [];
-    if (IDs.length != 0) {
-        selected = IDs.split(",");
-        $("#count-questions").html(selected.length);
-    }
+    //if (IDs.length != 0) {
+    //    selected = IDs.split(",");
+    //    $("#count-questions").html(selected.length);
+    //}
     $('#questions-table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -197,7 +197,6 @@ function createTestDataTable() {
 
     });
     $("#deleteLink").click(function () {
-        alert("aaaaa");
         var link = $(this).attr("data-content");
         var linkWithout = link.replace("#", "");
         alert(linkWithout);
@@ -285,9 +284,9 @@ function createProfileDataTable() {
     });
 
     $(document).ready(function() {
-        createQuestionDataTable();
         createTestDataTable();
         createProfileDataTable();
+        createQuestionDataTable();
     });
 
 })();

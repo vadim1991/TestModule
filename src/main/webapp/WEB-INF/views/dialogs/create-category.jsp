@@ -14,7 +14,7 @@
                         <label for="title" class="col-lg-2 control-label">Title</label>
 
                         <div class="col-lg-10">
-                            <input name="title" type="text" id="title" class="form-control"
+                            <input data-validate="required" name="title" type="text" id="title" class="form-control"
                                    placeholder="Title"/>
                             <span class="text-danger"></span>
                         </div>
