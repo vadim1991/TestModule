@@ -1,19 +1,19 @@
 package com.englishschool.controllers;
 
-import com.englishschool.entity.*;
+import com.englishschool.entity.PassedTest;
+import com.englishschool.entity.Test;
 import com.englishschool.entity.datatable.DataTableBean;
-import com.englishschool.entity.datatable.QuestionForDataTableBean;
 import com.englishschool.entity.datatable.TestForDataTableBean;
-import com.englishschool.entity.spring.PassedTestModelAttribute;
-import com.englishschool.service.group.IGroupService;
 import com.englishschool.service.json.JsonServiceImpl;
 import com.englishschool.service.passedtest.IPassedTestService;
 import com.englishschool.service.profile.IProfileService;
 import com.englishschool.service.question.IQuestionService;
 import com.englishschool.service.test.ITestService;
 import com.englishschool.validator.TestValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,17 +24,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.englishschool.datamodel.CommonConstants.*;
-import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_TEST;
 import static com.englishschool.datamodel.CommonURLs.*;
 import static com.englishschool.service.helper.ServiceUtils.*;
 
@@ -58,13 +57,19 @@ public class TestController {
     private JsonServiceImpl jsonService;
     @Autowired
     private TestValidator testValidator;
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value = "test/{id}/update", method = RequestMethod.GET)
-    public ModelAndView updateTest(@PathVariable(ID) String testID) {
+    public ModelAndView updateTest(@PathVariable(ID) String testID, Locale locale) {
+        String message = messageSource.getMessage("test.update", new Object[]{"test.update"}, locale);
+        System.out.println(message);
         Test test = testService.findById(testID);
         Map<String, Object> model = new HashMap<>();
         if (test != null) {
             model.put(TEST, test);
+            model.put("subject", getMessageFromBundle("test.update", locale, messageSource));
+            model.put("button", getMessageFromBundle("test.update.button", locale, messageSource));
         }
         return new ModelAndView(CREATE_TEST_PAGE, model);
     }
@@ -91,10 +96,12 @@ public class TestController {
     }
 
     @RequestMapping(value = TEST_CREATE_URL, method = RequestMethod.GET)
-    public ModelAndView createTest() {
+    public ModelAndView createTest(Locale locale) {
         Map<String, Object> model = new HashMap<>();
         Test test = new Test();
         model.put(TEST, test);
+        model.put("subject", getMessageFromBundle("test.create", locale, messageSource));
+        model.put("button", getMessageFromBundle("test.create.button", locale, messageSource));
         return new ModelAndView(CREATE_TEST_PAGE, model);
     }
 
@@ -102,13 +109,15 @@ public class TestController {
     public String createTest(@ModelAttribute(TEST) Test test, final RedirectAttributes redirectAttributes, BindingResult result) {
         String createTime = convertDateToString(new DateTime());
         test.setCreationDate(createTime);
-        System.out.println(test);
         testValidator.validate(test, result);
         if (result.hasErrors()) {
             return CREATE_TEST_PAGE;
         }
         testService.save(test);
-        redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_TEST);
+        redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, getMessageFromBundle("test.create.message", null, messageSource));
+        if (StringUtils.isNotBlank(test.getId())) {
+            redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, getMessageFromBundle("test.update.message", null, messageSource));
+        }
         return REDIRECT_TEST_CREATE_URL;
     }
 

@@ -6,11 +6,14 @@ import com.englishschool.entity.datatable.DataTableBean;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.context.MessageSource;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.util.Locale;
 
 import static com.englishschool.datamodel.CommonConstants.*;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -64,6 +67,10 @@ public class ServiceUtils {
         tableBean.setOrderColumn(order);
         tableBean.setOrderParam(request.getParameter(ORDER_0_DIR));
         tableBean.setSearchWord(request.getParameter(SEARCH_VALUE));
+    }
+
+    public static String getMessageFromBundle(String code, Locale locale, MessageSource messageSource) {
+        return messageSource.getMessage(code, new Object[]{code}, locale);
     }
 
 }

@@ -43,7 +43,7 @@
 
     <beans:bean class="org.springframework.context.support.ResourceBundleMessageSource"
           id="messageSource">
-        <beans:property name="basename" value="validation" />
+        <beans:property name="basename" value="validation"></beans:property>
     </beans:bean>
 
     <context:component-scan base-package="com.englishschool"/>

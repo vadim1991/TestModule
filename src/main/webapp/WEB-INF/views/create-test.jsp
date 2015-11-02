@@ -19,7 +19,7 @@
         </c:if>
         <form:form class="form-horizontal" action="/test/create" method="post" modelAttribute="test">
 
-            <h2>Add new Test</h2>
+            <h2>${subject}</h2>
             <input name="id" type="hidden" value="${test.id}">
 
             <spring:bind path="testTitle">
@@ -71,7 +71,7 @@
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     <a href="/test/create" class="btn btn-default">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">${button}</button>
                 </div>
             </div>
         </form:form>
