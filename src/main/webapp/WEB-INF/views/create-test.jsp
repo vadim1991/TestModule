@@ -26,7 +26,7 @@
                     <label for="testTitle" class="col-lg-2 control-label">Title</label>
 
                     <div class="col-lg-10">
-                        <form:input path="testTitle" type="text" id="testTitle" class="form-control"
+                        <form:input data-validate="required" path="testTitle" type="text" id="testTitle" class="form-control"
                                     cssClass="form-control"
                                     placeholder="Title"/>
                         <span class="text-danger"><form:errors path="testTitle" class="control-label"/></span>
@@ -38,7 +38,7 @@
                     <label for="timeOfTest" class="col-lg-2 control-label">Test duration</label>
 
                     <div class="col-lg-10">
-                        <form:input path="timeOfTest" class="form-control" id="timeOfTest" placeholder="Duration"/>
+                        <form:input data-validate="required,number,minVal(1)" path="timeOfTest" class="form-control" id="timeOfTest" placeholder="Duration"/>
                         <span class="help-block">Duration test time (minutes)</span>
                         <span class="text-danger"><form:errors path="timeOfTest" class="control-label"/></span>
                     </div>
