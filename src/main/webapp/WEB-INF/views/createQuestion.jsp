@@ -173,7 +173,7 @@
         </form:form>
     </div>
 </div>
-<jsp:include page="create-category.jsp"></jsp:include>
+<jsp:include page="dialogs/create-category.jsp"></jsp:include>
 <jsp:include page="../views/common/footer.jsp">
     <jsp:param name="page" value="addQuestion"></jsp:param>
 </jsp:include>
