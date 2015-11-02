@@ -44,7 +44,6 @@ public class ProfileDaoImpl extends GenericMongoDBDaoImpl<TestProfile> implement
     @Override
     public void saveMultiplyProfiles(Set<TestProfile> testProfiles) {
         getMongoOperations().insert(testProfiles, getClazz());
-        System.out.println("----------after insert");
     }
 
 }

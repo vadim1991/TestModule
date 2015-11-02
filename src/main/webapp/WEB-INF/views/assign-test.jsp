@@ -61,6 +61,17 @@
                     <p>Tests</p>
 
                     <p>Selected tests : <span id="count-tests">0</span></p>
+
+                    <div class="col-sm-4 col-sm-offset-9">
+                        <a class="btn btn-danger btn-flat btn-sm" data-toggle="modal"
+                           data-target="#complete-dialog">
+                            <i class="mdi-content-clear"></i>
+                            <span class="btn-text">Remove selected</span>
+
+                            <div class="ripple-wrapper"></div>
+                        </a>
+                    </div>
+
                     <table id="tests-table" class="table table-striped table-hover table-bordered" cellspacing="0"
                            width="100%">
                         <thead>
@@ -85,6 +96,7 @@
         </form:form>
     </div>
 </div>
+<jsp:include page="dialogs/delete-tests.jsp"></jsp:include>
 <jsp:include page="../views/common/footer.jsp">
     <jsp:param name="page" value="assignTest"></jsp:param>
 </jsp:include>

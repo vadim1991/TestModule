@@ -52,7 +52,6 @@ public class RunCheckTestController {
         PassedTest passedTestFromModel = passedTestService.getAndCheckPassedTestFromModel(passedModel, session);
         passedTestService.save(passedTestFromModel);
         profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());
-        removeAllCookies(request, response);
         invalidateTestInfoFromSession(session);
         return REDIRECT_RESULT_TEST_URL + passedTestFromModel.getId();
     }

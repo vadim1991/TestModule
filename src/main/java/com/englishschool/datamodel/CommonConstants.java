@@ -30,7 +30,7 @@ public class CommonConstants {
     public static final String UPDATE_QUESTION_LINK_FORMAT = "<a href=/question/%s/update role=button class=btn btn-primary btn-sm>Update</a>";
     public static final String UPDATE_TEST_LINK_FORMAT = "<a href=/test/%s/update role=button class=btn btn-primary btn-sm>Update</a>";
     public static final String DELETE_QUESTION_LINK_FORMAT = "<a href=/question/%s/delete role=button class=btn btn-danger btn-sm>Delete</a>";
-    public static final String DELETE_TEST_LINK_FORMAT = "<a href=/test/%s/delete role=button class=btn btn-danger btn-sm>Delete</a>";
+    public static final String DELETE_TEST_LINK_FORMAT = "<a data-content=#/test/%s/delete role=button id=deleteLink class=btn btn-danger btn-sm>Delete</a>";
     public static final String QUESTION_DAO = "questionDao";
     public static final String PROFILE_DAO = "profileDao";
     public static final String PASSED_TEST_DAO = "passedTestDao";

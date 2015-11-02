@@ -52,8 +52,13 @@ public class GenericMongoDBDaoImpl<T> implements GenericDao<T> {
     @Override
     public boolean deleteByID(String id) {
         Query query = new Query(Criteria.where(ID).is(id));
-        List<T> allAndRemove = getMongoOperations().findAllAndRemove(query, getClazz());
-        return allAndRemove == null ? false : true;
+        return deleteByQuery(query);
+    }
+
+    @Override
+    public boolean deleteByIDs(List<String> IDs) {
+        Query query = new Query(Criteria.where(ID).in(IDs));
+        return deleteByQuery(query);
     }
 
     @Override
@@ -109,6 +114,11 @@ public class GenericMongoDBDaoImpl<T> implements GenericDao<T> {
 
     public void setMongoOperations(MongoOperations mongoOperations) {
         this.mongoOperations = mongoOperations;
+    }
+
+    private boolean deleteByQuery(Query query) {
+        List<T> allAndRemove = getMongoOperations().findAllAndRemove(query, getClazz());
+        return allAndRemove == null ? false : true;
     }
 
 }

@@ -76,6 +76,16 @@ public class TestController {
         return new ModelAndView(CREATE_TEST_PAGE, model);
     }
 
+    @RequestMapping(value = "test/{id}/delete", method = RequestMethod.POST)
+    public void deleteTest(@PathVariable(ID) String testID, HttpServletResponse response) throws IOException {
+        String resultMessage = "error";
+        boolean deleteResult = testService.deleteByID(testID);
+        if (deleteResult) {
+            resultMessage = "success";
+        }
+        response.getWriter().write(resultMessage);
+    }
+
     @RequestMapping(value = TEST_PAGES_URL, method = RequestMethod.GET)
     public void getTestByPages(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String[] testFields = {ID, TEST_TITLE, CREATION_DATE, TIME_OF_TEST};

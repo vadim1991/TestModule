@@ -1,0 +1,3 @@
+$("#deleteLink").click(function () {
+
+});

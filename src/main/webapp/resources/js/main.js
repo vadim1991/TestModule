@@ -131,6 +131,11 @@ var createTestModule = function() {
         }
     };
 };
+function deleteItemFromDataTable(selected) {
+    $("#deleteLink").click(function () {
+
+    });
+};
 
 function createQuestionDataTable() {
     var IDs = $("#questionIDs").val();
@@ -194,7 +199,26 @@ function createTestDataTable() {
             }
         }
 
-    } );
+    });
+    $("#deleteLink").click(function () {
+        alert("aaaaa");
+        var link = $(this).attr("data-content");
+        var linkWithout = link.replace("#", "");
+        alert(linkWithout);
+        $.ajax({
+            url : linkWithout,
+            method : "post",
+            success: function (data) {
+                if (data == "success") {
+                    $("#tests-table")
+                        .row()
+                        .remove()
+                        .draw();
+                }
+            }
+        });
+    });
+
     $('#tests-table tbody').on('click', 'tr', function () {
         var firstChild = $(this).children("td:first");
         var id = firstChild.html();
