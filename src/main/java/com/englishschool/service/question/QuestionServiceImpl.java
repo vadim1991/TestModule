@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.englishschool.datamodel.CommonConstants.DELETE_LINK_FORMAT;
-import static com.englishschool.datamodel.CommonConstants.UPDATE_LINK_FORMAT;
+import static com.englishschool.datamodel.CommonConstants.DELETE_QUESTION_LINK_FORMAT;
+import static com.englishschool.datamodel.CommonConstants.UPDATE_QUESTION_LINK_FORMAT;
 
 /**
  * Created by Vadym_Vlasenko on 9/30/2015.
@@ -105,8 +105,8 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
                 dataTableBean.setQuestionID(question.getId());
                 dataTableBean.setTitle(question.getTitle());
                 dataTableBean.setCategory(question.getCategory());
-                dataTableBean.setUpdateLink(String.format(UPDATE_LINK_FORMAT, question.getId()));
-                dataTableBean.setDeleteLink(String.format(DELETE_LINK_FORMAT, question.getId()));
+                dataTableBean.setUpdateLink(String.format(UPDATE_QUESTION_LINK_FORMAT, question.getId()));
+                dataTableBean.setDeleteLink(String.format(DELETE_QUESTION_LINK_FORMAT, question.getId()));
                 questionForDataTableBeans.add(dataTableBean);
             }
         }

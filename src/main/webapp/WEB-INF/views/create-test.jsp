@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </spring:bind>
-            <input type="hidden" name="questionIds" value="" id="questionIDs">
+            <form:hidden path="questionIds" id="questionIDs"></form:hidden>
             <div class="form-group">
                 <div class="datatable-block">
                     <p>Questions</p>

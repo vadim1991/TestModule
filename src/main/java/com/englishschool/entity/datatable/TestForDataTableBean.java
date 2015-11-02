@@ -13,6 +13,8 @@ public class TestForDataTableBean implements Serializable {
     private String testTitle;
     private String creationDate;
     private Integer timeOfTest;
+    private String updateLink;
+    private String deleteLink;
 
     public String getId() {
         return id;
@@ -44,6 +46,22 @@ public class TestForDataTableBean implements Serializable {
 
     public void setTimeOfTest(Integer timeOfTest) {
         this.timeOfTest = timeOfTest;
+    }
+
+    public String getUpdateLink() {
+        return updateLink;
+    }
+
+    public void setUpdateLink(String updateLink) {
+        this.updateLink = updateLink;
+    }
+
+    public String getDeleteLink() {
+        return deleteLink;
+    }
+
+    public void setDeleteLink(String deleteLink) {
+        this.deleteLink = deleteLink;
     }
 
     @Override

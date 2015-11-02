@@ -9,7 +9,6 @@
         <div class="title">Welcome</div>
         <input type="text" data-validate="required" id="email" name="email" placeholder="E-mail"/>
         <input type="password" data-validate="required" name="password" placeholder="Password"/>
-        <%--<input type="submit" class="submit" value="Sign in">--%>
         <button>Sign in</button>
         <div class="social"><span>or sign up with social media</span></div>
         <div class="buttons">

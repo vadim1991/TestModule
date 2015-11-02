@@ -26,7 +26,7 @@
                     <label for="title" class="col-lg-2 control-label">Title</label>
 
                     <div class="col-lg-10">
-                        <form:input path="title" type="text" id="title" class="form-control" cssClass="form-control"
+                        <form:input data-validate="required" path="title" type="text" id="title" class="form-control" cssClass="form-control"
                                     placeholder="Title"/>
                         <span class="text-danger"><form:errors path="title" class="control-label"/></span>
                     </div>
@@ -35,7 +35,7 @@
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <label class="col-sm-2 control-label">Category</label>
                 <div class="col-sm-5">
-                    <form:select path="category" class="form-control">
+                    <form:select data-validate="required" path="category" class="form-control">
                         <form:option value="NONE" label="--- Select ---" />
                         <form:options items="${categories}" itemLabel="title" itemValue="title"/>
                     </form:select>
@@ -55,7 +55,7 @@
                     <label for="textArea" class="col-lg-2 control-label">Content Question</label>
 
                     <div class="col-lg-10">
-                        <form:textarea path="content" class="form-control" id="textArea" rows="5"/>
+                        <form:textarea data-validate="required" path="content" class="form-control" id="textArea" rows="5"/>
                         <span class="help-block">The content of question</span>
                         <span class="text-danger"><form:errors path="content" class="control-label"/></span>
                     </div>

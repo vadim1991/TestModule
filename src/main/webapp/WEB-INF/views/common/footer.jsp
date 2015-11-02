@@ -19,6 +19,8 @@
 <script type="text/javascript" src="/resources/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/resources/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="/resources/js/main.js"></script>
+<script type="text/javascript" src="/resources/js/verify.js"></script>
+<script type="text/javascript" src="/resources/js/verify.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#" + "${param.page}").parent().addClass("active");

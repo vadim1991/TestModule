@@ -133,7 +133,11 @@ var createTestModule = function() {
 };
 
 function createQuestionDataTable() {
+    var IDs = $("#questionIDs").val();
     var selected = [];
+    if (IDs != undefined) {
+        selected = IDs.split(",");
+    }
     $('#questions-table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -180,7 +184,9 @@ function createTestDataTable() {
             { "data": "id" },
             { "data": "testTitle" },
             { "data": "creationDate" },
-            { "data": "timeOfTest" }
+            { "data": "timeOfTest" },
+            { "data": "updateLink" },
+            { "data": "deleteLink" }
         ],
         "rowCallback": function( row, data ) {
             if ( $.inArray(data.id, selected) !== -1 ) {
