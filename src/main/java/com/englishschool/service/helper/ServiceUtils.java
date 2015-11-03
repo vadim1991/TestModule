@@ -7,12 +7,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.keygen.KeyGenerators;
+import org.springframework.security.crypto.keygen.StringKeyGenerator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.util.Locale;
 
 import static com.englishschool.datamodel.CommonConstants.*;
@@ -22,6 +23,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
  * Created by Vadym_Vlasenko on 10/18/2015.
  */
 public class ServiceUtils {
+
+    private static final StringKeyGenerator KEY_GENERATORS = KeyGenerators.string();
 
     public static String convertDateToString(DateTime dateTime) {
         DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_TIME_FORMAT);
@@ -71,6 +74,10 @@ public class ServiceUtils {
 
     public static String getMessageFromBundle(String code, Locale locale, MessageSource messageSource) {
         return messageSource.getMessage(code, new Object[]{code}, locale);
+    }
+
+    public static String generatePassword() {
+        return KEY_GENERATORS.generateKey();
     }
 
 }

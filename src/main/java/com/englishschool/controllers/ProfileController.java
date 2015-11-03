@@ -29,12 +29,13 @@ import static com.englishschool.datamodel.CommonConstants.ID;
 import static com.englishschool.datamodel.CommonConstants.MSG_ATTRIBUTE;
 import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_PROFILE;
 import static com.englishschool.service.helper.ServiceUtils.completeDataTableBeanFromRequest;
+import static com.englishschool.service.helper.ServiceUtils.generatePassword;
 
 /**
  * Created by Vadym_Vlasenko on 10/19/2015.
  */
 @Controller
-public class TestProfileController {
+public class ProfileController {
 
     public static final String PROFILE_PAGES_URL = "/profile/pages";
     public static final String AGE = "age";
@@ -63,8 +64,8 @@ public class TestProfileController {
 
     @RequestMapping(value = "/profile/create", method = RequestMethod.POST)
     public String createProfile(@ModelAttribute("profile") TestProfile profile, final RedirectAttributesModelMap redirectAttributesModelMap) {
+        profile.setPassword(generatePassword());
         System.out.println(profile);
-        profile.setPassword("11111");
         profileService.save(profile);
         redirectAttributesModelMap.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_PROFILE);
         return "redirect:/profile/create";
