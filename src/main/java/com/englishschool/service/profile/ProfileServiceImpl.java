@@ -2,7 +2,7 @@ package com.englishschool.service.profile;
 
 import com.englishschool.dao.generic.GenericDao;
 import com.englishschool.dao.profile.ProfileDaoImpl;
-import com.englishschool.datamodel.CommonConstants;
+import com.englishschool.entity.PassedTest;
 import com.englishschool.entity.TestProfile;
 import com.englishschool.entity.datatable.ProfileDataTableBean;
 import com.englishschool.entity.spring.AssignTestBean;
@@ -32,13 +32,13 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
     }
 
     @Override
-    public boolean addPassedTestToProfile(String profileID, String passedTestID) {
+    public boolean addPassedTestToProfile(String profileID, PassedTest passedTest) {
         boolean result = false;
         TestProfile profile = findById(profileID);
         if (profile != null) {
-            String testID = passedTestID.replaceAll(profileID, CommonConstants.EMPTY);
+            String passedTestID = passedTest.getId();
             List<String> availableTests = profile.getAvailableTests();
-            availableTests.remove(testID);
+            availableTests.remove(passedTest.getTestId());
             List<String> passedTests = profile.getPassedTests();
             if (passedTests != null) {
                 passedTests.add(passedTestID);
@@ -117,8 +117,6 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
                 save(testProfile);
                 resultProfiles.add(testProfile);
             }
-            System.out.println(resultProfiles);
-            dao.saveMultiplyProfiles(resultProfiles);
         }
     }
 
@@ -143,4 +141,14 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
         List<TestProfile> usersByCriteria = dao.findUsersByCriteria(EMAIL, email);
         return usersByCriteria != null ? usersByCriteria.get(0) : null;
     }
+
+    @Override
+    public int getAverageMark(List<PassedTest> passedTests) {
+        int totalMark = 0;
+        for (PassedTest passedTest : passedTests) {
+            totalMark += passedTest.getResult();
+        }
+        return totalMark / passedTests.size();
+    }
+
 }

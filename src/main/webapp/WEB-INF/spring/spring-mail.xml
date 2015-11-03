@@ -4,10 +4,10 @@
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="${host}" />
-        <property name="port" value="${port}" />
-        <property name="username" value="${username}" />
-        <property name="password" value="${password}" />
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="username" value="test.cuisineschool@gmail.com" />
+        <property name="password" value="vadim1991" />
 
         <property name="javaMailProperties">
             <props>
@@ -30,10 +30,6 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
                 class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
             </value>
         </property>
-    </bean>
-
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/spring/properties/mail-settings.properties"/>
     </bean>
 
 </beans>

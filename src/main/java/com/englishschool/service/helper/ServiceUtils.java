@@ -76,7 +76,7 @@ public class ServiceUtils {
         return messageSource.getMessage(code, new Object[]{code}, locale);
     }
 
-    public static String generatePassword() {
+    public static String generateStringKey() {
         return KEY_GENERATORS.generateKey();
     }
 

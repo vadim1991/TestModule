@@ -20,14 +20,16 @@
         <form:form class="form-horizontal" action="/test/create" method="post" modelAttribute="test">
 
             <h2>${subject}</h2>
-            <input name="id" type="hidden" value="${test.id}">
-
+            <c:if test="${not empty test.id}">
+                <input name="id" type="hidden" value="${test.id}">
+            </c:if>
             <spring:bind path="testTitle">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label for="testTitle" class="col-lg-2 control-label">Title</label>
 
                     <div class="col-lg-10">
-                        <form:input data-validate="required" path="testTitle" type="text" id="testTitle" class="form-control"
+                        <form:input data-validate="required" path="testTitle" type="text" id="testTitle"
+                                    class="form-control"
                                     cssClass="form-control"
                                     placeholder="Title"/>
                         <span class="text-danger"><form:errors path="testTitle" class="control-label"/></span>
@@ -39,7 +41,8 @@
                     <label for="timeOfTest" class="col-lg-2 control-label">Test duration</label>
 
                     <div class="col-lg-10">
-                        <form:input data-validate="required,number,minVal(1)" path="timeOfTest" class="form-control" id="timeOfTest" placeholder="Duration"/>
+                        <form:input data-validate="required,number,minVal(1)" path="timeOfTest" class="form-control"
+                                    id="timeOfTest" placeholder="Duration"/>
                         <span class="help-block">Duration test time (minutes)</span>
                         <span class="text-danger"><form:errors path="timeOfTest" class="control-label"/></span>
                     </div>
@@ -50,6 +53,7 @@
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <div class="datatable-block">
                         <p>Questions</p>
+
                         <p>Chooses questions : <span id="count-questions">0</span></p>
                         <span class="text-danger"><form:errors path="questionIds" class="control-label"/></span>
                         <table id="questions-table" class="table table-striped table-hover table-bordered"

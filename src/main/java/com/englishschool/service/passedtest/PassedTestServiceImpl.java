@@ -6,6 +6,7 @@ import com.englishschool.entity.*;
 import com.englishschool.entity.spring.PassedQuestionModelAttribute;
 import com.englishschool.entity.spring.PassedTestModelAttribute;
 import com.englishschool.service.generic.GenericManagerImpl;
+import com.englishschool.service.helper.ServiceUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +22,7 @@ import java.util.List;
 import static com.englishschool.datamodel.CacheConstants.PASSED_TASK;
 import static com.englishschool.datamodel.CacheConstants.PASSED_TESTS;
 import static com.englishschool.datamodel.CommonConstants.*;
+import static com.englishschool.service.helper.ServiceUtils.*;
 import static com.englishschool.service.helper.ServiceUtils.convertDateToString;
 
 /**
@@ -58,7 +60,7 @@ public class PassedTestServiceImpl extends GenericManagerImpl<PassedTest, Passed
     @Override
     public PassedTest getPassedTestFromTest(Test currentTest, String profileID) {
         PassedTest passedTest = new PassedTest();
-        passedTest.setId(currentTest.getId() + profileID);
+        passedTest.setId(generateStringKey());
         passedTest.setTestId(currentTest.getId());
         passedTest.setStartTest(convertDateToString(new DateTime()));
         return passedTest;

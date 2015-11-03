@@ -31,7 +31,7 @@ import static com.englishschool.datamodel.CommonConstants.ID;
 import static com.englishschool.datamodel.CommonConstants.MSG_ATTRIBUTE;
 import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_PROFILE;
 import static com.englishschool.service.helper.ServiceUtils.completeDataTableBeanFromRequest;
-import static com.englishschool.service.helper.ServiceUtils.generatePassword;
+import static com.englishschool.service.helper.ServiceUtils.generateStringKey;
 
 /**
  * Created by Vadym_Vlasenko on 10/19/2015.
@@ -68,7 +68,7 @@ public class ProfileController {
 
     @RequestMapping(value = "/profile/create", method = RequestMethod.POST)
     public String createProfile(@ModelAttribute("profile") TestProfile profile, final RedirectAttributesModelMap redirectAttributesModelMap) throws MessagingException {
-        profile.setPassword(generatePassword());
+        profile.setPassword(generateStringKey());
         System.out.println(profile);
         profileService.save(profile);
         emailSenderService.sendMimeEmail(profile);

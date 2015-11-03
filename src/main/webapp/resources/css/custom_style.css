@@ -186,6 +186,14 @@ pre {
     color: #006359;
 }
 
+.chili {
+    margin-top: 10px;
+}
+
+label p {
+    margin-top: 10px;
+}
+
 .datatable-block {
     margin-right: 15px;
     margin-left: 15px;

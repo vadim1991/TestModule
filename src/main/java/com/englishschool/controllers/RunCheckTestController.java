@@ -51,7 +51,7 @@ public class RunCheckTestController {
         String profileID = (String) session.getAttribute(PROFILE_ID);
         PassedTest passedTestFromModel = passedTestService.getAndCheckPassedTestFromModel(passedModel, session);
         passedTestService.save(passedTestFromModel);
-        profileService.addPassedTestToProfile(profileID, passedTestFromModel.getId());
+        profileService.addPassedTestToProfile(profileID, passedTestFromModel);
         invalidateTestInfoFromSession(session);
         return REDIRECT_RESULT_TEST_URL + passedTestFromModel.getId();
     }

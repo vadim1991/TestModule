@@ -1,5 +1,6 @@
 package com.englishschool.service.profile;
 
+import com.englishschool.entity.PassedTest;
 import com.englishschool.entity.TestProfile;
 import com.englishschool.entity.datatable.ProfileDataTableBean;
 import com.englishschool.entity.spring.AssignTestBean;
@@ -13,7 +14,7 @@ import java.util.Set;
  */
 public interface IProfileService extends GenericManager<TestProfile> {
 
-    boolean addPassedTestToProfile(String profileID, String passedTestID);
+    boolean addPassedTestToProfile(String profileID, PassedTest passedTest);
 
     boolean isPassedTestExist(String profileID, String passedTest);
 
@@ -30,5 +31,7 @@ public interface IProfileService extends GenericManager<TestProfile> {
     Set<TestProfile> getProfilesFromAssignBean(AssignTestBean assignTestBean);
 
     TestProfile findByEmail(String email);
+
+    int getAverageMark(List<PassedTest> passedTests);
 
 }
