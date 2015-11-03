@@ -41,8 +41,8 @@
         </c:if>
         <div class="container question" data-question='${i.index + 1}' style="display:none;">
                 <%--Question text start--%>
-            <div class="col-sm-9 ${questionClass}">
-                <div class="row well bs-component shadow-z-1">
+            <div class="col-sm-12 ${questionClass}">
+                <div class="row well bs-component shadow-z-1 question-block-result">
                     <div class="list-group">
                         <div class="list-group-item">
                             <div class="row-action-primary">
@@ -59,9 +59,9 @@
                                 <div class="least-content">
                                     <span class="label label-info">${passedQuestion.question.category}</span>
                                 </div>
-                                <h4 class="list-group-item-heading">${passedQuestion.question.title}</h4>
-
-                                <p class="list-group-item-text">${passedQuestion.question.title}</p>
+                                <div>
+                                    <h4 class="list-group-item-text">${passedQuestion.question.title}</h4>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                 <%--Question text end--%>
 
                 <%--Answers block start--%>
-            <div class="col-sm-3">
+            <div class="col-sm-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Варианты ответа:</h3>
