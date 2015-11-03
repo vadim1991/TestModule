@@ -7,10 +7,11 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- Root Context: defines shared resources visible to all other web components -->
-
-    <bean id="jsonObject" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     <context:component-scan base-package="com.englishschool"/>
 
+    <bean id="jsonObject" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+    <import resource="spring-mail.xml"></import>
     <import resource="mongodb-app.xml"></import>
     <import resource="spring-guava-cache.xml"></import>
     <import resource="security/security.xml"></import>

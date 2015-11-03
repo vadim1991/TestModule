@@ -51,4 +51,8 @@ public class CommonConstants {
     public static final String TEST_TITLE = "testTitle";
     public static final String GROUP_ID = "groupId";
     public static final String EMPTY = "";
+    public static final String FROM = "vadimvlasenko91@gmail.com";
+    public static final String NAME = "name";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
 }

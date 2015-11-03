@@ -5,6 +5,7 @@ import com.englishschool.entity.TestProfile;
 import com.englishschool.entity.datatable.DataTableBean;
 import com.englishschool.entity.datatable.ProfileDataTableBean;
 import com.englishschool.entity.spring.AssignTestBean;
+import com.englishschool.service.email.EmailSenderService;
 import com.englishschool.service.group.IGroupService;
 import com.englishschool.service.json.JsonService;
 import com.englishschool.service.profile.IProfileService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -51,6 +53,8 @@ public class ProfileController {
     private JsonService jsonService;
     @Autowired
     private IGroupService<Group> groupService;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @RequestMapping(value = "/profile/create", method = RequestMethod.GET)
     public ModelAndView createProfile() {
@@ -63,10 +67,11 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/profile/create", method = RequestMethod.POST)
-    public String createProfile(@ModelAttribute("profile") TestProfile profile, final RedirectAttributesModelMap redirectAttributesModelMap) {
+    public String createProfile(@ModelAttribute("profile") TestProfile profile, final RedirectAttributesModelMap redirectAttributesModelMap) throws MessagingException {
         profile.setPassword(generatePassword());
         System.out.println(profile);
         profileService.save(profile);
+        emailSenderService.sendMimeEmail(profile);
         redirectAttributesModelMap.addFlashAttribute(MSG_ATTRIBUTE, SUCCESS_CREATE_PROFILE);
         return "redirect:/profile/create";
     }

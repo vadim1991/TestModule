@@ -20,6 +20,7 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="/WEB-INF/spring/mongodb.properties"/>
     </bean>
+
     <mongo:mongo host="${mongo.host}" port="${mongo.port}">
         <mongo:options connections-per-host="100"/>
     </mongo:mongo>
