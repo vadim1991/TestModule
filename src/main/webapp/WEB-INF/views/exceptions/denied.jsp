@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-  <jsp:include page="../views/common/head.jsp"></jsp:include>
+  <jsp:include page="../common/head.jsp"></jsp:include>
   <title>Permission</title>
 </head>
 <body>
