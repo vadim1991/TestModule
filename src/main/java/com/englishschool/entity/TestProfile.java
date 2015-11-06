@@ -28,7 +28,7 @@ public class TestProfile implements Serializable {
     private String groupId;
     private Set<Role> roles;
     private List<String> availableTests;
-    private double averageMark;
+    private int averageMark;
     private List<String> passedTests;
 
     public TestProfile() {
@@ -102,11 +102,11 @@ public class TestProfile implements Serializable {
         this.availableTests = availableTests;
     }
 
-    public double getAverageMark() {
+    public int getAverageMark() {
         return averageMark;
     }
 
-    public void setAverageMark(double averageMark) {
+    public void setAverageMark(int averageMark) {
         this.averageMark = averageMark;
     }
 

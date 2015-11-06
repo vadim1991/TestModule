@@ -40,13 +40,13 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
             List<String> availableTests = profile.getAvailableTests();
             availableTests.remove(passedTest.getTestId());
             List<String> passedTests = profile.getPassedTests();
-            if (passedTests != null) {
-                passedTests.add(passedTestID);
-            } else {
-                ArrayList<String> newPassedTestList = new ArrayList<>();
-                newPassedTestList.add(passedTestID);
-                profile.setPassedTests(newPassedTestList);
+            if (passedTests == null) {
+                passedTests = new ArrayList<>();
             }
+            passedTests.add(passedTestID);
+            profile.setPassedTests(passedTests);
+            int averageMark = calculateAverageMark(profile.getAverageMark(), passedTest.getResult(), passedTests.size());
+            profile.setAverageMark(averageMark);
             save(profile);
             result = true;
         }
@@ -149,6 +149,10 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
             totalMark += passedTest.getResult();
         }
         return totalMark / passedTests.size();
+    }
+
+    private int calculateAverageMark(int markFromUser, int markFromPassedTest, int passedTestAmount) {
+        return (markFromUser + markFromPassedTest) / passedTestAmount;
     }
 
 }
