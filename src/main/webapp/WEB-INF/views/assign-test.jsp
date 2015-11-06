@@ -81,9 +81,9 @@
                             <th>Test ID</th>
                             <th>Test title</th>
                             <th>Test creation date</th>
+                            <th>Questions</th>
                             <th>Test duration</th>
                             <th>Update test</th>
-                            <th>Delete test</th>
                         </tr>
                         </thead>
                     </table>

@@ -42,6 +42,7 @@ public class TestController {
     public static final String CREATION_DATE = "creationDate";
     public static final String TIME_OF_TEST = "timeOfTest";
     public static final String SUCCESS = "success";
+    public static final String QUESTION_AMOUNT = "questionAmount";
     @Autowired
     private IQuestionService questionService;
     @Autowired
@@ -90,7 +91,7 @@ public class TestController {
 
     @RequestMapping(value = TEST_PAGES_URL, method = RequestMethod.GET)
     public void getTestByPages(DataTableBean dataTableBean, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String[] testFields = {ID, TEST_TITLE, CREATION_DATE, TIME_OF_TEST};
+        String[] testFields = {ID, TEST_TITLE, CREATION_DATE, QUESTION_AMOUNT, TIME_OF_TEST};
         completeDataTableBeanFromRequest(request, testFields, dataTableBean);
         Page<Test> testPagination = testService.findAllWithPagination(dataTableBean, testFields);
         List<Test> tests = testPagination.getContent();

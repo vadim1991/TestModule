@@ -22,7 +22,6 @@ public class TestDaoImpl extends GenericMongoDBDaoImpl<Test> implements ITestDao
 
     @Override
     public List<Test> getTestByListIDS(List<String> ids) {
-        System.out.println("------------------------tests DB");
         Query query = new Query(Criteria.where(ID).in(ids));
         return getMongoOperations().find(query, Test.class);
     }

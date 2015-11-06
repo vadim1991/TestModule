@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.englishschool.datamodel.CacheConstants.TESTS;
-import static com.englishschool.datamodel.CommonConstants.*;
+import static com.englishschool.datamodel.CommonConstants.TEST_DAO;
+import static com.englishschool.datamodel.CommonConstants.UPDATE_TEST_LINK_FORMAT;
 
 /**
  * Created by Administrator on 10/5/2015.
@@ -55,7 +56,7 @@ public class TestServiceImpl extends GenericManagerImpl<Test, TestDaoImpl> imple
                 bean.setTestTitle(test.getTestTitle());
                 bean.setTimeOfTest(test.getTimeOfTest());
                 bean.setUpdateLink(String.format(UPDATE_TEST_LINK_FORMAT, test.getId()));
-                bean.setDeleteLink(String.format(DELETE_TEST_LINK_FORMAT, test.getId()));
+                bean.setQuestionAmount(test.getQuestionIds().size());
                 beanList.add(bean);
             }
         }

@@ -185,9 +185,9 @@ function createTestDataTable() {
             { "data": "id" },
             { "data": "testTitle" },
             { "data": "creationDate" },
+            { "data": "questionAmount" },
             { "data": "timeOfTest" },
-            { "data": "updateLink" },
-            { "data": "deleteLink" }
+            { "data": "updateLink" }
         ],
         "rowCallback": function( row, data ) {
             if ( $.inArray(data.id, selected) !== -1 ) {

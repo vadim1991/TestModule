@@ -14,7 +14,7 @@ public class TestForDataTableBean implements Serializable {
     private String creationDate;
     private Integer timeOfTest;
     private String updateLink;
-    private String deleteLink;
+    private int questionAmount;
 
     public String getId() {
         return id;
@@ -56,12 +56,12 @@ public class TestForDataTableBean implements Serializable {
         this.updateLink = updateLink;
     }
 
-    public String getDeleteLink() {
-        return deleteLink;
+    public int getQuestionAmount() {
+        return questionAmount;
     }
 
-    public void setDeleteLink(String deleteLink) {
-        this.deleteLink = deleteLink;
+    public void setQuestionAmount(int questionAmount) {
+        this.questionAmount = questionAmount;
     }
 
     @Override
@@ -69,15 +69,15 @@ public class TestForDataTableBean implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TestForDataTableBean that = (TestForDataTableBean) o;
-        return Objects.equal(id, that.id) &&
+        return Objects.equal(questionAmount, that.questionAmount) &&
+                Objects.equal(id, that.id) &&
                 Objects.equal(testTitle, that.testTitle) &&
-                Objects.equal(creationDate, that.creationDate) &&
-                Objects.equal(timeOfTest, that.timeOfTest);
+                Objects.equal(creationDate, that.creationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, testTitle, creationDate, timeOfTest);
+        return Objects.hashCode(id, testTitle, creationDate, questionAmount);
     }
 
     @Override
@@ -87,7 +87,8 @@ public class TestForDataTableBean implements Serializable {
                 ", testTitle='" + testTitle + '\'' +
                 ", creationDate='" + creationDate + '\'' +
                 ", timeOfTest=" + timeOfTest +
+                ", updateLink='" + updateLink + '\'' +
+                ", questionAmount=" + questionAmount +
                 '}';
     }
-
 }
