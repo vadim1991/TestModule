@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <spring:url value="/" var="urlHome" />
 
 <footer class="navbar navbar-fixed-bottom ${param.footerClass}">
@@ -22,6 +23,15 @@
 <script type="text/javascript" src="/resources/js/verify.js"></script>
 <script type="text/javascript" src="/resources/js/verify.min.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.json-2.4.js"></script>
+<c:choose>
+    <c:when test="${param.page eq 'assignTest'}">
+        <script type="text/javascript" src="/resources/js/dataTable/assign-tests.js"></script>
+    </c:when>
+    <c:when test="${param.page eq 'addTest'}">
+        <script type="text/javascript" src="/resources/js/dataTable/question-datatable.js"></script>
+    </c:when>
+
+</c:choose>
 <script>
     $(document).ready(function () {
         $("#" + "${param.page}").parent().addClass("active");
