@@ -196,6 +196,26 @@ function createTestDataTable() {
         }
 
     });
+    $("#confirm").click(function () {
+        var testIDsVal = $("#testIDs").val();
+        var testIDsArray = testIDsVal.split(",");
+        $.ajax({
+            url: "/tests/delete",
+            method: "post",
+            contentType: "application/json; charset=utf-8",
+            data: $.toJSON(testIDsArray),
+            success: function (data) {
+                if (data == "success") {
+                    $("#cancel").click();
+                    var table = $('#tests-table').DataTable();
+                    table.row('.selected').remove().draw();
+                    $("#testIDs").attr("value", "");
+                    $("#count-tests").html(0);
+                    selected = [];
+                }
+            }
+        })
+    });
     $("#deleteLink").click(function () {
         var link = $(this).attr("data-content");
         var linkWithout = link.replace("#", "");

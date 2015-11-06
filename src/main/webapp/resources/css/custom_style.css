@@ -199,6 +199,11 @@ label p {
     margin-left: 15px;
 }
 
+.remove-all-button {
+    margin-left: 50%;
+    margin-top: 10%;
+}
+
 .btn.btn-fab i {
     top: 0px;
 }

@@ -22,6 +22,8 @@ public interface GenericManager<T> {
 
     boolean deleteByID(String id);
 
+    boolean deleteByIDs(List<String> IDs);
+
     Page<T> findAllWithPagination(DataTableBean dataTableBean, String... fields);
 
 }

@@ -21,6 +21,7 @@
 <script type="text/javascript" src="/resources/js/main.js"></script>
 <script type="text/javascript" src="/resources/js/verify.js"></script>
 <script type="text/javascript" src="/resources/js/verify.min.js"></script>
+<script type="text/javascript" src="/resources/js/jquery.json-2.4.js"></script>
 <script>
     $(document).ready(function () {
         $("#" + "${param.page}").parent().addClass("active");

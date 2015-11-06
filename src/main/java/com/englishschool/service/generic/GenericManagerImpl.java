@@ -44,6 +44,11 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements
     }
 
     @Override
+    public boolean deleteByIDs(List<String> IDs) {
+        return dao.deleteByIDs(IDs);
+    }
+
+    @Override
     public Page<T> findAllWithPagination(DataTableBean dataTableBean, String... fields) {
         return dao.findAllWithPagination(dataTableBean, fields);
     }

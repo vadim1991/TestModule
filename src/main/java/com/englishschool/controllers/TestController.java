@@ -1,5 +1,6 @@
 package com.englishschool.controllers;
 
+import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.PassedTest;
 import com.englishschool.entity.Test;
 import com.englishschool.entity.datatable.DataTableBean;
@@ -12,15 +13,13 @@ import com.englishschool.service.test.ITestService;
 import com.englishschool.validator.TestValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,10 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static com.englishschool.datamodel.CommonConstants.*;
 import static com.englishschool.datamodel.CommonURLs.*;
@@ -45,6 +41,7 @@ public class TestController {
 
     public static final String CREATION_DATE = "creationDate";
     public static final String TIME_OF_TEST = "timeOfTest";
+    public static final String SUCCESS = "success";
     @Autowired
     private IQuestionService questionService;
     @Autowired
@@ -79,9 +76,16 @@ public class TestController {
         String resultMessage = "error";
         boolean deleteResult = testService.deleteByID(testID);
         if (deleteResult) {
-            resultMessage = "success";
+            resultMessage = SUCCESS;
         }
         response.getWriter().write(resultMessage);
+    }
+
+    @RequestMapping(value = "/tests/delete", method = RequestMethod.POST)
+    public void deleteTests(@RequestBody List<String> testIDs, HttpServletResponse response) throws IOException {
+        System.out.println(testIDs);
+        testService.deleteByIDs(testIDs);
+        response.getWriter().write(SUCCESS);
     }
 
     @RequestMapping(value = TEST_PAGES_URL, method = RequestMethod.GET)
