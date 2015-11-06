@@ -20,7 +20,7 @@ function createTestDataTable() {
         }
 
     });
-    $("#confirm").click(function () {
+    $("#confirm-test").click(function () {
         var testIDsVal = $("#testIDs").val();
         var testIDsArray = testIDsVal.split(",");
         $.ajax({
@@ -30,7 +30,7 @@ function createTestDataTable() {
             data: $.toJSON(testIDsArray),
             success: function (data) {
                 if (data == "success") {
-                    $("#cancel").click();
+                    $("#cancel-confirm-test").click();
                     var table = $('#tests-table').DataTable();
                     table.row('.selected').remove().draw();
                     selected = [];
@@ -78,6 +78,26 @@ function createProfileDataTable() {
         }
 
     } );
+    $("#confirm-profile").click(function () {
+        var testIDsVal = $("#profileIDs").val();
+        var testIDsArray = testIDsVal.split(",");
+        $.ajax({
+            url: "/admin/delete/profiles",
+            method: "post",
+            contentType: "application/json; charset=utf-8",
+            data: $.toJSON(testIDsArray),
+            success: function (data) {
+                if (data == "success") {
+                    var table = $('#profile-table').DataTable();
+                    table.row('.selected').remove().draw();
+                    selected = [];
+                    $("#profileIDs").attr("value", selected);
+                    $("#count-profiles").html(0);
+                    $("#cancel-confirm-profile").click();
+                }
+            }
+        })
+    });
     $('#profile-table tbody').on('click', 'tr', function () {
         var firstChild = $(this).children("td:first");
         var id = firstChild.html();

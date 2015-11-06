@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import static com.englishschool.datamodel.CommonConstants.ID;
 import static com.englishschool.datamodel.CommonConstants.MSG_ATTRIBUTE;
+import static com.englishschool.datamodel.CommonConstants.SUCCESS;
 import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_PROFILE;
 import static com.englishschool.service.helper.ServiceUtils.completeDataTableBeanFromRequest;
 import static com.englishschool.service.helper.ServiceUtils.generateStringKey;
@@ -104,6 +106,13 @@ public class ProfileController {
         Set<TestProfile> profilesFromAssignBean = profileService.getProfilesFromAssignBean(assignTestBean);
         profileService.assignTestToProfiles(profilesFromAssignBean, assignTestBean.getTestIDs());
         return "redirect:/assign/tests";
+    }
+
+    @RequestMapping(value = "admin/delete/profiles", method = RequestMethod.POST)
+    public void deleteTests(@RequestBody List<String> profileIDs, HttpServletResponse response) throws IOException {
+        System.out.println(profileIDs);
+        profileService.deleteByIDs(profileIDs);
+        response.getWriter().write(SUCCESS);
     }
 
 }

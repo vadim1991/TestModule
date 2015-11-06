@@ -33,13 +33,28 @@
                     </div>
                 </div>
             </spring:bind>
+
+            <hr>
             <input type="hidden" name="profileIDs" value="" id="profileIDs">
 
             <div class="form-group">
                 <div class="datatable-block">
-                    <p>Profiles</p>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p>Profiles</p>
 
-                    <p>Selected profile : <span id="count-profiles">0</span></p>
+                            <p>Selected profile : <span id="count-profiles">0</span></p></div>
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-danger btn-flat btn-sm remove-all-button" data-toggle="modal"
+                               data-target="#complete-profile">
+                                <i class="mdi-content-clear"></i>
+                                <span class="btn-text">Remove selected</span>
+
+                                <div class="ripple-wrapper">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                     <table id="profile-table" class="table table-striped table-hover table-bordered" cellspacing="0"
                            width="100%">
                         <thead>
@@ -54,6 +69,7 @@
                     </table>
                 </div>
             </div>
+            <hr>
             <input type="hidden" name="testIDs" value="" id="testIDs">
 
             <div class="form-group">
@@ -61,10 +77,11 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <p>Tests</p>
+
                             <p>Selected tests : <span id="count-tests">0</span></p></div>
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-danger btn-flat btn-sm remove-all-button" data-toggle="modal"
-                               data-target="#complete-dialog">
+                               data-target="#complete-test">
                                 <i class="mdi-content-clear"></i>
                                 <span class="btn-text">Remove selected</span>
 
@@ -101,6 +118,15 @@
 <jsp:include page="../views/common/footer.jsp">
     <jsp:param name="page" value="assignTest"></jsp:param>
 </jsp:include>
-<jsp:include page="dialogs/delete-confirm.jsp"></jsp:include>
+<jsp:include page="dialogs/delete-confirm.jsp">
+    <jsp:param name="title" value="tests"></jsp:param>
+    <jsp:param name="id" value="complete-test"></jsp:param>
+    <jsp:param name="button" value="confirm-test"></jsp:param>
+</jsp:include>
+<jsp:include page="dialogs/delete-confirm.jsp">
+    <jsp:param name="title" value="profiles"></jsp:param>
+    <jsp:param name="id" value="complete-profile"></jsp:param>
+    <jsp:param name="button" value="confirm-profile"></jsp:param>
+</jsp:include>
 </body>
 </html>

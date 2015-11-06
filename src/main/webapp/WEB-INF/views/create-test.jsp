@@ -95,6 +95,9 @@
 <jsp:include page="../views/common/footer.jsp">
     <jsp:param name="page" value="addTest"></jsp:param>
 </jsp:include>
-<jsp:include page="dialogs/delete-confirm.jsp"></jsp:include>
+<jsp:include page="dialogs/delete-confirm.jsp">
+    <jsp:param name="title" value="questions"></jsp:param>
+    <jsp:param name="id" value="complete-dialog"></jsp:param>
+</jsp:include>
 </body>
 </html>
