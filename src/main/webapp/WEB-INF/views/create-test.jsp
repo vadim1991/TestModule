@@ -52,9 +52,21 @@
             <spring:bind path="questionIds">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <div class="datatable-block">
-                        <p>Questions</p>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p>Questions</p>
+                                <p>Selected questions : <span id="count-questions">0</span></p></div>
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <a class="btn btn-danger btn-flat btn-sm remove-all-button" data-toggle="modal"
+                                   data-target="#complete-dialog">
+                                    <i class="mdi-content-clear"></i>
+                                    <span class="btn-text">Remove selected</span>
 
-                        <p>Chooses questions : <span id="count-questions">0</span></p>
+                                    <div class="ripple-wrapper">
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                         <span class="text-danger"><form:errors path="questionIds" class="control-label"/></span>
                         <table id="questions-table" class="table table-striped table-hover table-bordered"
                                cellspacing="0"
@@ -65,7 +77,6 @@
                                 <th>Question title</th>
                                 <th>Question category</th>
                                 <th>Update question</th>
-                                <th>Delete question</th>
                             </tr>
                             </thead>
                         </table>
@@ -84,5 +95,6 @@
 <jsp:include page="../views/common/footer.jsp">
     <jsp:param name="page" value="addTest"></jsp:param>
 </jsp:include>
+<jsp:include page="dialogs/delete-confirm.jsp"></jsp:include>
 </body>
 </html>

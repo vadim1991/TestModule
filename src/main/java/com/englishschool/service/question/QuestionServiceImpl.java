@@ -67,6 +67,12 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
         return dao.findQuestionsByListId(ids);
     }
 
+    @CacheEvict(value = CacheConstants.QUESTION_PAGES, allEntries = true)
+    @Override
+    public boolean deleteByIDs(List<String> IDs) {
+        return super.deleteByIDs(IDs);
+    }
+
     @Cacheable(value = CacheConstants.QUESTION_PAGES)
     @Override
     public Page<Question> findAllWithPagination(DataTableBean dataTableBean, String... fields) {
@@ -106,7 +112,6 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
                 dataTableBean.setTitle(question.getTitle());
                 dataTableBean.setCategory(question.getCategory());
                 dataTableBean.setUpdateLink(String.format(UPDATE_QUESTION_LINK_FORMAT, question.getId()));
-                dataTableBean.setDeleteLink(String.format(DELETE_QUESTION_LINK_FORMAT, question.getId()));
                 questionForDataTableBeans.add(dataTableBean);
             }
         }

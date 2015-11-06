@@ -13,7 +13,6 @@ public class QuestionForDataTableBean implements Serializable {
     private String category;
     private String title;
     private String updateLink;
-    private String deleteLink;
 
     public String getQuestionID() {
         return questionID;
@@ -39,14 +38,6 @@ public class QuestionForDataTableBean implements Serializable {
         this.updateLink = updateLink;
     }
 
-    public String getDeleteLink() {
-        return deleteLink;
-    }
-
-    public void setDeleteLink(String deleteLink) {
-        this.deleteLink = deleteLink;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -62,14 +53,20 @@ public class QuestionForDataTableBean implements Serializable {
         QuestionForDataTableBean that = (QuestionForDataTableBean) o;
         return Objects.equal(questionID, that.questionID) &&
                 Objects.equal(category, that.category) &&
-                Objects.equal(title, that.title) &&
-                Objects.equal(updateLink, that.updateLink) &&
-                Objects.equal(deleteLink, that.deleteLink);
+                Objects.equal(title, that.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(questionID, category, title, updateLink, deleteLink);
+        return Objects.hashCode(questionID, category, title);
     }
 
+    @Override
+    public String toString() {
+        return "QuestionForDataTableBean{" +
+                "questionID='" + questionID + '\'' +
+                ", category='" + category + '\'' +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

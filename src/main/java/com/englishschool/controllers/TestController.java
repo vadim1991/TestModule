@@ -1,6 +1,5 @@
 package com.englishschool.controllers;
 
-import com.englishschool.datamodel.CommonConstants;
 import com.englishschool.entity.PassedTest;
 import com.englishschool.entity.Test;
 import com.englishschool.entity.datatable.DataTableBean;
@@ -13,7 +12,6 @@ import com.englishschool.service.test.ITestService;
 import com.englishschool.validator.TestValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -39,12 +37,6 @@ import static com.englishschool.service.helper.ServiceUtils.*;
 @Controller
 public class TestController {
 
-    public static final String CREATION_DATE = "creationDate";
-    public static final String TIME_OF_TEST = "timeOfTest";
-    public static final String SUCCESS = "success";
-    public static final String QUESTION_AMOUNT = "questionAmount";
-    @Autowired
-    private IQuestionService questionService;
     @Autowired
     private ITestService testService;
     @Autowired
@@ -82,7 +74,7 @@ public class TestController {
         response.getWriter().write(resultMessage);
     }
 
-    @RequestMapping(value = "/tests/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "admin/delete/tests", method = RequestMethod.POST)
     public void deleteTests(@RequestBody List<String> testIDs, HttpServletResponse response) throws IOException {
         System.out.println(testIDs);
         testService.deleteByIDs(testIDs);

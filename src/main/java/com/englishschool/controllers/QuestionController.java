@@ -89,6 +89,13 @@ public class QuestionController {
         response.getWriter().write(questionsDataJson);
     }
 
+    @RequestMapping(value = "/admin/delete/questions", method = RequestMethod.POST)
+    public void deleteTests(@RequestBody List<String> questionsIDs, HttpServletResponse response) throws IOException {
+        System.out.println(questionsIDs);
+        questionService.deleteByIDs(questionsIDs);
+        response.getWriter().write(SUCCESS);
+    }
+
     @RequestMapping(value = DELETE_QUESTION_URL, method = RequestMethod.GET)
     public String deleteQuestion(@PathVariable(ID) String id, final RedirectAttributes redirectAttributes) {
         boolean deleteResult = questionService.deleteByID(id);

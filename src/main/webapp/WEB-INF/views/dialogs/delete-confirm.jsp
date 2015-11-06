@@ -6,13 +6,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Remove selected tests</h4>
+                <h4 class="modal-title">Remove selected</h4>
                 <hr>
             </div>
 
             <div class="modal-body">
                 <div class="form-group">
-                    <div>Are you sure that you want remove selected tests?</div>
+                    <div>Are you sure that you want remove selected units?</div>
                 </div>
             </div>
             <div class="modal-footer">

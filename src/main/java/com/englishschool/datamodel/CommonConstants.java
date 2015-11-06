@@ -55,4 +55,8 @@ public class CommonConstants {
     public static final String NAME = "name";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
+    public static final String CREATION_DATE = "creationDate";
+    public static final String TIME_OF_TEST = "timeOfTest";
+    public static final String SUCCESS = "success";
+    public static final String QUESTION_AMOUNT = "questionAmount";
 }

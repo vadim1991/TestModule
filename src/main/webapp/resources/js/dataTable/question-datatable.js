@@ -14,8 +14,7 @@ function createQuestionDataTable() {
             {"data": "questionID"},
             {"data": "title"},
             {"data": "category"},
-            {"data": "updateLink"},
-            {"data": "deleteLink"}
+            {"data": "updateLink"}
         ],
         "rowCallback": function (row, data) {
             if ($.inArray(data.questionID, selected) !== -1) {
@@ -23,6 +22,26 @@ function createQuestionDataTable() {
             }
         }
 
+    });
+    $("#confirm").click(function () {
+        var questionIDsVal = $("#questionIDs").val();
+        var questionIDsArray = questionIDsVal.split(",");
+        $.ajax({
+            url: "/admin/delete/questions",
+            method: "post",
+            contentType: "application/json; charset=utf-8",
+            data: $.toJSON(questionIDsArray),
+            success: function (data) {
+                if (data == "success") {
+                    $("#cancel").click();
+                    var table = $('#questions-table').DataTable();
+                    table.row('.selected').remove().draw();
+                    selected = [];
+                    $("#questionIDs").attr("value", selected);
+                    $("#count-questions").html(0);
+                }
+            }
+        })
     });
     $('#questions-table tbody').on('click', 'tr', function () {
         var firstChild = $(this).children("td:first");
