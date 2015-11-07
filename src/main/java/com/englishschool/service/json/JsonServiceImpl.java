@@ -1,11 +1,7 @@
 package com.englishschool.service.json;
 
 import com.englishschool.entity.datatable.DataTableBean;
-import com.englishschool.entity.datatable.QuestionForDataTableBean;
-import com.englishschool.entity.datatable.TestForDataTableBean;
 import com.englishschool.entity.json.DataTableJsonBean;
-import com.englishschool.entity.json.QuestionJsonBean;
-import com.englishschool.entity.json.TestJsonBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

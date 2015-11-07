@@ -152,7 +152,8 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
     }
 
     private int calculateAverageMark(int markFromUser, int markFromPassedTest, int passedTestAmount) {
-        return (markFromUser + markFromPassedTest) / passedTestAmount;
+        int oldAverageMark = markFromUser * (passedTestAmount - 1);
+        return (oldAverageMark + markFromPassedTest) / passedTestAmount;
     }
 
 }
