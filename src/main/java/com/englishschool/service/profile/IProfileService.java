@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public interface IProfileService extends GenericManager<TestProfile> {
 
-    boolean addPassedTestToProfile(String profileID, PassedTest passedTest);
+    //boolean addPassedTestToProfile(String profileID, PassedTest passedTest);
 
     boolean isPassedTestExist(String profileID, String passedTest);
 
@@ -26,12 +26,10 @@ public interface IProfileService extends GenericManager<TestProfile> {
 
     List<ProfileDataTableBean> convertProfileForDataTableBean(List<TestProfile> questions);
 
-    void assignTestToProfiles(Set<TestProfile> testProfiles, List<String> testIDs);
-
-    Set<TestProfile> getProfilesFromAssignBean(AssignTestBean assignTestBean);
-
     TestProfile findByEmail(String email);
 
-    int getAverageMark(List<PassedTest> passedTests);
+    void addAvailableTestsToProfiles(AssignTestBean assignTestBean, boolean isAssign);
+
+    boolean addPassedTestToProfile(String profileID, PassedTest passedTest);
 
 }

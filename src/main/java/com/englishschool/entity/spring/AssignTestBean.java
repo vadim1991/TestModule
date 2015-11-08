@@ -41,7 +41,7 @@ public class AssignTestBean implements Serializable {
         return "AssignTestBean{" +
                 "groupIDs=" + groupIDs +
                 ", profileIDs=" + profileIDs +
-                ", testUDs=" + testIDs +
+                ", testIDs=" + testIDs +
                 '}';
     }
 

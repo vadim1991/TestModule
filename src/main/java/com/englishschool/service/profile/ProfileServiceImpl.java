@@ -101,53 +101,28 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
     }
 
     @Override
-    public void assignTestToProfiles(Set<TestProfile> testProfiles, List<String> testIDs) {
-        if (testProfiles != null) {
-            Set<TestProfile> resultProfiles = new HashSet<>();
-            for (TestProfile testProfile : testProfiles) {
-                List<String> availableTests = testProfile.getAvailableTests();
-                Set<String> availableTestsSet = new HashSet<>();
-                if (availableTests != null) {
-                    availableTestsSet.addAll(testProfile.getAvailableTests());
-                }
-                availableTestsSet.addAll(testIDs);
-                testProfile.setAvailableTests(new ArrayList<>(availableTestsSet));
-                save(testProfile);
-                resultProfiles.add(testProfile);
-            }
-        }
-    }
-
-    @Override
-    public Set<TestProfile> getProfilesFromAssignBean(AssignTestBean assignTestBean) {
-        List<String> groupIDs = assignTestBean.getGroupIDs();
-        Set<TestProfile> testProfiles = new LinkedHashSet<>();
-        if (groupIDs != null) {
-            for (String groupId : groupIDs) {
-                testProfiles.addAll(dao.findUsersByCriteria(GROUP_ID, groupId));
-            }
-        }
-        List<String> profileIDs = assignTestBean.getProfileIDs();
-        if (profileIDs != null) {
-            testProfiles.addAll(dao.findProfilesByIDs(profileIDs));
-        }
-        return testProfiles;
-    }
-
-    @Override
     public TestProfile findByEmail(String email) {
         List<TestProfile> usersByCriteria = dao.findUsersByCriteria(EMAIL, email);
         return usersByCriteria != null ? usersByCriteria.get(0) : null;
     }
 
     @Override
-    public int getAverageMark(List<PassedTest> passedTests) {
-        int totalMark = 0;
-        for (PassedTest passedTest : passedTests) {
-            totalMark += passedTest.getResult();
-        }
-        return totalMark / passedTests.size();
+    public void addAvailableTestsToProfiles(AssignTestBean assignTestBean, boolean isAssign) {
+        dao.addAvailableTestsToProfiles(assignTestBean, isAssign);
     }
+
+//    @Override
+//    public boolean addPassedTestToProfile(String profileID, PassedTest passedTest) {
+//        boolean result = false;
+//        if (profileID != null && passedTest != null) {
+//            TestProfile profile = findById(profileID);
+//            int averageMark = calculateAverageMark(profile.getAverageMark(), passedTest.getResult(), profile.getPassedTests().size());
+//            profile.setAverageMark(averageMark);
+//            save(profile);
+//            result = dao.addPassedTestToProfile(profileID, passedTest);
+//        }
+//        return result;
+//    }
 
     private int calculateAverageMark(int markFromUser, int markFromPassedTest, int passedTestAmount) {
         int oldAverageMark = markFromUser * (passedTestAmount - 1);

@@ -17,7 +17,8 @@
                 <p>${msg}</p>
             </div>
         </c:if>
-        <form:form class="form-horizontal" action="/assign/tests" method="post" modelAttribute="assignTest">
+        <form:form class="form-horizontal" id="assign-form" action="/assign/tests" method="post"
+                   modelAttribute="assignTest">
 
             <h2>Assign Tests</h2>
 
@@ -109,8 +110,9 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <a href="/test/create" class="btn btn-default">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="/assign/tests" class="btn btn-default">Cancel</a>
+                    <a id="unassign-button" type="submit" class="btn btn-danger">Unassign tests</a>
+                    <button id="assign-button" type="submit" class="btn btn-primary">Assign tests</button>
                 </div>
             </div>
         </form:form>

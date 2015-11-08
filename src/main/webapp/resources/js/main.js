@@ -1,9 +1,9 @@
-var testModule = function(time){
+var testModule = function (time) {
     var answers = [],
-        testDuration = time||0, // duration in seconds
+        testDuration = time || 0, // duration in seconds
         $form = $('#passedTestModel'),
         $finishBtn = $('#end-test'),
-        $answerInput =  $('.answer'),
+        $answerInput = $('.answer'),
         $questions = $('.question'),
         $pagination = $('#test-list'),
         $timer = $('#timer'),
@@ -12,13 +12,13 @@ var testModule = function(time){
 
 
     // Init pagination
-    function initPagination(){
+    function initPagination() {
         $questions.first().show();
         var options = {
             currentPage: 1,
             totalPages: questionsLength,
             bootstrapMajorVersion: 3,
-            onPageChanged: function(e, oldPage, newPage){
+            onPageChanged: function (e, oldPage, newPage) {
                 $questions.hide();
                 $questions.filter('[data-question=' + newPage + ']').show();
             }
@@ -27,25 +27,25 @@ var testModule = function(time){
     }
 
     // Set timer
-    function initTimer(time){
+    function initTimer(time) {
         var testTime = new Date();
         testTime.setSeconds(testTime.getSeconds() + testDuration);
 
         $timer.countdown(testTime)
-            .on('update.countdown', function(event) {
+            .on('update.countdown', function (event) {
                 var format = '%M:%S';
                 $(this).html(event.strftime(format));
             })
-            .on('finish.countdown', function() {
+            .on('finish.countdown', function () {
                 finishTest();
             });
     }
 
     // Read answers from Local Storage
-    function initAnswers (){
-        if(localStorage.check){
+    function initAnswers() {
+        if (localStorage.check) {
             answers = JSON.parse(localStorage.check);
-            answers.forEach(function(ch){
+            answers.forEach(function (ch) {
                 $answerInput.filter("[data-id=" + ch + "]").attr('checked', true);
             });
         } else {
@@ -54,19 +54,19 @@ var testModule = function(time){
     }
 
     // Write to Local Storage
-    function setAnswer (el){
+    function setAnswer(el) {
         answers.push($(el).data('id'));
         localStorage.check = JSON.stringify(answers);
     }
 
     // Complete test
-    function finishTest(){
+    function finishTest() {
         $form.submit();
         localStorage.clear();
     }
 
     return {
-        init: function(){
+        init: function () {
             initPagination();
             initAnswers();
             initTimer();
@@ -76,18 +76,18 @@ var testModule = function(time){
                 finishTest();
             });
 
-            $answerInput.on('click', function(){
+            $answerInput.on('click', function () {
                 setAnswer(this);
             });
 
-            $answerBtn.on('click', function(){
+            $answerBtn.on('click', function () {
                 $('#test-list').bootstrapPaginator("showNext");
             });
         }
     }
 };
 
-var createTestModule = function() {
+var createTestModule = function () {
     var $addBtn = $("#add"),
         $answerDiv = $("#answersDiv"),
         answerLabel = ".control-label",
@@ -132,63 +132,30 @@ var createTestModule = function() {
     };
 };
 
-function createQuestionDataTable() {
-    var IDs = $("#questionIDs").val();
-    var selected = [];
-    //if (IDs.length != 0) {
-    //    selected = IDs.split(",");
-    //    $("#count-questions").html(selected.length);
-    //}
-    $('#questions-table').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "pagination": true,
-        "ajax": "/questions/pages",
-        "columns": [
-            { "data": "questionID" },
-            { "data": "title" },
-            { "data": "category" },
-            { "data": "updateLink" },
-            { "data": "deleteLink" }
-        ],
-        "rowCallback": function( row, data ) {
-            if ( $.inArray(data.questionID, selected) !== -1 ) {
-                $(row).addClass('selected');
-            }
-        }
-
-    } );
-    $('#questions-table tbody').on('click', 'tr', function () {
-        var firstChild = $(this).children("td:first");
-        var id = firstChild.html();
-        var index = $.inArray(id, selected);
-
-        if ( index === -1 ) {
-            selected.push( id );
-        } else {
-            selected.splice( index, 1 );
-        }
-        $("#count-questions").html(selected.length);
-        $("#questionIDs").attr("value", selected);
-        $(this).toggleClass('selected');
-    } );
+function assignForm() {
+    $("#unassign-button").click(function () {
+        $("#assign-form").attr("action", "/admin/unassign/tests");
+        $("#assign-form").submit();
+    })
 };
 
-(function(){
+(function () {
     // Init material design
     $.material.init();
 
     // Init add question module
-    if ( $('#question').length){
+    if ($('#question').length) {
         createTestModule().init();
     }
     // Init test module
-    if ($('#resultTestModel').length){
+    if ($('#resultTestModel').length) {
         testModule().init();
     }
-    $(document).on('timer', function(e, time){
+    $(document).on('timer', function (e, time) {
         testModule(time).init();
     });
-
 })();
+$(document).ready(function() {
+    assignForm();
+});
 

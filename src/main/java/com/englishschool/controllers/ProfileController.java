@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.englishschool.datamodel.CommonConstants.*;
-import static com.englishschool.datamodel.CommonMessages.SUCCESS_CREATE_PROFILE;
-import static com.englishschool.datamodel.CommonURLs.CREATE_TEST_PAGE;
 import static com.englishschool.service.helper.ServiceUtils.completeDataTableBeanFromRequest;
 import static com.englishschool.service.helper.ServiceUtils.generateStringKey;
 import static com.englishschool.service.helper.ServiceUtils.getMessageFromBundle;
@@ -131,9 +129,14 @@ public class ProfileController {
 
     @RequestMapping(value = "/assign/tests", method = RequestMethod.POST)
     public String assignTests(@ModelAttribute(ASSIGN_TEST) AssignTestBean assignTestBean) {
-        System.out.println(assignTestBean);
-        Set<TestProfile> profilesFromAssignBean = profileService.getProfilesFromAssignBean(assignTestBean);
-        profileService.assignTestToProfiles(profilesFromAssignBean, assignTestBean.getTestIDs());
+        profileService.addAvailableTestsToProfiles(assignTestBean, true);
+        return "redirect:/assign/tests";
+    }
+
+    @RequestMapping(value = "admin/unassign/tests", method = RequestMethod.POST)
+    public String unAssignTests(@ModelAttribute(ASSIGN_TEST) AssignTestBean assignTestBean, final RedirectAttributesModelMap redirectAttributes, Locale locale) {
+        profileService.addAvailableTestsToProfiles(assignTestBean, false);
+        redirectAttributes.addFlashAttribute(MSG_ATTRIBUTE, getMessageFromBundle("unassign.message", locale, messageSource));
         return "redirect:/assign/tests";
     }
 
