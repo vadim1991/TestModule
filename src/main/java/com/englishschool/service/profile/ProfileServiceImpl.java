@@ -13,16 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static com.englishschool.datamodel.CommonConstants.GROUP_ID;
-import static com.englishschool.datamodel.CommonConstants.PROFILE_DAO;
+import static com.englishschool.datamodel.CommonConstants.*;
 
 /**
  * Created by Administrator on 10/5/2015.
  */
 @Service
 public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileDaoImpl> implements IProfileService {
-
-    public static final String EMAIL = "email";
 
     @Autowired
     @Qualifier(PROFILE_DAO)
@@ -92,10 +89,11 @@ public class ProfileServiceImpl extends GenericManagerImpl<TestProfile, ProfileD
             for (TestProfile profile : profiles) {
                 ProfileDataTableBean profileDataTableBean = new ProfileDataTableBean();
                 profileDataTableBean.setId(profile.getId());
-                profileDataTableBean.setAge(profile.getAge());
+                profileDataTableBean.setAverageMark(profile.getAverageMark());
                 profileDataTableBean.setEmail(profile.getEmail());
                 profileDataTableBean.setName(profile.getName());
                 profileDataTableBean.setSurname(profile.getSurname());
+                profileDataTableBean.setUpdateLink(String.format(UPDATE_PROFILE_LINK_FORMAT, profile.getId()));
                 profileForDataTableBeans.add(profileDataTableBean);
             }
         }

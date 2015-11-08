@@ -9,7 +9,7 @@
   <title>Add Question</title>
 </head>
 <body>
-<div class="container">
+<div class="container custom-container">
   <div class="jumbotron">
     <form:form class="form-horizontal" action="/create/question" method="post" modelAttribute="question">
       <fieldset>

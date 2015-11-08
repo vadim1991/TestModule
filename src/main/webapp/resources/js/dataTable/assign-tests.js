@@ -69,7 +69,8 @@ function createProfileDataTable() {
             { "data": "name" },
             { "data": "surname" },
             { "data": "email"},
-            { "data": "age" }
+            { "data": "averageMark" },
+            { "data": "updateLink" }
         ],
         "rowCallback": function( row, data ) {
             if ( $.inArray(data.id, selected) !== -1 ) {

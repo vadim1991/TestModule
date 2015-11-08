@@ -56,9 +56,9 @@ public class GenericMongoDBDaoImpl<T> implements GenericDao<T> {
     }
 
     @Override
-    public boolean deleteByIDs(List<String> IDs) {
+    public List<T> deleteByIDs(List<String> IDs) {
         Query query = new Query(Criteria.where(ID).in(IDs));
-        return deleteByQuery(query);
+        return getMongoOperations().findAllAndRemove(query, getClazz());
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.englishschool.service.passedtest;
 
 import com.englishschool.entity.PassedTest;
 import com.englishschool.entity.Test;
+import com.englishschool.entity.TestProfile;
 import com.englishschool.entity.spring.PassedTestModelAttribute;
 import com.englishschool.service.generic.GenericManager;
 
@@ -20,5 +21,7 @@ public interface IPassedTestService extends GenericManager<PassedTest> {
     PassedTest getAndCheckPassedTestFromModel(PassedTestModelAttribute passedModel, HttpSession session);
 
     PassedTestModelAttribute getPassedTestModelAttribute(Test currentTest);
+
+    List<PassedTest> deletePassedTestsFromProfiles(List<TestProfile> testProfiles);
 
 }

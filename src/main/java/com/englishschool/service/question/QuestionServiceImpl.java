@@ -69,7 +69,7 @@ public class QuestionServiceImpl extends GenericManagerImpl<Question, QuestionDa
 
     @CacheEvict(value = CacheConstants.QUESTION_PAGES, allEntries = true)
     @Override
-    public boolean deleteByIDs(List<String> IDs) {
+    public List<Question> deleteByIDs(List<String> IDs) {
         return super.deleteByIDs(IDs);
     }
 

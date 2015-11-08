@@ -29,8 +29,8 @@ public class CommonConstants {
     public static final String MSG_ATTRIBUTE = "msg";
     public static final String UPDATE_QUESTION_LINK_FORMAT = "<a href=/question/%s/update role=button class=btn btn-primary btn-sm>Update</a>";
     public static final String UPDATE_TEST_LINK_FORMAT = "<a href=/test/%s/update role=button class=btn btn-primary btn-sm>Update</a>";
+    public static final String UPDATE_PROFILE_LINK_FORMAT = "<a href=/admin/profile/%s/update role=button class=btn btn-primary btn-sm>Update</a>";
     public static final String DELETE_QUESTION_LINK_FORMAT = "<a href=/question/%s/delete role=button class=btn btn-danger btn-sm>Delete</a>";
-    public static final String DELETE_TEST_LINK_FORMAT = "<a data-content=#/test/%s/delete role=button id=deleteLink class=btn btn-danger btn-sm>Delete</a>";
     public static final String QUESTION_DAO = "questionDao";
     public static final String PROFILE_DAO = "profileDao";
     public static final String PASSED_TEST_DAO = "passedTestDao";
@@ -38,7 +38,6 @@ public class CommonConstants {
     public static final String TEST = "test";
     public static final String QUESTION_ID = "questionID";
     public static final String TITLE = "title";
-    public static final String QUESTION_TYPE = "questionType";
     public static final String ORDER_0_COLUMN = "order[0][column]";
     public static final String ORDER_0_DIR = "order[0][dir]";
     public static final int SECONDS_FROM_MINUTE = 60;
@@ -59,4 +58,9 @@ public class CommonConstants {
     public static final String TIME_OF_TEST = "timeOfTest";
     public static final String SUCCESS = "success";
     public static final String QUESTION_AMOUNT = "questionAmount";
+    public static final String AGE = "age";
+    public static final String SURNAME = "surname";
+    public static final String ASSIGN_TEST = "assignTest";
+    public static final String GROUPS = "groups";
+    public static final String PROFILE = "profile";
 }

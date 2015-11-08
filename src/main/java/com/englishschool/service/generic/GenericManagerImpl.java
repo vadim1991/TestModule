@@ -44,7 +44,7 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements
     }
 
     @Override
-    public boolean deleteByIDs(List<String> IDs) {
+    public List<T> deleteByIDs(List<String> IDs) {
         return dao.deleteByIDs(IDs);
     }
 

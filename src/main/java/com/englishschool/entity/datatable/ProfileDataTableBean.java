@@ -13,7 +13,8 @@ public class ProfileDataTableBean implements Serializable {
     private String name;
     private String surname;
     private String email;
-    private int age;
+    private int averageMark;
+    private String updateLink;
 
     public String getId() {
         return id;
@@ -47,12 +48,20 @@ public class ProfileDataTableBean implements Serializable {
         this.email = email;
     }
 
-    public int getAge() {
-        return age;
+    public int getAverageMark() {
+        return averageMark;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAverageMark(int averageMark) {
+        this.averageMark = averageMark;
+    }
+
+    public String getUpdateLink() {
+        return updateLink;
+    }
+
+    public void setUpdateLink(String updateLink) {
+        this.updateLink = updateLink;
     }
 
     @Override
@@ -78,8 +87,7 @@ public class ProfileDataTableBean implements Serializable {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
-                ", age='" + age + '\'' +
+                ", averageMark=" + averageMark +
                 '}';
     }
-
 }

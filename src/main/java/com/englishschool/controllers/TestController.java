@@ -52,8 +52,6 @@ public class TestController {
 
     @RequestMapping(value = "test/{id}/update", method = RequestMethod.GET)
     public ModelAndView updateTest(@PathVariable(ID) String testID, Locale locale) {
-        String message = messageSource.getMessage("test.update", new Object[]{"test.update"}, locale);
-        System.out.println(message);
         Test test = testService.findById(testID);
         Map<String, Object> model = new HashMap<>();
         if (test != null) {

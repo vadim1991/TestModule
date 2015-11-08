@@ -9,7 +9,7 @@
     <title>Add Test</title>
 </head>
 <body>
-<div class="container">
+<div class="container custom-container">
     <div class="jumbotron">
         <c:if test="${not empty msg}">
             <div class="alert alert-dismissable alert-material-cyan-300">
@@ -63,7 +63,8 @@
                             <th>Name</th>
                             <th>Surname</th>
                             <th>Email</th>
-                            <th>Age</th>
+                            <th>Average Mark</th>
+                            <th>Update</th>
                         </tr>
                         </thead>
                     </table>

@@ -229,3 +229,15 @@ label p {
     margin: 7px 5px 7px 30px;
     font-style: italic;
 }
+
+.add-profile input{
+    margin-bottom: 30px;
+}
+
+.add-category {
+    margin-top: 0px;
+}
+
+.custom-container {
+    margin-bottom: 60px;
+}

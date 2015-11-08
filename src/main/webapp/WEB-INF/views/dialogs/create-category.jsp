@@ -8,6 +8,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Add new Category</h4>
             </div>
+            <hr>
+            <br>
             <form class="form-horizontal" action="/category/create" method="post">
                 <div class="modal-body">
                     <div class="form-group">
